@@ -1,17 +1,298 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PROFILE, PROJECTS, EXPERIENCES, EDUCATION, TECH_SKILLS } from '../data/portfolio';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
+  
+  <!-- 1. HERO SECTION -->
+  <header class="relative min-h-[85vh] flex flex-col justify-center items-center px-6 text-center overflow-hidden border-b border-slate-900">
+    <!-- Glow di sfondo dinamico -->
+    <div class="absolute -top-40 w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -bottom-40 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+    <!-- Badge di stato -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs font-mono text-slate-300 mb-8 backdrop-blur-md shadow-inner">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>{PROFILE.graduationStatus}</span>
+    </div>
+
+    <!-- Titolo principale -->
+    <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
+      {PROFILE.name}
+    </h1>
+    
+    <p class="mt-4 text-xl sm:text-2xl font-medium bg-gradient-to-r from-violet-400 via-fuchsia-300 to-cyan-400 bg-clip-text text-transparent max-w-2xl font-mono">
+      {PROFILE.title}
+    </p>
+
+    <p class="mt-6 text-slate-400 max-w-2xl text-base sm:text-lg leading-relaxed">
+      {PROFILE.subheading}
+    </p>
+
+    <!-- Pulsanti di azione rapida -->
+    <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
+      <a 
+        href={PROFILE.github} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 transition flex items-center gap-2 shadow-lg"
+      >
+        <span>GitHub Preview</span>
+        <span class="text-xs text-slate-500">↗</span>
+      </a>
+      <a 
+        href={`mailto:${PROFILE.email}`}
+        class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2"
+      >
+        <span>Contattami</span>
+        <span class="text-xs">✉</span>
+      </a>
+    </div>
+
+    <!-- Lingue parlate in pillole -->
+    <div class="mt-10 flex flex-wrap justify-center gap-3 text-xs font-mono text-slate-400">
+      {PROFILE.languages.map((lang) => (
+        <span class="px-3 py-1 rounded-md bg-slate-900/50 border border-slate-800/80">
+          <strong class="text-slate-300">{lang.name}:</strong> {lang.level}
+        </span>
+      ))}
+    </div>
+  </header>
+
+  <!-- 2. STICKY HUD CONTROLLER (Selettore di Binario) -->
+  <nav class="sticky top-4 z-50 max-w-3xl mx-auto px-4 my-8">
+    <div class="bg-slate-900/90 border border-slate-800 backdrop-blur-xl p-1.5 rounded-2xl shadow-2xl flex flex-wrap items-center justify-between gap-1">
+      <button 
+        data-target="projects" 
+        class="hud-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-mono font-semibold transition flex items-center justify-center gap-2 bg-violet-600 text-white shadow-md shadow-violet-600/30"
+      >
+        <span>🎮</span>
+        <span>01. Progetti</span>
+      </button>
+      <button 
+        data-target="experience" 
+        class="hud-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-mono font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition flex items-center justify-center gap-2"
+      >
+        <span>💼</span>
+        <span>02. Esperienze</span>
+      </button>
+      <button 
+        data-target="education" 
+        class="hud-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-mono font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition flex items-center justify-center gap-2"
+      >
+        <span>🎓</span>
+        <span>03. Formazione</span>
+      </button>
+      <button 
+        data-target="skills" 
+        class="hud-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-mono font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition flex items-center justify-center gap-2"
+      >
+        <span>⚡</span>
+        <span>04. Competenze</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 3. CONTENUTI DINAMICI (Solo il binario selezionato) -->
+  <main class="max-w-5xl mx-auto px-6 py-6 w-full">
+    
+    <!-- TRACCIA 1: PROGETTI (Default visibile) -->
+    <section id="track-projects" class="track-section space-y-12">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Showcase Videogiochi & Sistemi</h2>
+        <p class="text-slate-400 text-sm mt-2 font-mono">Dalla fisica GPU in CUDA ai survival co-op fino al game design narrativo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {PROJECTS.map((proj) => (
+          <article class="bg-slate-900/60 border border-slate-800/80 hover:border-slate-700 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition group hover:shadow-2xl hover:shadow-violet-500/5 backdrop-blur-sm">
+            <div>
+              {proj.highlight && (
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono mb-4">
+                  <span>★</span>
+                  <span>{proj.highlight}</span>
+                </div>
+              )}
+
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-violet-300 transition">
+                  {proj.title}
+                </h3>
+                <span class="text-xs font-mono text-slate-500">{proj.period}</span>
+              </div>
+
+              <p class="text-xs font-mono text-cyan-400 mt-1">{proj.tagline}</p>
+              <div class="text-xs text-slate-400 font-mono mt-1 mb-4 italic">Ruolo: {proj.role}</div>
+
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                {proj.description}
+              </p>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap gap-1.5 mb-6">
+                {proj.tags.map((tag) => (
+                  <span class="px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 text-xs font-mono">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {proj.githubUrl && (
+                <a 
+                  href={proj.githubUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-xs font-mono font-semibold text-violet-400 hover:text-violet-300 transition"
+                >
+                  <span>Dettagli Progetto & Codice</span>
+                  <span>→</span>
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- TRACCIA 2: ESPERIENZE (Inizialmente nascosta) -->
+    <section id="track-experience" class="track-section hidden space-y-8">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Esperienze Lavorative</h2>
+        <p class="text-slate-400 text-sm mt-2 font-mono">Docenza accademica, sviluppo su motori proprietari e produzione Unity.</p>
+      </div>
+
+      <div class="space-y-6 max-w-3xl mx-auto">
+        {EXPERIENCES.map((exp) => (
+          <div class="relative pl-6 sm:pl-8 border-l-2 border-slate-800 hover:border-violet-500 transition py-2">
+            <span class="absolute -left-[9px] top-4 w-4 h-4 rounded-full bg-slate-950 border-2 border-violet-500"></span>
+            
+            <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 class="text-lg font-bold text-white">{exp.role}</h3>
+                <span class="text-xs font-mono text-slate-400">{exp.period}</span>
+              </div>
+              
+              <div class="text-sm font-mono text-violet-400 mb-3">{exp.company} • {exp.location}</div>
+              
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                {exp.description}
+              </p>
+
+              <div class="flex flex-wrap gap-1.5">
+                {exp.skills.map((skill) => (
+                  <span class="px-2 py-0.5 rounded bg-slate-800/60 text-slate-400 text-xs font-mono">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- TRACCIA 3: FORMAZIONE (Inizialmente nascosta) -->
+    <section id="track-education" class="track-section hidden space-y-8">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Formazione Accademica & Ricerca</h2>
+        <p class="text-slate-400 text-sm mt-2 font-mono">Dalla Dynamic Difficulty Adjustment all'Ingegneria Informatica classica.</p>
+      </div>
+
+      <div class="space-y-8 max-w-3xl mx-auto">
+        {EDUCATION.map((edu) => (
+          <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+              <h3 class="text-lg sm:text-xl font-bold text-white">{edu.degree}</h3>
+              <span class="text-xs font-mono text-slate-400">{edu.period}</span>
+            </div>
+
+            <div class="text-sm font-mono text-cyan-400 mb-6">{edu.institution}</div>
+
+            <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-5 mb-5 space-y-2">
+              <div class="text-xs font-mono text-amber-400 uppercase tracking-wider">Tesi di Laurea</div>
+              <div class="text-sm font-semibold text-slate-200 italic">"{edu.thesisTitle}"</div>
+              <p class="text-xs text-slate-400 leading-relaxed pt-2">
+                {edu.thesisDetails}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              {edu.skills.map((skill) => (
+                <span class="px-2.5 py-1 rounded-md bg-slate-800/70 text-slate-300 text-xs font-mono">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- TRACCIA 4: COMPETENZE & TOOLING (Inizialmente nascosta) -->
+    <section id="track-skills" class="track-section hidden space-y-8">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Tech Inventory & Competenze</h2>
+        <p class="text-slate-400 text-sm mt-2 font-mono">Il toolkit tecnico: linguaggi a basso livello, motori di gioco e pipeline di design.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {TECH_SKILLS.map((cat) => (
+          <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-4">
+            <h3 class="text-sm font-mono font-bold text-violet-400 uppercase tracking-wider flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+              {cat.category}
+            </h3>
+            
+            <ul class="space-y-2">
+              {cat.items.map((item) => (
+                <li class="text-sm text-slate-300 font-mono flex items-center gap-2">
+                  <span class="text-slate-600">›</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. FOOTER -->
+  <footer class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20">
+    <p>{PROFILE.name} • {PROFILE.title}</p>
+    <p class="text-slate-600 mt-1">Hostato su GitHub Pages • 0 kB Bloat • Zero-cost Edge CDN</p>
+  </footer>
+
+</BaseLayout>
+
+<!-- Client Script ultra-veloce per il cambio di binario senza ricaricare la pagina -->
+<script>
+  const buttons = document.querySelectorAll('.hud-btn');
+  const sections = document.querySelectorAll('.track-section');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetId = `track-${btn.getAttribute('data-target')}`;
+
+      // 1. Aggiorna stile bottoni
+      buttons.forEach((b) => {
+        b.classList.remove('bg-violet-600', 'text-white', 'shadow-md', 'shadow-violet-600/30');
+        b.classList.add('text-slate-400');
+      });
+      btn.classList.add('bg-violet-600', 'text-white', 'shadow-md', 'shadow-violet-600/30');
+      btn.classList.remove('text-slate-400');
+
+      // 2. Mostra solo la sezione corrispondente
+      sections.forEach((sec) => {
+        if (sec.id === targetId) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
