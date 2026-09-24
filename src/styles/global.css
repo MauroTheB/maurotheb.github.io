@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Cursore puntatore automatico per tutti gli elementi interattivi */
+button, 
+a, 
+[role="button"],
+.interactive-card {
+  cursor: pointer;
+}

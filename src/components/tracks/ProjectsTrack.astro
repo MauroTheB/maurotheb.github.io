@@ -1,0 +1,246 @@
+---
+import { PROJECTS } from '../../data/portfolio';
+---
+
+<!-- TRACCIA 1: PROGETTI -->
+<section id="track-projects" class="track-section space-y-12">
+  
+  <!-- VISTA A: GRIGLIA DI TUTTI I PROGETTI (Widescreen) -->
+  <div id="projects-grid-view" class="space-y-12 transition-all duration-300">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Showcase Videogiochi & Sistemi</h2>
+      <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Clicca su un progetto per visualizzarne il processo e i dettagli completi.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="projects-cards-container">
+      {PROJECTS.map((proj) => (
+        <article 
+          data-project-card={proj.id}
+          class="interactive-card bg-slate-900/70 border border-slate-800 rounded-3xl p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-violet-500/15 hover:-translate-y-1 backdrop-blur-md"
+        >
+          <div>
+            {proj.highlight && (
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs sm:text-sm font-mono mb-6">
+                <span class="text-base">★</span>
+                <span>{proj.highlight}</span>
+              </div>
+            )}
+
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-violet-300 transition">
+                {proj.title}
+              </h3>
+              <span class="text-sm font-mono text-slate-500">{proj.period}</span>
+            </div>
+
+            <p class="text-sm sm:text-base font-mono text-cyan-400 mt-2">{proj.tagline}</p>
+            <div class="text-sm text-slate-400 font-mono mt-1 mb-6 italic">Ruolo: {proj.role}</div>
+
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+              {proj.description}
+            </p>
+          </div>
+
+          <div>
+            <div class="flex flex-wrap gap-2 mb-8">
+              {proj.tags.map((tag) => (
+                <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div class="inline-flex items-center gap-2.5 text-sm sm:text-base font-mono font-bold text-violet-400 group-hover:text-violet-300 transition">
+              <span>Esplora Documentazione & Processo</span>
+              <span class="group-hover:translate-x-1.5 transition-transform text-lg">→</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- VISTA B: SCHEDA ESPANSA DEL SINGOLO PROGETTO (Expanded Cinema Mode) -->
+  <div id="project-detail-view" class="hidden min-h-[70vh] space-y-8 animate-detail-appear">
+    <!-- Pulsante di ritorno stile back button -->
+    <button id="close-project-detail" class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-sm font-mono text-slate-300 hover:text-white hover:border-slate-700 transition-opacity duration-300">
+      <span class="text-base">←</span>
+      <span>Torna a tutti i progetti</span>
+    </button>
+
+    <!-- Contenitore dell'espansione del gioco (Morphing Card) -->
+    <div id="detail-card-container" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-14 md:p-16 backdrop-blur-2xl shadow-2xl relative overflow-hidden will-change-transform">
+      <div class="text-center max-w-3xl mx-auto space-y-5 mb-14">
+        <span id="detail-tagline" class="text-sm sm:text-base font-mono text-cyan-400 tracking-wider uppercase">Tagline</span>
+        <h2 id="detail-title" class="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight will-change-transform">
+          Titolo Gioco
+        </h2>
+        <p id="detail-role" class="text-sm sm:text-base font-mono text-slate-400 italic">Ruolo</p>
+      </div>
+
+      <!-- Spazio scrollabile con immagini grandi e breakdown tecnico -->
+      <div id="detail-body-content" class="space-y-12 border-t border-slate-800/80 pt-10 transition-all duration-700 ease-out">
+        <div>
+          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">Overview & Game Design</h4>
+          <p id="detail-description" class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-4xl"></p>
+        </div>
+
+        <!-- Immagini ingrandite (Altezza portata a h-80 / h-96 per showcase reale) -->
+        <div>
+          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-5">Media & Showcase Visivo</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
+              [ Screenshot Gameplay ad Alta Risoluzione / Video Showcase ]
+            </div>
+            <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
+              [ Schema Architetturale Engine / Shaders / Level Design ]
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-6 pt-6 border-t border-slate-800/80">
+          <div id="detail-tags" class="flex flex-wrap gap-2.5"></div>
+          <a 
+            id="detail-github-link" 
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="px-6 py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-sm font-semibold transition shadow-xl shadow-violet-600/25"
+          >
+            Vedi Repository & Codice Sorgente ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Logica FLIP Morphing Incapsulata -->
+<script>
+  const projectCards = document.querySelectorAll('[data-project-card]');
+  const projectsGrid = document.getElementById('projects-grid-view');
+  const projectDetail = document.getElementById('project-detail-view');
+  const closeDetailBtn = document.getElementById('close-project-detail');
+
+  const detailCardContainer = document.getElementById('detail-card-container');
+  const detailTitle = document.getElementById('detail-title');
+  const detailTagline = document.getElementById('detail-tagline');
+  const detailRole = document.getElementById('detail-role');
+  const detailDescription = document.getElementById('detail-description');
+  const detailTags = document.getElementById('detail-tags');
+  const detailBodyContent = document.getElementById('detail-body-content');
+
+  let savedDeltaX = 0;
+  let savedDeltaY = 0;
+  let savedScaleX = 1;
+  let savedScaleY = 1;
+  let isAnimating = false;
+
+  projectCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      if (!detailCardContainer || !detailTitle || !detailBodyContent) return;
+
+      const firstCardRect = card.getBoundingClientRect();
+
+      projectCards.forEach((otherCard) => {
+        if (otherCard !== card) {
+          otherCard.classList.add('disintegrate');
+        }
+      });
+
+      detailTitle.innerText = card.querySelector('h3')?.innerText || '';
+      if (detailTagline) detailTagline.innerText = card.querySelector('.text-cyan-400')?.innerText || '';
+      if (detailRole) detailRole.innerText = card.querySelector('.italic')?.innerText || '';
+      if (detailDescription) detailDescription.innerText = card.querySelector('p.text-slate-300')?.innerText || '';
+      if (detailTags) {
+        const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
+        detailTags.innerHTML = tags.map(t => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
+      }
+
+      detailBodyContent.classList.add('blur-md', 'opacity-30');
+
+      if (projectsGrid) projectsGrid.classList.add('hidden');
+      if (projectDetail) projectDetail.classList.remove('hidden');
+
+      const lastCardRect = detailCardContainer.getBoundingClientRect();
+
+      savedDeltaX = firstCardRect.left - lastCardRect.left;
+      savedDeltaY = firstCardRect.top - lastCardRect.top;
+      savedScaleX = firstCardRect.width / lastCardRect.width;
+      savedScaleY = firstCardRect.height / lastCardRect.height;
+
+      detailCardContainer.style.transformOrigin = 'top left';
+      detailCardContainer.style.transition = 'none';
+      detailCardContainer.style.transform = `translate3d(${savedDeltaX}px, ${savedDeltaY}px, 0) scale(${savedScaleX}, ${savedScaleY})`;
+
+      requestAnimationFrame(() => {
+        detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        detailCardContainer.style.transform = 'translate3d(0, 0, 0) scale(1, 1)';
+
+        setTimeout(() => {
+          detailBodyContent.classList.remove('blur-md', 'opacity-30');
+          isAnimating = false;
+        }, 700);
+      });
+    });
+  });
+
+  closeDetailBtn?.addEventListener('click', () => {
+    if (isAnimating || !detailCardContainer) return;
+    isAnimating = true;
+
+    detailBodyContent?.classList.add('blur-md', 'opacity-0');
+    closeDetailBtn.classList.add('opacity-0');
+
+    detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
+    detailCardContainer.style.transform = `translate3d(${savedDeltaX}px, ${savedDeltaY}px, 0) scale(${savedScaleX}, ${savedScaleY})`;
+
+    setTimeout(() => {
+      if (projectDetail) projectDetail.classList.add('hidden');
+      if (projectsGrid) projectsGrid.classList.remove('hidden');
+
+      requestAnimationFrame(() => {
+        projectCards.forEach((card) => {
+          card.classList.remove('disintegrate');
+        });
+      });
+
+      detailCardContainer.style.transition = 'none';
+      detailCardContainer.style.transform = 'none';
+      closeDetailBtn.classList.remove('opacity-0');
+      detailBodyContent?.classList.remove('blur-md', 'opacity-0');
+
+      isAnimating = false;
+    }, 850);
+  });
+</script>
+
+<!-- Stili di Disintegrazione e Comparsa Dettaglio -->
+<style is:global>
+  .disintegrate {
+    transition: all 0.35s cubic-bezier(0.4, 0, 1, 1) !important;
+    opacity: 0 !important;
+    transform: scale(0.9) translateY(20px) !important;
+    filter: blur(8px) !important;
+    pointer-events: none;
+  }
+
+  @keyframes detailAppear {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-detail-appear {
+    animation: detailAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>

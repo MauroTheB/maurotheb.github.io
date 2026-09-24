@@ -1,0 +1,126 @@
+---
+// Componente autonomo per l'atmosfera volumetrica
+---
+
+<!-- 1. Markup Parete e Contenitore Particelle -->
+<div id="parallax-wall" class="fixed inset-0 pointer-events-none z-0 wall-pattern will-change-transform"></div>
+<div id="dust-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+<!-- 2. Logica Parallasse & Generatore Particelle VFX -->
+<script>
+  // Parallasse della parete rispetto al cursore del mouse
+  const wall = document.getElementById('parallax-wall');
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+
+  window.addEventListener('pointermove', (e) => {
+    const normX = (e.clientX / window.innerWidth - 0.5) * 2;
+    const normY = (e.clientY / window.innerHeight - 0.5) * 2;
+    targetX = normX * -14;
+    targetY = normY * -14;
+  });
+
+  function updateParallax() {
+    currentX += (targetX - currentX) * 0.05;
+    currentY += (targetY - currentY) * 0.05;
+    if (wall) {
+      wall.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    }
+    requestAnimationFrame(updateParallax);
+  }
+  updateParallax();
+
+  // Generatore di particelle volumetriche ambientali (Bokeh VFX)
+  const dustContainer = document.getElementById('dust-container');
+  if (dustContainer) {
+    const particleCount = 28;
+    const palettes = [
+      'radial-gradient(circle, rgba(196, 181, 253, 0.9) 0%, rgba(139, 92, 246, 0.3) 40%, transparent 75%)',
+      'radial-gradient(circle, rgba(103, 232, 249, 0.85) 0%, rgba(6, 182, 212, 0.25) 45%, transparent 75%)',
+      'radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(216, 180, 254, 0.2) 50%, transparent 75%)',
+    ];
+
+    for (let i = 0; i < particleCount; i++) {
+      const mote = document.createElement('div');
+      mote.className = 'dust-mote';
+
+      const size = Math.random() * 14 + 8;
+      const duration = Math.random() * 14 + 12;
+      const delay = Math.random() * -25;
+      const animType = Math.random() > 0.5 ? 'vfxMoteExpand' : 'vfxMoteContract';
+      const gradient = palettes[Math.floor(Math.random() * palettes.length)];
+
+      mote.style.width = `${size}px`;
+      mote.style.height = `${size}px`;
+      mote.style.left = `${Math.random() * 100}%`;
+      mote.style.top = `${Math.random() * 100}%`;
+      mote.style.background = gradient;
+      mote.style.animation = `${animType} ${duration}s ease-in-out infinite`;
+      mote.style.animationDelay = `${delay}s`;
+
+      dustContainer.appendChild(mote);
+    }
+  }
+</script>
+
+<!-- 3. Stili e Keyframes isolati delle Particelle e della Texture -->
+<style is:global>
+  .wall-pattern {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.09) 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+    background-position: center;
+  }
+
+  @keyframes vfxMoteExpand {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.3);
+      opacity: 0;
+      filter: blur(1px);
+    }
+    20% {
+      opacity: 0.85;
+      transform: translate3d(12px, -35px, 0) scale(1);
+      filter: blur(0.5px);
+    }
+    60% {
+      opacity: 0.6;
+      transform: translate3d(-10px, -100px, 0) scale(1.8);
+      filter: blur(2.5px);
+    }
+    100% {
+      transform: translate3d(20px, -170px, 0) scale(2.6);
+      opacity: 0;
+      filter: blur(6px);
+    }
+  }
+
+  @keyframes vfxMoteContract {
+    0% {
+      transform: translate3d(0, 0, 0) scale(2.2);
+      opacity: 0;
+      filter: blur(5px);
+    }
+    30% {
+      opacity: 0.75;
+      transform: translate3d(-15px, -45px, 0) scale(1.2);
+      filter: blur(1.5px);
+    }
+    70% {
+      opacity: 0.8;
+      transform: translate3d(8px, -105px, 0) scale(0.6);
+      filter: blur(0.4px);
+    }
+    100% {
+      transform: translate3d(-8px, -165px, 0) scale(0.2);
+      opacity: 0;
+      filter: blur(2px);
+    }
+  }
+
+  .dust-mote {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    will-change: transform, opacity, filter;
+  }
+</style>
