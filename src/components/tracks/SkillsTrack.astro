@@ -1,0 +1,31 @@
+---
+import { TECH_SKILLS } from '../../data/portfolio';
+---
+
+<!-- TRACCIA 4: COMPETENZE & TOOLING -->
+<section id="track-skills" class="track-section hidden space-y-12">
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Tech Inventory & Competenze</h2>
+    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Il toolkit tecnico: linguaggi a basso livello, motori di gioco e pipeline di design.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    {TECH_SKILLS.map((cat) => (
+      <div class="bg-slate-900/70 border border-slate-800 p-8 rounded-3xl space-y-5 backdrop-blur-md shadow-xl">
+        <h3 class="text-base font-mono font-bold text-violet-400 uppercase tracking-wider flex items-center gap-2.5">
+          <span class="w-2 h-2 rounded-full bg-violet-400"></span>
+          {cat.category}
+        </h3>
+        
+        <ul class="space-y-3">
+          {cat.items.map((item) => (
+            <li class="text-base text-slate-300 font-mono flex items-center gap-2.5">
+              <span class="text-slate-500 font-bold">›</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import { EDUCATION } from '../../data/portfolio';
+---
+
+<!-- TRACCIA 3: FORMAZIONE -->
+<section id="track-education" class="track-section hidden space-y-12">
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Formazione Accademica & Ricerca</h2>
+    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Dalla Dynamic Difficulty Adjustment all'Ingegneria Informatica classica.</p>
+  </div>
+
+  <div class="space-y-10 max-w-4xl mx-auto">
+    {EDUCATION.map((edu) => (
+      <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden backdrop-blur-md shadow-xl">
+        <div class="flex flex-wrap items-baseline justify-between gap-3 mb-2">
+          <h3 class="text-2xl sm:text-3xl font-bold text-white">{edu.degree}</h3>
+          <span class="text-sm font-mono text-slate-400">{edu.period}</span>
+        </div>
+
+        <div class="text-base font-mono text-cyan-400 mb-8">{edu.institution}</div>
+
+        <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-6 sm:p-8 mb-6 space-y-3">
+          <div class="text-xs sm:text-sm font-mono text-amber-400 uppercase tracking-wider font-bold">Tesi di Laurea</div>
+          <div class="text-base sm:text-lg font-semibold text-slate-200 italic">"{edu.thesisTitle}"</div>
+          <p class="text-sm sm:text-base text-slate-400 leading-relaxed pt-2">
+            {edu.thesisDetails}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2.5">
+          {edu.skills.map((skill) => (
+            <span class="px-3 py-1.5 rounded-lg bg-slate-800/80 text-slate-300 text-xs sm:text-sm font-mono">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

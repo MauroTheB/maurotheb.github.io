@@ -152,10 +152,10 @@ import { PROJECTS } from '../../data/portfolio';
         }
       });
 
-      detailTitle.innerText = card.querySelector('h3')?.innerText || '';
-      if (detailTagline) detailTagline.innerText = card.querySelector('.text-cyan-400')?.innerText || '';
-      if (detailRole) detailRole.innerText = card.querySelector('.italic')?.innerText || '';
-      if (detailDescription) detailDescription.innerText = card.querySelector('p.text-slate-300')?.innerText || '';
+      detailTitle.textContent = card.querySelector('h3')?.textContent || '';
+      if (detailTagline) detailTagline.textContent = card.querySelector('.text-cyan-400')?.textContent || '';
+      if (detailRole) detailRole.textContent = card.querySelector('.italic')?.textContent || '';
+      if (detailDescription) detailDescription.textContent = card.querySelector('p.text-slate-300')?.textContent || '';
       if (detailTags) {
         const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
         detailTags.innerHTML = tags.map(t => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');

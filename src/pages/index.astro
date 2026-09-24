@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PROFILE, EXPERIENCES, EDUCATION, TECH_SKILLS } from '../data/portfolio';
+import { PROFILE } from '../data/portfolio';
 import AmbientEnvironment from '../components/vfx/AmbientEnvironment.astro';
 import Hero from '../components/sections/Hero.astro';
 import HudNav from '../components/hud/HudNav.astro';
 import ProjectsTrack from '../components/tracks/ProjectsTrack.astro';
+import ExperienceTrack from '../components/tracks/ExperienceTrack.astro';
+import EducationTrack from '../components/tracks/EducationTrack.astro';
+import SkillsTrack from '../components/tracks/SkillsTrack.astro';
 ---
 
 <BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
@@ -23,107 +26,14 @@ import ProjectsTrack from '../components/tracks/ProjectsTrack.astro';
     <!-- TRACCIA 1: PROGETTI -->
     <ProjectsTrack />
     
-    <!-- TRACCIA 2: ESPERIENZE (Ingrandita) -->
-    <section id="track-experience" class="track-section hidden space-y-12">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Esperienze Lavorative</h2>
-        <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Docenza accademica, sviluppo su motori proprietari e produzione Unity.</p>
-      </div>
+    <!-- TRACCIA 2: ESPERIENZE -->
+    <ExperienceTrack />
 
-      <div class="space-y-8 max-w-4xl mx-auto">
-        {EXPERIENCES.map((exp) => (
-          <div class="relative pl-8 sm:pl-10 border-l-2 border-slate-800 hover:border-violet-500 transition py-2">
-            <span class="absolute -left-[9px] top-6 w-4 h-4 rounded-full bg-slate-950 border-2 border-violet-500"></span>
-            
-            <div class="bg-slate-900/70 border border-slate-800 p-8 sm:p-10 rounded-3xl backdrop-blur-md shadow-xl">
-              <div class="flex flex-wrap items-baseline justify-between gap-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white">{exp.role}</h3>
-                <span class="text-sm font-mono text-slate-400">{exp.period}</span>
-              </div>
-              
-              <div class="text-base font-mono text-violet-400 mt-1 mb-4">{exp.company} • {exp.location}</div>
-              
-              <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-6">
-                {exp.description}
-              </p>
+    <!-- TRACCIA 3: FORMAZIONE -->
+    <EducationTrack />
 
-              <div class="flex flex-wrap gap-2">
-                {exp.skills.map((skill) => (
-                  <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-400 text-xs sm:text-sm font-mono">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- TRACCIA 3: FORMAZIONE (Ingrandita) -->
-    <section id="track-education" class="track-section hidden space-y-12">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Formazione Accademica & Ricerca</h2>
-        <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Dalla Dynamic Difficulty Adjustment all'Ingegneria Informatica classica.</p>
-      </div>
-
-      <div class="space-y-10 max-w-4xl mx-auto">
-        {EDUCATION.map((edu) => (
-          <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden backdrop-blur-md shadow-xl">
-            <div class="flex flex-wrap items-baseline justify-between gap-3 mb-2">
-              <h3 class="text-2xl sm:text-3xl font-bold text-white">{edu.degree}</h3>
-              <span class="text-sm font-mono text-slate-400">{edu.period}</span>
-            </div>
-
-            <div class="text-base font-mono text-cyan-400 mb-8">{edu.institution}</div>
-
-            <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-6 sm:p-8 mb-6 space-y-3">
-              <div class="text-xs sm:text-sm font-mono text-amber-400 uppercase tracking-wider font-bold">Tesi di Laurea</div>
-              <div class="text-base sm:text-lg font-semibold text-slate-200 italic">"{edu.thesisTitle}"</div>
-              <p class="text-sm sm:text-base text-slate-400 leading-relaxed pt-2">
-                {edu.thesisDetails}
-              </p>
-            </div>
-
-            <div class="flex flex-wrap gap-2.5">
-              {edu.skills.map((skill) => (
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800/80 text-slate-300 text-xs sm:text-sm font-mono">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- TRACCIA 4: COMPETENZE & TOOLING (Ingrandita) -->
-    <section id="track-skills" class="track-section hidden space-y-12">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Tech Inventory & Competenze</h2>
-        <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Il toolkit tecnico: linguaggi a basso livello, motori di gioco e pipeline di design.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {TECH_SKILLS.map((cat) => (
-          <div class="bg-slate-900/70 border border-slate-800 p-8 rounded-3xl space-y-5 backdrop-blur-md shadow-xl">
-            <h3 class="text-base font-mono font-bold text-violet-400 uppercase tracking-wider flex items-center gap-2.5">
-              <span class="w-2 h-2 rounded-full bg-violet-400"></span>
-              {cat.category}
-            </h3>
-            
-            <ul class="space-y-3">
-              {cat.items.map((item) => (
-                <li class="text-base text-slate-300 font-mono flex items-center gap-2.5">
-                  <span class="text-slate-500 font-bold">›</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </section>
+    <!-- TRACCIA 4: COMPETENZE -->
+    <SkillsTrack />
 
   </main>
 
