@@ -1,48 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PROFILE } from '../data/portfolio';
+import { getPortfolio } from '../data/portfolio';
 import AmbientEnvironment from '../components/vfx/AmbientEnvironment.astro';
+import CursorTrail from '../components/vfx/CursorTrail.astro';
+import LanguageSwitcher from '../components/hud/LanguageSwitcher.astro';
 import Hero from '../components/sections/Hero.astro';
 import HudNav from '../components/hud/HudNav.astro';
 import ProjectsTrack from '../components/tracks/ProjectsTrack.astro';
 import ExperienceTrack from '../components/tracks/ExperienceTrack.astro';
 import EducationTrack from '../components/tracks/EducationTrack.astro';
 import SkillsTrack from '../components/tracks/SkillsTrack.astro';
+
+const { profile: PROFILE, ui: UI } = getPortfolio('en');
 ---
 
 <BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
-  
   <AmbientEnvironment />
+  <CursorTrail />
+  <LanguageSwitcher currentLang="en" />
 
-  <!-- 1. HERO SECTION -->
-  <Hero />
+  <Hero lang="en" />
+  <HudNav lang="en" />
 
-  <!-- 2. STICKY HUD CONTROLLER -->
-  <HudNav />
-
-  <!-- 3. CONTENUTI DINAMICI (Widescreen 7XL) -->
   <main class="max-w-7xl mx-auto px-6 sm:px-8 py-8 w-full">
-    
-    <!-- TRACCIA 1: PROGETTI -->
-    <ProjectsTrack />
-    
-    <!-- TRACCIA 2: ESPERIENZE -->
-    <ExperienceTrack />
-
-    <!-- TRACCIA 3: FORMAZIONE -->
-    <EducationTrack />
-
-    <!-- TRACCIA 4: COMPETENZE -->
-    <SkillsTrack />
-
+    <ProjectsTrack lang="en" />
+    <ExperienceTrack lang="en" />
+    <EducationTrack lang="en" />
+    <SkillsTrack lang="en" />
   </main>
 
-  <!-- 4. FOOTER -->
   <footer class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20">
     <p>{PROFILE.name} • {PROFILE.title}</p>
-    <p class="text-slate-600 mt-1">Hostato su GitHub Pages • 0 kB Bloat • Zero-cost Edge CDN</p>
+    <p class="text-slate-600 mt-1">{UI.footerText}</p>
   </footer>
-
 </BaseLayout>
 
 <style is:global>

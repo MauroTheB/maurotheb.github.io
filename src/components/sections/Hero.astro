@@ -1,53 +1,87 @@
 ---
-import { PROFILE } from '../../data/portfolio';
+import { getPortfolio, type Locale } from '../../data/portfolio';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const { profile: PROFILE, ui: UI } = getPortfolio(lang);
 ---
 
-<header class="relative min-h-[85vh] flex flex-col justify-center items-center px-6 text-center overflow-hidden border-b border-slate-900">
-  <!-- Glow di sfondo dinamico -->
-  <div class="absolute -top-40 w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[140px] pointer-events-none"></div>
-  <div class="absolute -bottom-40 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[130px] pointer-events-none"></div>
+<header 
+  id="hero-header"
+  class="relative min-h-[85vh] flex flex-col justify-center items-center px-6 text-center overflow-hidden backdrop-blur-md bg-slate-950/30 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] border-b border-white/10 select-none"
+>
+  <!-- 1. Bagliori di fondo potenziati -->
+  <div class="absolute -top-32 w-[650px] h-[650px] bg-violet-600/30 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute -bottom-24 w-[550px] h-[550px] bg-cyan-500/25 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <!-- 2. Micro-Grana Satinata (Effetto tattile acrilico satinato) -->
+  <div class="absolute inset-0 glass-grain pointer-events-none"></div>
+
+  <!-- 3. Riflesso Dinamico reattivo al cursore (Fresnel Specular Glare) -->
+  <div 
+    id="hero-glare" 
+    class="absolute inset-0 pointer-events-none transition-opacity duration-300"
+    style="background: radial-gradient(700px circle at var(--glare-x, 50%) var(--glare-y, 35%), rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%);"
+  ></div>
+
+  <!-- 4. Riflesso speculare diagonale fisso del cristallo -->
+  <div class="absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-violet-500/[0.05] pointer-events-none"></div>
+
+  <!-- 5. Bordo di rifrazione prismatico con Respiro Elettrico sinusoidale -->
+  <div class="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/90 to-transparent beam-pulse"></div>
+  <div class="absolute bottom-0 inset-x-0 h-4 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent blur-sm beam-pulse pointer-events-none"></div>
+  <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-56 h-3 bg-violet-500/40 blur-md beam-pulse pointer-events-none"></div>
+
+  <!-- 6. Nodo di Connessione HUD (Status R&D su DDA) -->
+  <div class="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-0.5 rounded-full bg-slate-950/95 border border-amber-500/40 text-[10px] font-mono text-amber-300 tracking-widest uppercase shadow-[0_0_12px_rgba(245,158,11,0.2)] pointer-events-none backdrop-blur-md">
+    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+    <span>{UI.ddaBadge}</span>
+  </div>
 
   <!-- Badge di stato -->
-  <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs font-mono text-slate-300 mb-8 backdrop-blur-md shadow-inner">
+  <div class="relative z-10 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs font-mono text-slate-300 mb-8 backdrop-blur-md shadow-inner">
     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
     <span>{PROFILE.graduationStatus}</span>
   </div>
 
   <!-- Titolo principale -->
-  <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
+  <h1 class="relative z-10 text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
     {PROFILE.name}
   </h1>
   
-  <p class="mt-4 text-xl sm:text-2xl font-medium bg-gradient-to-r from-violet-400 via-fuchsia-300 to-cyan-400 bg-clip-text text-transparent max-w-2xl font-mono">
+  <p class="relative z-10 mt-4 text-xl sm:text-2xl font-medium bg-gradient-to-r from-violet-400 via-fuchsia-300 to-cyan-400 bg-clip-text text-transparent max-w-2xl font-mono">
     {PROFILE.title}
   </p>
 
-  <p class="mt-6 text-slate-400 max-w-2xl text-base sm:text-lg leading-relaxed">
+  <p class="relative z-10 mt-6 text-slate-400 max-w-2xl text-base sm:text-lg leading-relaxed">
     {PROFILE.subheading}
   </p>
 
   <!-- Pulsanti di azione rapida -->
-  <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
+  <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
     <a 
       href={PROFILE.github} 
       target="_blank" 
       rel="noopener noreferrer"
       class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 transition flex items-center gap-2 shadow-lg"
     >
-      <span>GitHub Preview</span>
+      <span>{UI.heroBtnGithub}</span>
       <span class="text-xs text-slate-500">↗</span>
     </a>
     <a 
       href={`mailto:${PROFILE.email}`}
       class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2"
     >
-      <span>Contattami</span>
+      <span>{UI.heroBtnContact}</span>
       <span class="text-xs">✉</span>
     </a>
   </div>
 
   <!-- Lingue parlate in pillole -->
-  <div class="mt-10 flex flex-wrap justify-center gap-3 text-xs font-mono text-slate-400">
+  <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-3 text-xs font-mono text-slate-400">
     {PROFILE.languages.map((lang) => (
       <span class="px-3 py-1 rounded-md bg-slate-900/50 border border-slate-800/80">
         <strong class="text-slate-300">{lang.name}:</strong> {lang.level}
@@ -55,3 +89,41 @@ import { PROFILE } from '../../data/portfolio';
     ))}
   </div>
 </header>
+
+<!-- Script dedicato al calcolo del riflesso speculare del vetro in base al mouse -->
+<script>
+  const header = document.getElementById('hero-header');
+  if (header) {
+    header.addEventListener('pointermove', (e) => {
+      const rect = header.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      header.style.setProperty('--glare-x', `${x}px`);
+      header.style.setProperty('--glare-y', `${y}px`);
+    });
+  }
+</script>
+
+<style>
+  /* Grana procedurale satinata per simulare la ruvidità fisica del cristallo sabbiato */
+  .glass-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* Respiro sinusoidale calmo (4.5s) per il fascio laser */
+  @keyframes beamBreathe {
+    0%, 100% {
+      opacity: 0.75;
+      transform: scaleX(0.96);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleX(1.03);
+    }
+  }
+
+  .beam-pulse {
+    animation: beamBreathe 4.5s ease-in-out infinite;
+  }
+</style>

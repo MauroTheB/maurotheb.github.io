@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPortfolio } from '../../data/portfolio';
+import AmbientEnvironment from '../../components/vfx/AmbientEnvironment.astro';
+import CursorTrail from '../../components/vfx/CursorTrail.astro';
+import LanguageSwitcher from '../../components/hud/LanguageSwitcher.astro';
+import Hero from '../../components/sections/Hero.astro';
+import HudNav from '../../components/hud/HudNav.astro';
+import ProjectsTrack from '../../components/tracks/ProjectsTrack.astro';
+import ExperienceTrack from '../../components/tracks/ExperienceTrack.astro';
+import EducationTrack from '../../components/tracks/EducationTrack.astro';
+import SkillsTrack from '../../components/tracks/SkillsTrack.astro';
+
+const { profile: PROFILE, ui: UI } = getPortfolio('it');
+---
+
+<BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
+  <AmbientEnvironment />
+  <CursorTrail />
+  <LanguageSwitcher currentLang="it" />
+
+  <Hero lang="it" />
+  <HudNav lang="it" />
+
+  <main class="max-w-7xl mx-auto px-6 sm:px-8 py-8 w-full">
+    <ProjectsTrack lang="it" />
+    <ExperienceTrack lang="it" />
+    <EducationTrack lang="it" />
+    <SkillsTrack lang="it" />
+  </main>
+
+  <footer class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20">
+    <p>{PROFILE.name} • {PROFILE.title}</p>
+    <p class="text-slate-600 mt-1">{UI.footerText}</p>
+  </footer>
+</BaseLayout>

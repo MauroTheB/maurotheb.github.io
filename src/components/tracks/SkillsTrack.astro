@@ -1,12 +1,19 @@
 ---
-import { TECH_SKILLS } from '../../data/portfolio';
+import { getPortfolio, type Locale } from '../../data/portfolio';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const { skills: TECH_SKILLS, ui: UI } = getPortfolio(lang);
 ---
 
 <!-- TRACCIA 4: COMPETENZE & TOOLING -->
 <section id="track-skills" class="track-section hidden space-y-12">
   <div class="text-center max-w-2xl mx-auto mb-12">
-    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Tech Inventory & Competenze</h2>
-    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Il toolkit tecnico: linguaggi a basso livello, motori di gioco e pipeline di design.</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">{UI.skillsHeading}</h2>
+    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">{UI.skillsSubheading}</p>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">

@@ -1,12 +1,19 @@
 ---
-import { EXPERIENCES } from '../../data/portfolio';
+import { getPortfolio, type Locale } from '../../data/portfolio';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const { experiences: EXPERIENCES, ui: UI } = getPortfolio(lang);
 ---
 
 <!-- TRACCIA 2: ESPERIENZE -->
 <section id="track-experience" class="track-section hidden space-y-12">
   <div class="text-center max-w-2xl mx-auto mb-12">
-    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Esperienze Lavorative</h2>
-    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">Docenza accademica, sviluppo su motori proprietari e produzione Unity.</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">{UI.expHeading}</h2>
+    <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">{UI.expSubheading}</p>
   </div>
 
   <div class="space-y-8 max-w-4xl mx-auto">
