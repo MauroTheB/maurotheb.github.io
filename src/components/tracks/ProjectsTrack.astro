@@ -1,5 +1,6 @@
 ---
 import { getPortfolio, type Locale } from '../../data/portfolio';
+import ProjectScrollyShowcase from './ProjectScrollyShowcase.astro';
 
 interface Props {
   lang?: Locale;
@@ -20,9 +21,10 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="projects-cards-container">
-      {PROJECTS.map((proj) => (
-        <article 
-          data-project-card={proj.id}
+        {PROJECTS.map((proj) => (
+          <article 
+            data-project-card={proj.id}
+            data-project-video={proj.videoUrl || ''}
           class="interactive-card bg-slate-900/70 border border-slate-800 rounded-3xl p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-violet-500/15 hover:-translate-y-1 backdrop-blur-md"
         >
           <div>
@@ -76,8 +78,24 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     </button>
 
     <!-- Contenitore dell'espansione del gioco (Morphing Card) -->
-    <div id="detail-card-container" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-14 md:p-16 backdrop-blur-2xl shadow-2xl relative overflow-hidden will-change-transform">
-      <div class="text-center max-w-3xl mx-auto space-y-5 mb-14">
+      <div id="detail-card-container" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-14 md:p-16 backdrop-blur-2xl shadow-2xl relative overflow-hidden will-change-transform">
+        
+        <!-- Background Video di Gameplay (Living Ambient Texture) -->
+        <div id="detail-video-container" class="absolute inset-0 pointer-events-none overflow-hidden opacity-0 transition-opacity duration-1000 ease-out z-0">
+          <video 
+            id="detail-bg-video" 
+            class="w-full h-full object-cover filter blur-[1px] scale-105"
+            autoplay
+            muted 
+            loop 
+            playsinline 
+          ></video>
+          <!-- Overlay di contrasto calibrato: fa risaltare il testo senza nascondere il video -->
+          <div class="absolute inset-0 bg-slate-950/65"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-slate-950/70"></div>
+        </div>
+
+        <div class="relative z-10 text-center max-w-3xl mx-auto space-y-5 mb-14">
         <span id="detail-tagline" class="text-sm sm:text-base font-mono text-cyan-400 tracking-wider uppercase">Tagline</span>
         <h2 id="detail-title" class="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight will-change-transform">
           Titolo Gioco
@@ -86,24 +104,35 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       </div>
 
       <!-- Spazio scrollabile con immagini grandi e breakdown tecnico -->
-      <div id="detail-body-content" class="space-y-12 border-t border-slate-800/80 pt-10 transition-all duration-700 ease-out">
-        <div>
-          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">{UI.overviewHeading}</h4>
-          <p id="detail-description" class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-4xl"></p>
-        </div>
+      <div id="detail-body-content" class="relative z-10 space-y-12 border-t border-slate-800/80 pt-10 transition-all duration-700 ease-out">        <div>
+         <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">{UI.overviewHeading}</h4>
+         <p id="detail-description" class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-4xl"></p>
+       </div>
 
-        <!-- Immagini ingrandite (Altezza portata a h-80 / h-96 per showcase reale) -->
-        <div>
-          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-5">{UI.mediaHeading}</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
-              [ Screenshot Gameplay ad Alta Risoluzione / Video Showcase ]
+      <!-- Sezione Media Dinamica (Scrollytelling se il progetto ha capitoli, altrimenti Media Showcase Standard) -->
+      {PROJECTS.map((proj) => (
+        <div data-project-media-block={proj.id} class="project-media-container hidden pt-4">
+          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">{UI.mediaHeading}</h4>
+          
+          {proj.storySteps ? (
+            <ProjectScrollyShowcase 
+              steps={proj.storySteps} 
+              lang={lang}
+            />
+          ) : (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
+                <span class="text-violet-400 font-bold mb-2">{proj.title}</span>
+                <span>[ Screenshot Gameplay ad Alta Risoluzione / Video ]</span>
+              </div>
+              <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
+                <span class="text-cyan-400 font-bold mb-2">Technical Architecture</span>
+                <span>[ Schema Motore / Kernel CUDA / Shaders / Level Design ]</span>
+              </div>
             </div>
-            <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
-              [ Schema Architetturale Engine / Shaders / Level Design ]
-            </div>
-          </div>
+          )}
         </div>
+            ))}
 
         <div class="flex flex-wrap items-center justify-between gap-6 pt-6 border-t border-slate-800/80">
           <div id="detail-tags" class="flex flex-wrap gap-2.5"></div>
@@ -137,6 +166,8 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
   const detailDescription = document.getElementById('detail-description');
   const detailTags = document.getElementById('detail-tags');
   const detailBodyContent = document.getElementById('detail-body-content');
+  const detailVideoContainer = document.getElementById('detail-video-container');
+  const detailBgVideo = document.getElementById('detail-bg-video') as HTMLVideoElement | null;
 
   let savedDeltaX = 0;
   let savedDeltaY = 0;
@@ -163,6 +194,16 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       if (detailTagline) detailTagline.textContent = card.querySelector('.text-cyan-400')?.textContent || '';
       if (detailRole) detailRole.textContent = card.querySelector('.italic')?.textContent || '';
       if (detailDescription) detailDescription.textContent = card.querySelector('p.text-slate-300')?.textContent || '';
+      // Mostra solo il blocco media corrispondente al progetto cliccato
+      const clickedProjId = card.getAttribute('data-project-card');
+      const allMediaBlocks = document.querySelectorAll('[data-project-media-block]');
+      allMediaBlocks.forEach((block) => {
+        if (block.getAttribute('data-project-media-block') === clickedProjId) {
+          block.classList.remove('hidden');
+        } else {
+          block.classList.add('hidden');
+        }
+      });
       if (detailTags) {
         const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
         detailTags.innerHTML = tags.map(t => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
@@ -184,21 +225,51 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       detailCardContainer.style.transition = 'none';
       detailCardContainer.style.transform = `translate3d(${savedDeltaX}px, ${savedDeltaY}px, 0) scale(${savedScaleX}, ${savedScaleY})`;
 
-      requestAnimationFrame(() => {
-        detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
-        detailCardContainer.style.transform = 'translate3d(0, 0, 0) scale(1, 1)';
+      // Recupera l'eventuale URL video del progetto
+    const videoSrc = card.getAttribute('data-project-video');
 
-        setTimeout(() => {
-          detailBodyContent.classList.remove('blur-md', 'opacity-30');
-          isAnimating = false;
-        }, 700);
-      });
+    requestAnimationFrame(() => {
+      detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      detailCardContainer.style.transform = 'translate3d(0, 0, 0) scale(1, 1)';
+
+      setTimeout(() => {
+        detailBodyContent.classList.remove('blur-md', 'opacity-30');
+        isAnimating = false;
+
+        // Avvia il video eliminando ogni deadlock
+          if (videoSrc && detailBgVideo && detailVideoContainer) {
+            detailBgVideo.muted = true;
+            detailBgVideo.defaultMuted = true;
+            detailBgVideo.src = videoSrc;
+            detailBgVideo.load();
+
+            // Mostra il layer in dissolvenza graduale
+            detailVideoContainer.classList.remove('opacity-0');
+
+            detailBgVideo.play().catch((err) => {
+              console.warn("Autoplay notice:", err);
+            });
+          } else if (detailVideoContainer) {
+            // Se il progetto non ha video, assicurati che sia invisibile
+            detailVideoContainer.classList.add('opacity-0');
+          }
+      }, 700);
+    });
     });
   });
 
   closeDetailBtn?.addEventListener('click', () => {
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
+
+    // 1. Spegni e nascondi subito il video per non consumare GPU in chiusura
+    if (detailVideoContainer) {
+      detailVideoContainer.classList.remove('opacity-45');
+      detailVideoContainer.classList.add('opacity-0');
+    }
+    if (detailBgVideo) {
+      detailBgVideo.pause();
+    }
 
     detailBodyContent?.classList.add('blur-md', 'opacity-0');
     closeDetailBtn.classList.add('opacity-0');
@@ -222,6 +293,10 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       detailBodyContent?.classList.remove('blur-md', 'opacity-0');
 
       isAnimating = false;
+      // Rilascia la memoria video
+      if (detailBgVideo) {
+        detailBgVideo.src = '';
+      }
     }, 850);
   });
 </script>

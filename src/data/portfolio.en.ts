@@ -16,10 +16,10 @@ export const PORTFOLIO_EN = {
     heroBtnGithub: "GitHub Preview",
     heroBtnContact: "Get in touch",
     ddaBadge: "DDA RESEARCH // IN PROGRESS",
-    hudProjects: "01. Projects",
-    hudExperience: "02. Experience",
-    hudEducation: "03. Education",
-    hudSkills: "04. Skills",
+   hudProjects: "Projects",
+    hudExperience: "Experience",
+    hudEducation: "Education",
+    hudSkills: "Skills",
     projectsHeading: "Video Games & Systems Showcase",
     projectsSubheading: "Click on any project to inspect technical breakdown, architecture, and gameplay design.",
     exploreProject: "Explore Documentation & Process",
@@ -46,7 +46,28 @@ export const PORTFOLIO_EN = {
       description: "Players alternate between frantic combat (using ammunition crafted from harvested magical pomegranates) and strategic shelter repair and bonfire maintenance before the petrifying dawn resets the threat. Pitched and showcased with hands-on demo sessions to industry studios including Ubisoft, Milestone, and Nacon at the New Game Designer event.",
       tags: ["Unity3D", "C#", "Co-op Multiplayer", "Game Design", "Team Leadership"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#pomegranade",
-      highlight: "Industry Showcase: Ubisoft, Milestone, Nacon & more"
+      videoUrl: "/videos/pomegranade.mp4",
+      highlight: "Industry Showcase: Ubisoft, Milestone, Nacon & more",
+      storySteps: [
+        {
+          tag: "01 // CORE GAMEPLAY LOOP",
+          title: "Survival Combat & Bonfire Stewardship",
+          description: "Players alternate between high-intensity combat—using ammunition crafted from harvested magical pomegranates—and strategic base maintenance. Feeding the central bonfire is essential to keep the petrifying dawn at bay and protect team shelters.",
+          mediaLabel: "[ Gameplay Combat // Pomegranate Ammo Crafting & Shelter Building ]"
+        },
+        {
+          tag: "02 // MULTIPLAYER SYSTEMS",
+          title: "Co-op Architecture (2–4 Players)",
+          description: "Engineered shared-state multiplayer logic in Unity and native C#. Players must dynamically divide responsibilities: scouting for fruit, fending off night terrors, and synchronizing defense around the shared campfire life-force.",
+          mediaLabel: "[ Technical Breakdown // Multiplayer State Sync & Resource Distribution ]"
+        },
+        {
+          tag: "03 // INDUSTRY SHOWCASE",
+          title: "Hands-on Pitch to Milestone, Ubisoft & Nacon",
+          description: "Selected to pitch and showcase the playable build directly to senior talent and studio leads at the New Game Designer event. Conducted live demo sessions focusing on game feel, onboarding curve, and cooperative flow state.",
+          mediaLabel: "[ Industry Event // Live Gameplay Demos & Evaluation Feedback ]"
+        }
+      ]
     },
     {
       id: "puppeteer",
@@ -56,7 +77,27 @@ export const PORTFOLIO_EN = {
       period: "2025",
       description: "First-person horror exploration inside an abandoned estate. The player follows a guiding voice, collects clues and documents, while eluding the Puppeteer—a sorcerer who transforms victims into living marionettes. Features stealth mechanics, anxiety management, and narrative puzzles.",
       tags: ["Unity3D", "C#", "Horror Exploration", "AI Stealth", "Atmospheric Audio"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#a-childs-tale"
+      githubUrl: "https://github.com/MauroTheB/projects-preview#a-childs-tale",
+      storySteps: [
+        {
+          tag: "01 // ATMOSPHERIC HORROR",
+          title: "Audio-Driven Environmental Exploration",
+          description: "Engineered tension building inside an abandoned estate. The player relies on a mysterious guiding female voice, acoustic cues, and found journals to reconstruct the tragedy while avoiding sound-triggered alarms.",
+          mediaLabel: "[ Gameplay Exploration // Dynamic Audio Panning & Lighting ]"
+        },
+        {
+          tag: "02 // STEALTH & AI BEHAVIOR",
+          title: "The Puppeteer's Patrol & Perception",
+          description: "Developed stealth mechanics and sensory AI states (Patrol, Alert, Hunt) for the Puppeteer sorcerer. Evasion requires line-of-sight breaking, hiding spots, and careful sprint stamina management.",
+          mediaLabel: "[ AI Architecture // Finite State Machine & Line of Sight Gizmos ]"
+        },
+        {
+          tag: "03 // ESCAPE MECHANICS",
+          title: "Rescue Objections & Multiple Endings",
+          description: "Integrated risk-reward puzzle scenarios where players decide whether to sprint straight for escape or risk uncovering additional victims trapped as living marionettes.",
+          mediaLabel: "[ Level Design // Branching Paths & Environmental Narrative ]"
+        }
+      ]
     },
     {
       id: "water-sim",
@@ -66,7 +107,27 @@ export const PORTFOLIO_EN = {
       period: "2024",
       description: "Real-time fluid simulation developed in C++ and OpenGL with physics computed via CUDA parallel kernels. Handles physical interactions between arbitrary 3D rigid bodies and fluid surface wave propagation.",
       tags: ["C++", "CUDA", "OpenGL", "GPGPU", "Physics Simulation", "Low-Level"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water"
+      githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
+      storySteps: [
+        {
+          tag: "01 // GPGPU COMPUTING",
+          title: "Parallel CUDA Physics Kernels",
+          description: "Implemented high-performance parallel computation in C++ and CUDA. Fluid grid state and velocity fields are computed directly on the GPU across thousands of concurrent hardware threads.",
+          mediaLabel: "[ High Performance // CUDA Kernel Dispatch & Memory Hierarchy ]"
+        },
+        {
+          tag: "02 // FLUID DYNAMICS",
+          title: "Surface Wave Equations in OpenGL",
+          description: "Engineered real-time wave propagation through height-field displacement and custom OpenGL shaders, achieving smooth fluid reflections and refractive caustic lighting.",
+          mediaLabel: "[ Graphics Engine // Shaders, Caustics & Vertex Displacement ]"
+        },
+        {
+          tag: "03 // RIGID BODY COUPLING",
+          title: "Arbitrary 3D Mesh Interaction",
+          description: "Simulated two-way physical interaction between dynamic 3D rigid bodies and the fluid surface: objects generate realistic wake ripples, buoyancy, and displacement based on shape.",
+          mediaLabel: "[ Physics Simulation // Mesh Collision & Wave Ripple Generation ]"
+        }
+      ]
     },
     {
       id: "murder-mystery",
@@ -76,7 +137,27 @@ export const PORTFOLIO_EN = {
       period: "2025",
       description: "Playing as a rookie operative in a shadowy intelligence agency, plan and execute 'perfect murders' by coordinating agent actions and placing items on an interactive tactical timeline without raising suspicion.",
       tags: ["2D Strategy", "AI Systems", "Timeline Mechanics", "Puzzle Design"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery"
+      githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
+      storySteps: [
+        {
+          tag: "01 // TEMPORAL MECHANICS",
+          title: "Interactive Timeline Scheduling",
+          description: "Designed a 2D puzzle-strategy core loop where players schedule actions, place tools, and arrange agent trajectories along a multi-track tactical timeline.",
+          mediaLabel: "[ UI & Design // Timeline Scrubber & Action Scheduling Grid ]"
+        },
+        {
+          tag: "02 // AGENT AI PATTERNS",
+          title: "Predictable Routine Exploitation",
+          description: "Engineered deterministic NPC routines and detection cones. Players exploit predictable guard movements to orchestrate fatal accidents without raising suspicion meters.",
+          mediaLabel: "[ AI Systems // Routine Paths, Suspicion Cones & Trigger Traps ]"
+        },
+        {
+          tag: "03 // THE EXECUTION PHASE",
+          title: "Autonomous Playback & Evaluation",
+          description: "Once the timeline is staged, hitting play triggers an autonomous real-time sequence. The agency system grades performance based on clean execution and zero collateral evidence.",
+          mediaLabel: "[ Gameplay Demo // Playback Sequence & Mission Debriefing Screen ]"
+        }
+      ]
     },
     {
       id: "mazes-soul",
@@ -86,7 +167,27 @@ export const PORTFOLIO_EN = {
       period: "2021",
       description: "Game centered on visuo-spatial memory: 30 seconds to memorize the maze layout in 2D, followed by real 3D third-person navigation with hidden merchants, potions, and resource management.",
       tags: ["Unity3D", "C#", "Mobile Development", "Cognitive Mechanics"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul"
+      githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
+      storySteps: [
+        {
+          tag: "01 // COGNITIVE MECHANICS",
+          title: "2D Memory Memorization Phase",
+          description: "Players are presented with a top-down 2D blueprint of the labyrinth for exactly 30 seconds to memorize pathways, dead ends, and point-of-interest markers.",
+          mediaLabel: "[ Game Mechanics // 2D Blueprint HUD & Countdown Timer ]"
+        },
+        {
+          tag: "02 // 3D SPATIAL NAVIGATION",
+          title: "Third-Person Perspective Traversal",
+          description: "The perspective transitions into full 3D over-the-shoulder navigation. The player must rely purely on visual-spatial working memory to find the exit through identical corridor walls.",
+          mediaLabel: "[ Gameplay Traversal // 3D Camera Controls & Mobile Touch Input ]"
+        },
+        {
+          tag: "03 // RESOURCE MANAGEMENT",
+          title: "Hidden Merchants & Potion Economy",
+          description: "Integrated survival gameplay mechanics on mobile: finding hidden merchants, managing torches, and utilizing speed or memory potions to avoid being trapped forever in the maze.",
+          mediaLabel: "[ Mobile UI // Inventory, Potion Crafting & Merchant Interaction ]"
+        }
+      ]
     }
   ],
   experiences: [

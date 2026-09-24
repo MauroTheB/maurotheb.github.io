@@ -1,0 +1,238 @@
+---
+interface StoryStep {
+  tag: string;
+  title: string;
+  description: string;
+  mediaLabel: string;
+}
+
+interface Props {
+  steps: StoryStep[];
+  lang?: 'en' | 'it';
+}
+
+const { steps, lang = 'en' } = Astro.props;
+const scrollCue = lang === 'it' 
+  ? 'CONTROLLO ANALOGICO ROTELLINA: RUOTA PER ESPLORARE' 
+  : 'ANALOG SCRUBBING: SCROLL WHEEL TO EXPLORE';
+---
+
+<!-- Contenitore con Illuminazione Soffusa Graduale all'ingresso del mouse -->
+<div 
+  class="wheel-scrub-container group relative mt-6 min-h-[550px] w-full flex flex-col justify-between p-6 sm:p-10 rounded-3xl bg-slate-950/85 border border-slate-800/90 hover:border-cyan-500/40 backdrop-blur-xl shadow-2xl hover:shadow-[0_0_70px_-15px_rgba(6,182,212,0.22)] transition-all duration-700 ease-out overflow-hidden select-none"
+>
+  <!-- 1. Glow soffuso graduale all'ingresso del cursore (Ambient Backlight) -->
+  <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.13)_0%,rgba(147,51,234,0.08)_50%,transparent_75%)]"></div>
+
+  <!-- 2. Riflesso speculare sul bordo superiore che si accende dolcemente -->
+  <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/0 group-hover:via-cyan-400/50 to-transparent transition-all duration-700 pointer-events-none"></div>
+
+  <!-- Stage a 2 Colonne -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center flex-1 relative min-h-[380px]">
+    
+    <!-- COLONNA SINISTRA: Stack Immagini -->
+    <div class="relative h-64 sm:h-80 lg:h-96 w-full rounded-2xl overflow-hidden bg-slate-900/90 border border-slate-800 flex items-center justify-center shadow-inner">
+      {steps.map((step, index) => (
+        <div 
+          data-scrub-media={index}
+          class="scrub-media-layer absolute inset-0 p-6 flex flex-col items-center justify-center text-center will-change-[filter,opacity,transform]"
+        >
+          <div class="w-full h-full rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs sm:text-sm">
+            <span class="text-cyan-400 font-bold mb-2">{step.tag}</span>
+            <span class="text-slate-300 font-medium">{step.mediaLabel}</span>
+            <span class="text-[10px] text-slate-600 mt-4 italic">[ Immagine / Video Showcase ]</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- COLONNA DESTRA: Stack Testi -->
+    <div class="relative h-64 sm:h-80 lg:h-96 flex items-center">
+      {steps.map((step, index) => (
+        <div 
+          data-scrub-text={index}
+          class="scrub-text-layer absolute inset-0 flex flex-col justify-center will-change-[filter,opacity,transform]"
+        >
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono w-max mb-4">
+            <span>{step.tag}</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-4">
+            {step.title}
+          </h3>
+          <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-xl">
+            {step.description}
+          </p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <!-- Barra inferiore -->
+  <div class="pt-6 mt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-400">
+    <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse group-hover:shadow-[0_0_10px_rgba(6,182,212,0.8)] transition-all"></span>
+        <span class="text-slate-400 group-hover:text-cyan-300 tracking-wider font-semibold transition-colors duration-500">{scrollCue}</span>
+    </div>
+
+    <!-- Barra e badge con classi relative al container -->
+    <div class="flex items-center gap-3">
+      <div class="w-28 h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden p-0.5">
+        <div class="scrub-progress-bar h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full transition-all duration-75 w-0"></div>
+      </div>
+      <div class="scrub-step-label px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-cyan-400 font-bold min-w-[100px] text-center">
+        STEP 01 / 0{steps.length}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script multi-istanza: isola ogni showcase di ogni singolo gioco -->
+<script>
+  function setupAllContinuousScrubbers() {
+    const containers = document.querySelectorAll<HTMLElement>('.wheel-scrub-container');
+
+    containers.forEach((container) => {
+      const mediaLayers = container.querySelectorAll<HTMLElement>('[data-scrub-media]');
+      const textLayers = container.querySelectorAll<HTMLElement>('[data-scrub-text]');
+      const progressBar = container.querySelector<HTMLElement>('.scrub-progress-bar');
+      const stepLabel = container.querySelector<HTMLElement>('.scrub-step-label');
+
+      if (!mediaLayers.length) return;
+
+      const totalSteps = mediaLayers.length;
+      const maxProgress = totalSteps - 1;
+
+      let targetProgress = 0.0;
+      let currentProgress = 0.0;
+      let isLoopRunning = false;
+
+      const SENSITIVITY = 0.0018;
+
+      function updateVisuals(progress: number) {
+        const k = Math.min(totalSteps - 2, Math.floor(progress));
+        const f = progress - k;
+        const PLATEAU = 0.22;
+
+        for (let i = 0; i < totalSteps; i++) {
+          const media = mediaLayers[i];
+          const text = textLayers[i];
+          if (!media || !text) continue;
+
+          if (i < k || i > k + 1) {
+            media.style.opacity = '0';
+            media.style.filter = 'blur(20px)';
+            media.style.transform = 'scale(0.92)';
+            media.style.pointerEvents = 'none';
+
+            text.style.opacity = '0';
+            text.style.filter = 'blur(16px)';
+            text.style.transform = 'translate3d(0, 24px, 0)';
+            text.style.pointerEvents = 'none';
+          } else if (f <= PLATEAU) {
+            const isK = (i === k);
+            media.style.opacity = isK ? '1' : '0';
+            media.style.filter = isK ? 'blur(0px)' : 'blur(20px)';
+            media.style.transform = isK ? 'scale(1)' : 'scale(0.92)';
+            media.style.pointerEvents = isK ? 'auto' : 'none';
+
+            text.style.opacity = isK ? '1' : '0';
+            text.style.filter = isK ? 'blur(0px)' : 'blur(16px)';
+            text.style.transform = isK ? 'translate3d(0, 0, 0)' : 'translate3d(0, 24px, 0)';
+            text.style.pointerEvents = isK ? 'auto' : 'none';
+          } else if (f >= 1 - PLATEAU) {
+            const isNext = (i === k + 1);
+            media.style.opacity = isNext ? '1' : '0';
+            media.style.filter = isNext ? 'blur(0px)' : 'blur(20px)';
+            media.style.transform = isNext ? 'scale(1)' : 'scale(0.92)';
+            media.style.pointerEvents = isNext ? 'auto' : 'none';
+
+            text.style.opacity = isNext ? '1' : '0';
+            text.style.filter = isNext ? 'blur(0px)' : 'blur(16px)';
+            text.style.transform = isNext ? 'translate3d(0, 0, 0)' : 'translate3d(0, 24px, 0)';
+            text.style.pointerEvents = isNext ? 'auto' : 'none';
+          } else {
+            const t = (f - PLATEAU) / (1 - 2 * PLATEAU);
+
+            if (i === k) {
+              const alpha = 0.5 * (1 + Math.cos(Math.PI * t));
+              const blurPx = t * 20;
+              const scale = 1 - t * 0.06;
+              const translateY = -t * 24;
+
+              media.style.opacity = alpha.toFixed(3);
+              media.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+              media.style.transform = `scale(${scale.toFixed(3)})`;
+              media.style.pointerEvents = 'none';
+
+              text.style.opacity = alpha.toFixed(3);
+              text.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+              text.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+              text.style.pointerEvents = 'none';
+            } else if (i === k + 1) {
+              const alpha = 0.5 * (1 - Math.cos(Math.PI * t));
+              const blurPx = (1 - t) * 20;
+              const scale = 0.94 + t * 0.06;
+              const translateY = (1 - t) * 24;
+
+              media.style.opacity = alpha.toFixed(3);
+              media.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+              media.style.transform = `scale(${scale.toFixed(3)})`;
+              media.style.pointerEvents = 'none';
+
+              text.style.opacity = alpha.toFixed(3);
+              text.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+              text.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+              text.style.pointerEvents = 'none';
+            }
+          }
+        }
+
+        if (progressBar) {
+          const percent = (progress / maxProgress) * 100;
+          progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+        }
+        if (stepLabel) {
+          const roundedStep = Math.min(totalSteps, Math.max(1, Math.round(progress) + 1));
+          stepLabel.textContent = `STEP 0${roundedStep} / 0${totalSteps}`;
+        }
+      }
+
+      function renderLoop() {
+        currentProgress += (targetProgress - currentProgress) * 0.12;
+        updateVisuals(currentProgress);
+
+        if (Math.abs(targetProgress - currentProgress) > 0.001) {
+          requestAnimationFrame(renderLoop);
+        } else {
+          currentProgress = targetProgress;
+          updateVisuals(currentProgress);
+          isLoopRunning = false;
+        }
+      }
+
+      function wakeUpLoop() {
+        if (!isLoopRunning) {
+          isLoopRunning = true;
+          requestAnimationFrame(renderLoop);
+        }
+      }
+
+      container.addEventListener('wheel', (e) => {
+        const delta = e.deltaY;
+
+        if (targetProgress <= 0.01 && delta < 0) return;
+        if (targetProgress >= maxProgress - 0.01 && delta > 0) return;
+
+        e.preventDefault();
+        targetProgress = Math.max(0, Math.min(maxProgress, targetProgress + delta * SENSITIVITY));
+        wakeUpLoop();
+      }, { passive: false });
+
+      updateVisuals(0);
+    });
+  }
+
+  setupAllContinuousScrubbers();
+  document.addEventListener('astro:page-load', setupAllContinuousScrubbers);
+</script>
