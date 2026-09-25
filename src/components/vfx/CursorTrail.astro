@@ -1,8 +1,8 @@
 ---
-// Effetto Plasma Wake / Laser Incisione su Canvas 2D
+// Effetto Plasma Wake / Laser Incisione su Canvas 2D (Allineamento Perfetto a Qualsiasi Zoom)
 ---
 
-<canvas id="cursor-trail-canvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
+<canvas id="cursor-trail-canvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
 
 <script>
   interface TrailPoint {
@@ -11,40 +11,53 @@
     age: number;
   }
 
-  // Verifica che il dispositivo abbia un mouse di precisione (non solo touch)
   const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-
   const canvas = document.getElementById('cursor-trail-canvas') as HTMLCanvasElement | null;
 
   if (canvas && isFinePointer) {
     const ctx = canvas.getContext('2d');
     let points: TrailPoint[] = [];
     let isRunning = false;
-    const maxAge = 20; // Circa 330ms a 60fps (dissolvenza rapida)
+    const maxAge = 20;
+    const MIN_DISTANCE = 4;
 
-    // Adatta il canvas alla risoluzione fisica del display (HiDPI / Retina)
+    // Calibra il canvas ad alta definizione (Retina / 4K / Zoom del browser)
     function resizeCanvas() {
-      if (!canvas) return;
+      if (!canvas || !ctx) return;
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx?.scale(dpr, dpr);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+
+      // Applica la matrice di scala nativa per annullare l'offset da zoom
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Distanza minima in pixel tra due campioni per evitare addensamenti di luce
-    const MIN_DISTANCE = 4;
-
     window.addEventListener('pointermove', (e: PointerEvent) => {
+      if (!canvas) return;
+
+      // Auto-Detect Zoom: se l'utente ha zoomato con Ctrl +/-, ricalibra istantaneamente
+      const expectedWidth = Math.round(window.innerWidth * (window.devicePixelRatio || 1));
+      if (canvas.width !== expectedWidth) {
+        resizeCanvas();
+      }
+
       const events = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [e];
-      
+
       for (let i = 0; i < events.length; i++) {
-        const last = points[points.length - 1];
+        // Coordinate dirette 1:1 con la freccia del mouse
         const ex = events[i].clientX;
         const ey = events[i].clientY;
 
-        // Inserisce il punto solo se c'è un effettivo avanzamento spaziale
+        const last = points[points.length - 1];
+
         if (!last || Math.hypot(ex - last.x, ey - last.y) >= MIN_DISTANCE) {
           points.push({ x: ex, y: ey, age: 0 });
         }
@@ -59,9 +72,9 @@
     function render() {
       if (!ctx || !canvas) return;
 
+      // Pulisce l'area visibile in coordinate viewport
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Invecchiamento dei punti
       for (let i = 0; i < points.length; i++) {
         points[i].age++;
       }
@@ -72,7 +85,6 @@
         return;
       }
 
-      // Giunti piatti per eliminare l'accumulo di luce sui vertici di raccordo
       ctx.lineCap = 'butt';
       ctx.lineJoin = 'round';
       ctx.globalCompositeOperation = 'lighter';
@@ -94,7 +106,6 @@
 
         if (lifeAlpha <= 0) continue;
 
-        // Disegno a filo continuo senza sovrapposizioni
         const strokeBeam = (color: string, width: number) => {
           if (!ctx) return;
           ctx.beginPath();
@@ -109,7 +120,7 @@
         strokeBeam(`rgba(56, 189, 248, ${lifeAlpha * 0.7})`, Math.max(0.8, taper * 5));
         strokeBeam(`rgba(255, 255, 255, ${lifeAlpha * 0.95})`, Math.max(0.5, taper * 1.8));
 
-        // Solo sulla punta estrema del cursore disegniamo il nucleo sferico incandescente
+        // Punta incandescente centrata
         if (isLast) {
           ctx.beginPath();
           ctx.arc(pCurr.x, pCurr.y, Math.max(1, taper * 1.2), 0, Math.PI * 2);

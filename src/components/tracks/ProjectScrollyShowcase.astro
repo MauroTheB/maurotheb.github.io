@@ -4,6 +4,8 @@ interface StoryStep {
   title: string;
   description: string;
   mediaLabel: string;
+  imageSrc?: string;
+  blendMode?: 'screen' | 'normal';
 }
 
 interface Props {
@@ -30,18 +32,27 @@ const scrollCue = lang === 'it'
   <!-- Stage a 2 Colonne -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center flex-1 relative min-h-[380px]">
     
-    <!-- COLONNA SINISTRA: Stack Immagini -->
-    <div class="relative h-64 sm:h-80 lg:h-96 w-full rounded-2xl overflow-hidden bg-slate-900/90 border border-slate-800 flex items-center justify-center shadow-inner">
+    <!-- COLONNA SINISTRA: Stack Immagini (Libero da gabbie e bordi intermedi) -->
+    <div class="relative h-64 sm:h-80 lg:h-96 w-full flex items-center justify-center">
       {steps.map((step, index) => (
         <div 
           data-scrub-media={index}
-          class="scrub-media-layer absolute inset-0 p-6 flex flex-col items-center justify-center text-center will-change-[filter,opacity,transform]"
+          class="scrub-media-layer absolute inset-0 flex items-center justify-center will-change-[filter,opacity,transform]"
         >
-          <div class="w-full h-full rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs sm:text-sm">
-            <span class="text-cyan-400 font-bold mb-2">{step.tag}</span>
-            <span class="text-slate-300 font-medium">{step.mediaLabel}</span>
-            <span class="text-[10px] text-slate-600 mt-4 italic">[ Immagine / Video Showcase ]</span>
-          </div>
+          {step.imageSrc ? (
+            <img 
+              src={step.imageSrc} 
+              alt={step.title}
+              class="max-h-full max-w-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
+              draggable="false"
+            />
+          ) : (
+            <div class="w-full h-full rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs sm:text-sm">
+              <span class="text-cyan-400 font-bold mb-2">{step.tag}</span>
+              <span class="text-slate-300 font-medium">{step.mediaLabel}</span>
+              <span class="text-[10px] text-slate-600 mt-4 italic">[ In attesa di Immagine Trasparente ]</span>
+            </div>
+          )}
         </div>
       ))}
     </div>

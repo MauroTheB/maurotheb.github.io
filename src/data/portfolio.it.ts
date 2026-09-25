@@ -53,19 +53,23 @@ export const PORTFOLIO_IT = {
           tag: "01 // CORE GAMEPLAY LOOP",
           title: "Combattimento Survival & Custodia del Falò",
           description: "I giocatori alternano combattimenti ad alta intensità—usando munizioni estratte da melograni magici—a fasi strategiche di riparazione. Alimentare il falò centrale è indispensabile per respingere l'alba pietrificante e proteggere i rifugi del team.",
-          mediaLabel: "[ Gameplay Combat // Crafting Munizioni Melograno & Manutenzione Rifugio ]"
+          mediaLabel: "[ Gameplay Combat // Crafting Munizioni Melograno & Manutenzione Rifugio ]",
+          imageSrc: "/images/immagine_falo_personaggio.png",
+          blendMode: "screen"
         },
         {
           tag: "02 // MULTIPLAYER SYSTEMS",
           title: "Architettura Cooperativa (2–4 Giocatori)",
           description: "Progettazione e implementazione della logica multiplayer cooperativa in Unity e C#. I ruoli sono distribuiti dinamicamente: raccogliere risorse, respingere le ondate notturne e coordinare la difesa attorno alla forza vitale del falò.",
-          mediaLabel: "[ Schema Tecnico // Sincronizzazione di Stato & Gestione Risorse Co-op ]"
+          mediaLabel: "[ Schema Tecnico // Sincronizzazione di Stato & Gestione Risorse Co-op ]",
+          imageSrc: "/images/players_vs_monsters.png"
         },
         {
           tag: "03 // INDUSTRY SHOWCASE",
           title: "Demo Hands-on a Milestone, Ubisoft e Nacon",
           description: "Selezionato per presentare il gioco a lead developer e publisher di primo piano all'evento New Game Designer. Sessioni di prova dal vivo incentrate su game feel, curva di onboarding e mantenimento del flow cooperativo.",
-          mediaLabel: "[ Showcase Event // Sessioni Demo dal Vivo & Valutazione Studi ]"
+          mediaLabel: "[ Showcase Event // Sessioni Demo dal Vivo & Valutazione Studi ]",
+          imageSrc: "/images/loghi_aziende_pomegranade.png"
         }
       ]
     },

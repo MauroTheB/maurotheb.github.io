@@ -53,19 +53,23 @@ export const PORTFOLIO_EN = {
           tag: "01 // CORE GAMEPLAY LOOP",
           title: "Survival Combat & Bonfire Stewardship",
           description: "Players alternate between high-intensity combat—using ammunition crafted from harvested magical pomegranates—and strategic base maintenance. Feeding the central bonfire is essential to keep the petrifying dawn at bay and protect team shelters.",
-          mediaLabel: "[ Gameplay Combat // Pomegranate Ammo Crafting & Shelter Building ]"
+          mediaLabel: "[ Gameplay Combat // Pomegranate Ammo Crafting & Shelter Building ]",
+          imageSrc: "/images/immagine_falo_personaggio.png",
+          blendMode: "screen"
         },
         {
           tag: "02 // MULTIPLAYER SYSTEMS",
           title: "Co-op Architecture (2–4 Players)",
           description: "Engineered shared-state multiplayer logic in Unity and native C#. Players must dynamically divide responsibilities: scouting for fruit, fending off night terrors, and synchronizing defense around the shared campfire life-force.",
-          mediaLabel: "[ Technical Breakdown // Multiplayer State Sync & Resource Distribution ]"
+          mediaLabel: "[ Technical Breakdown // Multiplayer State Sync & Resource Distribution ]",
+          imageSrc: "/images/players_vs_monsters.png"
         },
         {
           tag: "03 // INDUSTRY SHOWCASE",
           title: "Hands-on Pitch to Milestone, Ubisoft & Nacon",
           description: "Selected to pitch and showcase the playable build directly to senior talent and studio leads at the New Game Designer event. Conducted live demo sessions focusing on game feel, onboarding curve, and cooperative flow state.",
-          mediaLabel: "[ Industry Event // Live Gameplay Demos & Evaluation Feedback ]"
+          mediaLabel: "[ Industry Event // Live Gameplay Demos & Evaluation Feedback ]",
+          imageSrc: "/images/loghi_aziende_pomegranade.png"
         }
       ]
     },
