@@ -1,0 +1,211 @@
+---
+// Modulo di Detonazione ad Alto Impatto Cinetico e Risonanza Multi-Finestra
+---
+
+<!-- 1. Flashbang Ottico a Doppia Esposizione (Luce Bianca centrale + Tinta Rubino) -->
+<div 
+  id="detonation-flash" 
+  class="fixed inset-0 pointer-events-none z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.7)_0%,rgba(244,63,94,0.45)_50%,transparent_100%)] mix-blend-screen transition-opacity duration-300 select-none"
+></div>
+
+<!-- 2. Doppia Onda d'Urto Supersonica Centrata al Millimetro (360°) -->
+<div class="fixed inset-0 pointer-events-none z-40 overflow-hidden select-none">
+  <!-- Onda primaria rubino profondo -->
+  <div 
+    id="detonation-shockwave" 
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border-4 border-rose-500 opacity-0 shadow-[0_0_80px_rgba(244,63,94,0.8)]"
+  ></div>
+  <!-- Onda supersonica bianca/ciano ad altissima velocità -->
+  <div 
+    id="detonation-core-shockwave" 
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full border-2 border-white opacity-0 shadow-[0_0_40px_#ffffff]"
+  ></div>
+</div>
+
+<script>
+  function setupShockwaveEngine() {
+    const flash = document.getElementById('detonation-flash');
+    const shockwave = document.getElementById('detonation-shockwave');
+    const coreShockwave = document.getElementById('detonation-core-shockwave');
+
+    if (!flash || !shockwave || !coreShockwave) return;
+
+    let isDetonating = false;
+
+    window.addEventListener('pomegranate:detonate', () => {
+      if (isDetonating) return;
+      isDetonating = true;
+
+      const detailCard = document.getElementById('detail-card-container');
+      const innerScrubBox = document.querySelector('.wheel-scrub-container');
+      const hudNav = document.querySelector('nav');
+
+      // 1. [HIT-STOP] Brevissima sospensione (35ms)
+      setTimeout(() => {
+        // 2. [FLASHBANG] Lampo accecante istantaneo
+        flash.style.transition = 'opacity 0.04s ease-out';
+        flash.style.opacity = '1';
+        setTimeout(() => {
+          flash.style.transition = 'opacity 0.45s cubic-bezier(0.1, 0.9, 0.2, 1)';
+          flash.style.opacity = '0';
+        }, 40);
+
+        // 3. [DOPPIA ONDA D'URTO] Espansione dal centro
+        shockwave.classList.add('animate-shockwave-primary');
+        coreShockwave.classList.add('animate-shockwave-core');
+
+        // 4. [RINCULO SISMICO MULTI-FINESTRA]
+        if (detailCard) {
+          detailCard.classList.add('card-violent-shake');
+        }
+        if (innerScrubBox) {
+          innerScrubBox.classList.add('inner-sympathetic-shake');
+        }
+        if (hudNav) {
+          hudNav.classList.add('hud-sympathetic-shake');
+        }
+
+        // 5. [CLEANUP & RESPAWN]
+        setTimeout(() => {
+          shockwave.classList.remove('animate-shockwave-primary');
+          coreShockwave.classList.remove('animate-shockwave-core');
+
+          if (detailCard) detailCard.classList.remove('card-violent-shake');
+          if (innerScrubBox) innerScrubBox.classList.remove('inner-sympathetic-shake');
+          if (hudNav) hudNav.classList.remove('hud-sympathetic-shake');
+
+          isDetonating = false;
+          window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
+        }, 700);
+
+      }, 35);
+    });
+
+    window.addEventListener('pomegranate:clear', () => {
+      flash.style.opacity = '0';
+      shockwave.classList.remove('animate-shockwave-primary');
+      coreShockwave.classList.remove('animate-shockwave-core');
+      
+      const detailCard = document.getElementById('detail-card-container');
+      const innerScrubBox = document.querySelector('.wheel-scrub-container');
+      const hudNav = document.querySelector('nav');
+
+      if (detailCard) detailCard.classList.remove('card-violent-shake');
+      if (innerScrubBox) innerScrubBox.classList.remove('inner-sympathetic-shake');
+      if (hudNav) hudNav.classList.remove('hud-sympathetic-shake');
+
+      isDetonating = false;
+    });
+  }
+
+  setupShockwaveEngine();
+  document.addEventListener('astro:page-load', setupShockwaveEngine);
+</script>
+
+<style is:global>
+  /* 1. ONDA D'URTO PRIMARIA RUBINO: Centrata al 100% via transform-origin */
+  @keyframes shockwavePrimary {
+    0% {
+      opacity: 1;
+      transform: translate3d(-50%, -50%, 0) scale(0.08);
+      filter: blur(0px);
+    }
+    40% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-50%, -50%, 0) scale(4.8);
+      filter: blur(12px);
+    }
+  }
+
+  /* 2. ONDA SUPERSONICA BIANCA: Più rapida e tagliente */
+  @keyframes shockwaveCore {
+    0% {
+      opacity: 1;
+      transform: translate3d(-50%, -50%, 0) scale(0.05);
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-50%, -50%, 0) scale(5.5);
+      filter: blur(6px);
+    }
+  }
+
+  .animate-shockwave-primary {
+    animation: shockwavePrimary 0.58s cubic-bezier(0.12, 0.8, 0.2, 1) forwards !important;
+  }
+
+  .animate-shockwave-core {
+    animation: shockwaveCore 0.45s cubic-bezier(0.08, 0.9, 0.15, 1) forwards !important;
+  }
+
+  /* 3. RINCULO VIOLENTO DELLA SCHEDA PRINCIPALE (Trauma ad alta ampiezza) */
+  @keyframes cardViolentShake {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    12% {
+      /* Picco d'urto: dilatazione esplosiva a 1.055x + spostamento sismico e rotazione */
+      transform: translate3d(-14px, -15px, 0) scale(1.055) rotate(-0.9deg);
+      border-color: rgba(251, 113, 133, 1) !important;
+      box-shadow: 0 0 110px 20px rgba(244, 63, 94, 0.65), inset 0 0 40px rgba(244, 63, 94, 0.3) !important;
+    }
+    24% {
+      transform: translate3d(16px, 12px, 0) scale(1.042) rotate(1.1deg);
+    }
+    38% {
+      transform: translate3d(-12px, 9px, 0) scale(1.028) rotate(-0.6deg);
+    }
+    52% {
+      transform: translate3d(9px, -8px, 0) scale(1.016) rotate(0.4deg);
+    }
+    68% {
+      transform: translate3d(-6px, 5px, 0) scale(1.008) rotate(-0.2deg);
+    }
+    82% {
+      transform: translate3d(3px, -2px, 0) scale(1.002);
+    }
+    92% {
+      transform: translate3d(-1px, 1px, 0) scale(0.999);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  /* 4. RISONANZA SECONDARIA DEL BOX INTERNO (Vibrazione simpatica) */
+  @keyframes innerBoxShudder {
+    0% { transform: translate3d(0, 0, 0); }
+    15% { transform: translate3d(8px, 9px, 0) scale(1.02); border-color: rgba(244, 63, 94, 0.5); }
+    32% { transform: translate3d(-10px, -7px, 0); }
+    50% { transform: translate3d(6px, -5px, 0); }
+    70% { transform: translate3d(-3px, 3px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  /* 5. VIBRAZIONE DELL'HUD IN ALTO (Reazione d'insieme dell'interfaccia) */
+  @keyframes hudShudder {
+    0% { transform: translate3d(0, 0, 0); }
+    15% { transform: translate3d(-6px, -8px, 0); }
+    35% { transform: translate3d(7px, 5px, 0); }
+    55% { transform: translate3d(-4px, 3px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  .card-violent-shake {
+    animation: cardViolentShake 0.65s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important;
+  }
+
+  .inner-sympathetic-shake {
+    animation: innerBoxShudder 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+  }
+
+  .hud-sympathetic-shake {
+    animation: hudShudder 0.55s ease-out forwards !important;
+  }
+</style>

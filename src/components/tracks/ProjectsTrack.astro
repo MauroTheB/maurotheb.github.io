@@ -204,6 +204,14 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
           block.classList.add('hidden');
         }
       });
+      
+      // Attiva i melograni solo se il progetto aperto è Pomegranade: Limbo
+      if (clickedProjId === 'pomegranade') {
+        window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
+      } else {
+        window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+      }
+
       if (detailTags) {
         const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
         detailTags.innerHTML = tags.map(t => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
@@ -259,6 +267,10 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
   });
 
   closeDetailBtn?.addEventListener('click', () => {
+    
+    // Spegni e rimuovi immediatamente i melograni tornando alla griglia
+    window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+    
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
 

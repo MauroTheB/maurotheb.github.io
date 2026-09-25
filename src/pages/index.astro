@@ -10,6 +10,8 @@ import ProjectsTrack from '../components/tracks/ProjectsTrack.astro';
 import ExperienceTrack from '../components/tracks/ExperienceTrack.astro';
 import EducationTrack from '../components/tracks/EducationTrack.astro';
 import SkillsTrack from '../components/tracks/SkillsTrack.astro';
+import PomegranateHarvest from '../components/vfx/PomegranateHarvest.astro';
+import PomegranateShockwave from '../components/vfx/PomegranateShockwave.astro';
 
 const { profile: PROFILE, ui: UI } = getPortfolio('en');
 ---
@@ -17,6 +19,8 @@ const { profile: PROFILE, ui: UI } = getPortfolio('en');
 <BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
   <AmbientEnvironment />
   <CursorTrail />
+  <PomegranateHarvest />
+  <PomegranateShockwave />
   <LanguageSwitcher currentLang="en" />
 
   <Hero lang="en" />
