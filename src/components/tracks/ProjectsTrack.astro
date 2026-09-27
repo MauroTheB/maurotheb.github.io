@@ -1,6 +1,7 @@
 ---
 import { getPortfolio, type Locale } from '../../data/portfolio';
 import ProjectScrollyShowcase from './ProjectScrollyShowcase.astro';
+import ProjectVideoPlayer from './ProjectVideoPlayer.astro';
 
 interface Props {
   lang?: Locale;
@@ -109,29 +110,112 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
          <p id="detail-description" class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-4xl"></p>
        </div>
 
-      <!-- Sezione Media Dinamica (Scrollytelling se il progetto ha capitoli, altrimenti Media Showcase Standard) -->
+      <!-- Sezione Dettaglio Ricca e Modulare per ogni Progetto -->
       {PROJECTS.map((proj) => (
-        <div data-project-media-block={proj.id} class="project-media-container hidden pt-4">
-          <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">{UI.mediaHeading}</h4>
+        <div data-project-media-block={proj.id} class="project-media-container hidden space-y-10 pt-2">
           
-          {proj.storySteps ? (
-            <ProjectScrollyShowcase 
-              steps={proj.storySteps} 
-              lang={lang}
-            />
-          ) : (
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
-                <span class="text-violet-400 font-bold mb-2">{proj.title}</span>
-                <span>[ Screenshot Gameplay ad Alta Risoluzione / Video ]</span>
-              </div>
-              <div class="h-80 sm:h-96 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center text-slate-500 font-mono text-sm text-center p-6 shadow-inner">
-                <span class="text-cyan-400 font-bold mb-2">Technical Architecture</span>
-                <span>[ Schema Motore / Kernel CUDA / Shaders / Level Design ]</span>
-              </div>
+          <!-- A. Barra di Azione Documenti Tecnici (GDD & TDD) e Specifiche di Produzione -->
+          {(proj.gddUrl || proj.tddUrl || proj.platform) && (
+            <div class="p-6 sm:p-8 rounded-3xl bg-slate-950/70 border border-slate-800/80 backdrop-blur-md space-y-6">
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h4 class="text-xs font-mono uppercase text-slate-400 tracking-wider font-bold mb-1">
+                    {UI.teamHeading}
+                  </h4>
+                  <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-300">
+                    {proj.platform && (
+                      <span><strong class="text-slate-500">{UI.platformLabel}:</strong> {proj.platform}</span>
+                    )}
+                    {proj.networking && (
+                      <span><strong class="text-slate-500">{UI.engineLabel}:</strong> {proj.engine} + {proj.networking}</span>
+                    )}
+                  </div>
+                </div>
+
+                <!-- Bottoni Documentazione Tecnica (GDD / TDD) & Video Drive -->
+                    <div class="flex flex-wrap gap-3">
+                      {proj.gddUrl && (
+                        <a 
+                          href={proj.gddUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-500/10 hover:border-cyan-400"
+                        >
+                          <span>📄</span>
+                          <span>{UI.gddButton}</span>
+                          <span class="text-[10px]">↗</span>
+                        </a>
+                      )}
+                      {proj.tddUrl && (
+                        <a 
+                          href={proj.tddUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-violet-300 border border-violet-500/40 text-xs font-mono font-bold transition flex items-center gap-2 shadow-lg shadow-violet-500/10 hover:border-violet-400"
+                        >
+                          <span>⚙️</span>
+                          <span>{UI.tddButton}</span>
+                          <span class="text-[10px]">↗</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <!-- Badge Speciali (VR Meta XR & Audio Spaziale 3D) -->
+                  {(proj.vrBadge || proj.audioNotice) && (
+                    <div class="flex flex-wrap gap-3 pt-2">
+                      {proj.vrBadge && (
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-400 text-xs font-mono">
+                          <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-pulse"></span>
+                          <span>{proj.vrBadge}</span>
+                        </span>
+                      )}
+                      {proj.audioNotice && (
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
+                          <span>🎧</span>
+                          <span>{UI.headphonesBadge}</span>
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+              {proj.authors && (
+                <div class="pt-4 border-t border-slate-900 text-xs font-mono text-slate-400">
+                  <strong class="text-slate-500">{UI.authorsLabel}:</strong> {proj.authors}
+                </div>
+              )}
             </div>
           )}
-        </div>
+
+                <!-- B. Cinema Video Station (Trailer Ufficiale & Gameplay Walkthrough) -->
+                {(proj.trailerId || proj.gameplayId) && (
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">
+                      Cinema Player & Showcase
+                    </h4>
+                    <ProjectVideoPlayer 
+                      trailerId={proj.trailerId}
+                      gameplayId={proj.gameplayId}
+                      trailerLabel={UI.watchTrailer}
+                      gameplayLabel={UI.watchGameplay}
+                    />
+                  </div>
+                )}
+
+                <!-- C. Interactive Scrollytelling Showcase -->
+                {proj.storySteps && (
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-2">
+                      {UI.mediaHeading}
+                    </h4>
+                    <ProjectScrollyShowcase 
+                      steps={proj.storySteps} 
+                      lang={lang}
+                    />
+                  </div>
+                )}
+
+              </div>
             ))}
 
         <div class="flex flex-wrap items-center justify-between gap-6 pt-6 border-t border-slate-800/80">
