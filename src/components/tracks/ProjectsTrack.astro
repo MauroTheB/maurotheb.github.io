@@ -304,16 +304,24 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
         }
       });
       
-      // Gestione eventi ambientali dedicati per singolo gioco
+     // Gestione eventi ambientali dedicati per singolo gioco
+    // Gestione eventi ambientali dedicati per singolo gioco (Senza auto-cancellazione)
     if (clickedProjId === 'pomegranade') {
-      window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
       window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
     } else if (clickedProjId === 'puppeteer') {
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
       window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
+    } else if (clickedProjId === 'murder-mystery') {
+      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+      window.dispatchEvent(new CustomEvent('murder:mystery:start'));
     } else {
       window.dispatchEvent(new CustomEvent('pomegranate:clear'));
       window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
     }
 
       if (detailTags) {
@@ -375,7 +383,8 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     // Spegni e rimuovi immediatamente i melograni tornando alla griglia
     window.dispatchEvent(new CustomEvent('pomegranate:clear'));
     window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-    
+    window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
 

@@ -1,20 +1,21 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPortfolio } from '../data/portfolio';
-import AmbientEnvironment from '../components/vfx/AmbientEnvironment.astro';
-import CursorTrail from '../components/vfx/CursorTrail.astro';
-import LanguageSwitcher from '../components/hud/LanguageSwitcher.astro';
-import Hero from '../components/sections/Hero.astro';
-import HudNav from '../components/hud/HudNav.astro';
-import ProjectsTrack from '../components/tracks/ProjectsTrack.astro';
-import ExperienceTrack from '../components/tracks/ExperienceTrack.astro';
-import EducationTrack from '../components/tracks/EducationTrack.astro';
-import SkillsTrack from '../components/tracks/SkillsTrack.astro';
-import PomegranateHarvest from '../components/vfx/PomegranateHarvest.astro';
-import PomegranateShockwave from '../components/vfx/PomegranateShockwave.astro';
-import PuppeteerCurse from '../components/vfx/PuppeteerCurse.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPortfolio } from "../data/portfolio";
+import AmbientEnvironment from "../components/vfx/AmbientEnvironment.astro";
+import CursorTrail from "../components/vfx/CursorTrail.astro";
+import LanguageSwitcher from "../components/hud/LanguageSwitcher.astro";
+import Hero from "../components/sections/Hero.astro";
+import HudNav from "../components/hud/HudNav.astro";
+import ProjectsTrack from "../components/tracks/ProjectsTrack.astro";
+import ExperienceTrack from "../components/tracks/ExperienceTrack.astro";
+import EducationTrack from "../components/tracks/EducationTrack.astro";
+import SkillsTrack from "../components/tracks/SkillsTrack.astro";
+import PomegranateHarvest from "../components/vfx/PomegranateHarvest.astro";
+import PomegranateShockwave from "../components/vfx/PomegranateShockwave.astro";
+import PuppeteerCurse from "../components/vfx/PuppeteerCurse.astro";
+import MurderMysteryAssassination from "../components/vfx/MurderMysteryAssassination.astro";
 
-const { profile: PROFILE, ui: UI } = getPortfolio('en');
+const { profile: PROFILE, ui: UI } = getPortfolio("en");
 ---
 
 <BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
@@ -23,19 +24,23 @@ const { profile: PROFILE, ui: UI } = getPortfolio('en');
   <PomegranateHarvest />
   <PomegranateShockwave />
   <PuppeteerCurse />
+  <MurderMysteryAssassination />
+
   <LanguageSwitcher currentLang="en" />
 
   <Hero lang="en" />
   <HudNav lang="en" />
 
-  <main class="max-w-7xl mx-auto px-6 sm:px-8 py-8 w-full">
+  <main class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 py-8 w-full">
     <ProjectsTrack lang="en" />
     <ExperienceTrack lang="en" />
     <EducationTrack lang="en" />
     <SkillsTrack lang="en" />
   </main>
 
-  <footer class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20">
+  <footer
+    class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20"
+  >
     <p>{PROFILE.name} • {PROFILE.title}</p>
     <p class="text-slate-600 mt-1">{UI.footerText}</p>
   </footer>

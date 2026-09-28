@@ -1,0 +1,619 @@
+---
+// Effetto Murder Mystery: Armi Pure SVG, Pozza di Sangue Dietro la Scheda e Target HUD
+---
+
+<!-- 1. Canvas 2D posizionato a z-0 DIETRO al contenuto principale (non copre mai il testo) -->
+<canvas
+    id="murder-blood-canvas"
+    class="fixed inset-0 pointer-events-none z-0 opacity-0 transition-opacity duration-700 select-none"
+></canvas>
+
+<!-- 2. Palcoscenico delle armi pure che fluttuano nelle quinte -->
+<div
+    id="murder-weapons-stage"
+    class="absolute inset-x-0 top-0 pointer-events-none z-30 hidden xl:block select-none"
+>
+    <!-- Le armi pure verranno generate qui senza riquadri o tooltip -->
+</div>
+
+<script>
+    interface WeaponDef {
+        id: string;
+        name: string;
+        cleanSrc: string;
+        bloodySrc: string;
+        isLeft: boolean;
+        scale: number;
+        angle: number;
+    }
+
+    interface SplatterDrop {
+        x: number;
+        y: number;
+        r: number;
+        alpha: number;
+    }
+
+    interface WeaponDrip {
+        startX: number;
+        startY: number;
+        length: number;
+        width: number;
+    }
+
+    function setupMurderMysteryAssassination() {
+        const stage = document.getElementById(
+            "murder-weapons-stage",
+        ) as HTMLElement;
+        const canvas = document.getElementById(
+            "murder-blood-canvas",
+        ) as HTMLCanvasElement;
+        if (!stage || !canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        let isActive = false;
+        let bloodRadius = 0;
+        let targetBloodRadius = 0;
+        let weaponsThrown = 0;
+        let isLoopRunning = false;
+
+        // Lobi organici della pozza per renderla frastagliata e asimmetrica (Non un cerchio perfetto)
+        const puddleLobes = [
+            1.08, 0.92, 1.15, 0.88, 1.22, 0.95, 1.12, 0.85, 1.18, 0.9, 1.25,
+            0.94, 1.1, 0.88, 1.16, 0.92,
+        ];
+
+        const WEAPON_DATA: WeaponDef[] = [
+            {
+                id: "knife",
+                name: "Coltello",
+                cleanSrc: "/images/knife.svg",
+                bloodySrc: "/images/knife sangue.svg",
+                isLeft: true,
+                scale: 1.25,
+                angle: -25,
+            },
+            {
+                id: "gun",
+                name: "Pistola Silenziata",
+                cleanSrc: "/images/gun.svg",
+                bloodySrc: "/images/gun.svg",
+                isLeft: true,
+                scale: 1.3,
+                angle: 15,
+            },
+            {
+                id: "bottiglia",
+                name: "Bottiglia di Veleno",
+                cleanSrc: "/images/bottiglia.svg",
+                bloodySrc: "/images/bottiglia.svg",
+                isLeft: true,
+                scale: 1.15,
+                angle: -10,
+            },
+            {
+                id: "mannaia",
+                name: "Mannaia Pesante",
+                cleanSrc: "/images/mannaia.svg",
+                bloodySrc: "/images/mannaia sangue.svg",
+                isLeft: false,
+                scale: 1.3,
+                angle: 30,
+            },
+            {
+                id: "cash",
+                name: "Mazzetta di Denaro",
+                cleanSrc: "/images/cash.svg",
+                bloodySrc: "/images/cash.svg",
+                isLeft: false,
+                scale: 1.15,
+                angle: -15,
+            },
+        ];
+
+        const TOTAL_WEAPONS = WEAPON_DATA.length;
+
+        // Schizzi balistici volanti e schizzi permanenti sul muro
+        interface FlyingBlood {
+            x: number;
+            y: number;
+            vx: number;
+            vy: number;
+            r: number;
+            alpha: number;
+        }
+        let flyingParticles: FlyingBlood[] = [];
+        let permanentSplatters: SplatterDrop[] = [];
+        let weaponDrips: WeaponDrip[] = [];
+
+        function resize() {
+            if (!canvas || !ctx) return;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.round(window.innerWidth * dpr);
+            canvas.height = Math.round(window.innerHeight * dpr);
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        function spawnWeapons() {
+            stage.innerHTML = "";
+            weaponsThrown = 0;
+            bloodRadius = 0;
+            targetBloodRadius = 0;
+            flyingParticles = [];
+            permanentSplatters = [];
+            weaponDrips = [];
+
+            const detailCard = document.getElementById("detail-card-container");
+            const cardRect = detailCard
+                ? detailCard.getBoundingClientRect()
+                : null;
+            const pageTop = cardRect
+                ? cardRect.top + window.scrollY
+                : window.scrollY + 350;
+            const cardHeight = cardRect ? Math.max(cardRect.height, 700) : 800;
+            const screenW = window.innerWidth;
+            const gutter = Math.max(60, (screenW - 1280) / 2);
+
+            injectTargetHUD();
+
+            WEAPON_DATA.forEach((w, idx) => {
+                const weaponEl = document.createElement("div");
+                weaponEl.className =
+                    "murder-weapon-item absolute pointer-events-auto cursor-pointer will-change-transform";
+
+                const xPos = w.isLeft ? gutter * 0.45 : screenW - gutter * 0.45;
+                const ySlot = cardHeight / (TOTAL_WEAPONS + 1);
+                const yPos =
+                    pageTop + (idx + 1) * ySlot + (Math.random() * 20 - 10);
+
+                weaponEl.style.left = `${xPos}px`;
+                weaponEl.style.top = `${yPos}px`;
+                weaponEl.style.setProperty("--base-rot", `${w.angle}deg`);
+                weaponEl.style.transform = `translate(-50%, -50%) rotate(${w.angle}deg)`;
+
+                // Immagine PURA senza box, senza bordi e senza scritte tooltip
+                weaponEl.innerHTML = `
+          <img 
+            src="${encodeURI(w.cleanSrc)}" 
+            alt="${w.name}" 
+            class="weapon-img w-16 h-16 sm:w-20 sm:h-20 object-contain filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.8)] hover:scale-120 hover:drop-shadow-[0_0_20px_rgba(244,63,94,0.6)] transition-transform duration-200 active:scale-95" 
+            draggable="false" 
+          />
+        `;
+
+                weaponEl.addEventListener(
+                    "click",
+                    () => {
+                        if (weaponEl.classList.contains("launched")) return;
+                        weaponEl.classList.add("launched");
+                        launchWeapon(weaponEl, w, xPos, yPos);
+                    },
+                    { once: true },
+                );
+
+                stage.appendChild(weaponEl);
+            });
+        }
+
+        function injectTargetHUD() {
+            const existing = document.getElementById("target-hud-badge");
+            if (existing) existing.remove();
+
+            const detailCard = document.getElementById("detail-card-container");
+            if (!detailCard) return;
+
+            const badge = document.createElement("div");
+            badge.id = "target-hud-badge";
+            badge.className =
+                "absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/90 border border-emerald-500/40 text-[11px] font-mono text-emerald-400 tracking-wider shadow-lg backdrop-blur-md transition-all duration-500";
+            badge.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="target-hud-text">TARGET: SECURE // 100% INTEGRITY</span>
+      `;
+            detailCard.appendChild(badge);
+        }
+
+        function updateTargetHUD(hits: number) {
+            const badge = document.getElementById("target-hud-badge");
+            const text = document.getElementById("target-hud-text");
+            if (!badge || !text) return;
+
+            const health = Math.max(0, 100 - hits * 20);
+
+            if (health > 50) {
+                badge.className =
+                    "absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/90 border border-amber-500/40 text-[11px] font-mono text-amber-400 tracking-wider shadow-lg backdrop-blur-md transition-all duration-500";
+                badge.querySelector("span")?.classList.remove("bg-emerald-400");
+                badge.querySelector("span")?.classList.add("bg-amber-400");
+                text.textContent = `TARGET: COMPROMISED // ${health}% INTEGRITY`;
+            } else if (health > 0) {
+                badge.className =
+                    "absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/90 border border-rose-500/60 text-[11px] font-mono text-rose-400 tracking-wider shadow-[0_0_15px_rgba(244,63,94,0.4)] backdrop-blur-md transition-all duration-500";
+                badge.querySelector("span")?.classList.remove("bg-amber-400");
+                badge.querySelector("span")?.classList.add("bg-rose-400");
+                text.textContent = `TARGET: CRITICAL // ${health}% INTEGRITY`;
+            } else {
+                badge.className =
+                    "absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/90 border-2 border-rose-500 text-xs font-mono text-rose-300 font-bold tracking-widest shadow-[0_0_25px_rgba(244,63,94,0.6)] backdrop-blur-md animate-pulse";
+                text.textContent = `TARGET ELIMINATED // PERFECT MURDER [☠]`;
+            }
+        }
+
+        function launchWeapon(
+            el: HTMLElement,
+            w: WeaponDef,
+            startX: number,
+            startY: number,
+        ) {
+            const detailCard = document.getElementById("detail-card-container");
+            if (!detailCard) return;
+
+            const cardRect = detailCard.getBoundingClientRect();
+            const targetX = w.isLeft ? cardRect.left + 20 : cardRect.right - 20;
+            const targetY = startY + (Math.random() * 80 - 40);
+            const flySpin = w.angle + (w.isLeft ? 180 : -180);
+
+            el.style.transition =
+                "left 0.28s cubic-bezier(0.1, 0.9, 0.15, 1), top 0.28s cubic-bezier(0.1, 0.9, 0.15, 1), transform 0.28s cubic-bezier(0.1, 0.9, 0.15, 1)";
+            el.style.left = `${targetX}px`;
+            el.style.top = `${targetY}px`;
+            el.style.transform = `translate(-50%, -50%) rotate(${flySpin}deg) scale(${w.scale})`;
+
+            setTimeout(() => {
+                weaponsThrown++;
+
+                const img = el.querySelector("img");
+                if (img && w.bloodySrc) {
+                    img.src = encodeURI(w.bloodySrc);
+                }
+
+                el.classList.add("stuck-quiver");
+                el.style.zIndex = "35";
+
+                detailCard.classList.remove(
+                    "damage-recoil-left",
+                    "damage-recoil-right",
+                );
+                void detailCard.offsetWidth;
+                detailCard.classList.add(
+                    w.isLeft ? "damage-recoil-right" : "damage-recoil-left",
+                );
+
+                // Genera un rivolo di sangue che cola dall'arma verso la pozza sottostante
+                weaponDrips.push({
+                    startX: targetX,
+                    startY: targetY,
+                    length: Math.random() * 110 + 60,
+                    width: Math.random() * 2.5 + 2,
+                });
+
+                spawnBloodSpurt(targetX, targetY, w.isLeft);
+
+                // Allarga progressivamente la pozza sotto la scheda
+                targetBloodRadius += 55;
+
+                updateTargetHUD(weaponsThrown);
+            }, 270);
+        }
+
+        function spawnBloodSpurt(x: number, y: number, fromLeft: boolean) {
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const spreadAngle =
+                    (fromLeft ? 0 : Math.PI) + (Math.random() - 0.5) * 1.3;
+                const speed = Math.random() * 6 + 3.5;
+                flyingParticles.push({
+                    x,
+                    y,
+                    vx: Math.cos(spreadAngle) * speed,
+                    vy: Math.sin(spreadAngle) * speed - Math.random() * 2.5,
+                    r: Math.random() * 3 + 1.5,
+                    alpha: 1,
+                });
+            }
+
+            // 4-5 gocce d'impatto rimangono incollate permanentemente sulla parete
+            for (let s = 0; s < 5; s++) {
+                const splatterDist = Math.random() * 70 + 20;
+                const angle = Math.random() * Math.PI * 2;
+                permanentSplatters.push({
+                    x: x + Math.cos(angle) * splatterDist,
+                    y: y + Math.sin(angle) * splatterDist,
+                    r: Math.random() * 3.5 + 2,
+                    alpha: 0.92,
+                });
+            }
+        }
+
+        // Lobi organici asimmetrici per un perimetro liquido reale (senza facce geometriche)
+        const bloodLobes = [
+            1.25, 0.78, 1.35, 0.85, 1.45, 0.92, 1.2, 0.75, 1.4, 0.88, 1.5, 0.95,
+            1.3, 0.72, 1.38, 0.86, 1.42, 0.9, 1.28, 0.8, 1.32, 0.84,
+        ];
+
+        function renderBlood() {
+            if (!isActive || !ctx || !canvas) {
+                isLoopRunning = false;
+                return;
+            }
+
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            const scrollY = window.scrollY;
+
+            const detailCard = document.getElementById("detail-card-container");
+            if (detailCard) {
+                const cardRect = detailCard.getBoundingClientRect();
+                const centerX = cardRect.left + cardRect.width / 2;
+                const centerY = cardRect.top + cardRect.height / 2;
+
+                // Espansione morbida continua della pozza
+                bloodRadius += (targetBloodRadius - bloodRadius) * 0.04;
+
+                if (bloodRadius > 2) {
+                    ctx.save();
+
+                    // 1. OMBRA DI CONTATTO SUL MURO DELLA POZZA
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.75)";
+                    ctx.shadowBlur = 18;
+                    ctx.shadowOffsetY = 8;
+
+                    // 2. CALCOLO DEI PUNTI PERIMETRALI CON GRAVITÀ E LOBI ASIMMETRICI
+                    const count = bloodLobes.length;
+                    const pts: { x: number; y: number }[] = [];
+
+                    for (let j = 0; j < count; j++) {
+                        const a = (j / count) * Math.PI * 2;
+                        const lobe = bloodLobes[j];
+
+                        // Asimmetria gravitazionale: il sangue si accumula e cola verso il basso (angolo attorno a PI/2)
+                        const isDown = Math.sin(a) > 0;
+                        const grav = isDown ? 1 + Math.sin(a) * 0.4 : 0.85;
+
+                        const rX =
+                            (cardRect.width * 0.5 + bloodRadius * lobe * 0.9) *
+                            grav;
+                        const rY =
+                            (cardRect.height * 0.5 +
+                                bloodRadius * lobe * 0.75) *
+                            grav;
+
+                        pts.push({
+                            x: centerX + Math.cos(a) * rX,
+                            y: centerY + Math.sin(a) * rY,
+                        });
+                    }
+
+                    // 3. CURVA DI BÉZIER CONTINUA (ZERO LINEE RETTE O SPIGOLI)
+                    ctx.beginPath();
+                    const startMidX = (pts[count - 1].x + pts[0].x) / 2;
+                    const startMidY = (pts[count - 1].y + pts[0].y) / 2;
+                    ctx.moveTo(startMidX, startMidY);
+
+                    for (let j = 0; j < count; j++) {
+                        const curr = pts[j];
+                        const next = pts[(j + 1) % count];
+                        const midX = (curr.x + next.x) / 2;
+                        const midY = (curr.y + next.y) / 2;
+                        ctx.quadraticCurveTo(curr.x, curr.y, midX, midY);
+                    }
+                    ctx.closePath();
+
+                    // Corpo del sangue arterioso denso
+                    ctx.fillStyle = "rgba(110, 8, 32, 0.95)";
+                    ctx.fill();
+
+                    // Menisco scuro di coagulazione perimetrale
+                    ctx.strokeStyle = "rgba(30, 2, 8, 0.98)";
+                    ctx.lineWidth = 3.5;
+                    ctx.stroke();
+
+                    // 4. RIVOLI DI SANGUE CHE COLANO DALLE ARMI CONFICCATE
+                    ctx.shadowColor = "transparent";
+                    for (let drip of weaponDrips) {
+                        const dY = drip.startY - scrollY;
+                        ctx.beginPath();
+                        ctx.moveTo(drip.startX, dY);
+                        // Curva fluida che cola verso il basso
+                        ctx.quadraticCurveTo(
+                            drip.startX + (Math.random() - 0.5) * 6,
+                            dY + drip.length * 0.5,
+                            drip.startX + (Math.random() - 0.5) * 8,
+                            dY + drip.length,
+                        );
+                        ctx.strokeStyle = "rgba(125, 10, 36, 0.92)";
+                        ctx.lineWidth = drip.width;
+                        ctx.lineCap = "round";
+                        ctx.stroke();
+
+                        // Goccia finale del rivolo
+                        ctx.beginPath();
+                        ctx.arc(
+                            drip.startX,
+                            dY + drip.length,
+                            drip.width * 1.2,
+                            0,
+                            Math.PI * 2,
+                        );
+                        ctx.fillStyle = "rgba(95, 5, 25, 0.96)";
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+
+                // 5. SCHIZZI BALISTICI PERMANENTI SULLA PARETE
+                for (let sp of permanentSplatters) {
+                    const sy = sp.y - scrollY;
+                    ctx.beginPath();
+                    ctx.arc(sp.x, sy, sp.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(135, 10, 40, ${sp.alpha})`;
+                    ctx.fill();
+                    ctx.strokeStyle = "rgba(35, 2, 8, 0.85)";
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+
+                // 6. SCHIZZI IN VOLO
+                for (let i = flyingParticles.length - 1; i >= 0; i--) {
+                    const p = flyingParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.16;
+                    p.vx *= 0.94;
+                    p.alpha *= 0.96;
+
+                    const sy = p.y - scrollY;
+                    ctx.beginPath();
+                    ctx.arc(p.x, sy, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(175, 12, 50, ${p.alpha})`;
+                    ctx.fill();
+
+                    if (p.alpha <= 0.02) {
+                        flyingParticles.splice(i, 1);
+                    }
+                }
+            }
+
+            requestAnimationFrame(renderBlood);
+        }
+
+        function wakeUpBloodLoop() {
+            if (!isLoopRunning) {
+                isLoopRunning = true;
+                requestAnimationFrame(renderBlood);
+            }
+        }
+
+        window.addEventListener("murder:mystery:start", () => {
+            isActive = true;
+            resize();
+            spawnWeapons();
+            canvas.style.opacity = "1";
+            wakeUpBloodLoop();
+        });
+
+        window.addEventListener("murder:mystery:clear", () => {
+            isActive = false;
+            canvas.style.opacity = "0";
+            stage.innerHTML = "";
+            const badge = document.getElementById("target-hud-badge");
+            if (badge) badge.remove();
+            const detailCard = document.getElementById("detail-card-container");
+            if (detailCard) {
+                detailCard.classList.remove(
+                    "damage-recoil-left",
+                    "damage-recoil-right",
+                );
+            }
+            setTimeout(() => {
+                if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 700);
+        });
+    }
+
+    setupMurderMysteryAssassination();
+    document.addEventListener(
+        "astro:page-load",
+        setupMurderMysteryAssassination,
+    );
+</script>
+
+<style is:global>
+    @keyframes weaponIdleSway {
+        0%,
+        100% {
+            transform: translate(-50%, -50%) rotate(var(--base-rot))
+                translateY(0px);
+        }
+        50% {
+            transform: translate(-50%, -50%)
+                rotate(calc(var(--base-rot) + 4deg)) translateY(-4px);
+        }
+    }
+
+    .murder-weapon-item:not(.launched) {
+        animation: weaponIdleSway 3.6s ease-in-out infinite;
+    }
+
+    @keyframes stuckQuiver {
+        0% {
+            transform: translate(-50%, -50%) scale(1.25) rotate(0deg);
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.22) rotate(4deg);
+        }
+        40% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(-3deg);
+        }
+        60% {
+            transform: translate(-50%, -50%) scale(1.18) rotate(2deg);
+        }
+        80% {
+            transform: translate(-50%, -50%) scale(1.16) rotate(-1deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(1.15) rotate(0deg);
+        }
+    }
+
+    .stuck-quiver {
+        animation: stuckQuiver 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28)
+            forwards !important;
+    }
+
+    @keyframes damageRecoilRight {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        15% {
+            transform: translate3d(14px, -3px, 0) scale(1.015);
+            border-color: rgba(244, 63, 94, 0.9) !important;
+            box-shadow: 0 0 50px rgba(244, 63, 94, 0.5) !important;
+        }
+        40% {
+            transform: translate3d(-8px, 2px, 0);
+        }
+        70% {
+            transform: translate3d(4px, -1px, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes damageRecoilLeft {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        15% {
+            transform: translate3d(-14px, -3px, 0) scale(1.015);
+            border-color: rgba(244, 63, 94, 0.9) !important;
+            box-shadow: 0 0 50px rgba(244, 63, 94, 0.5) !important;
+        }
+        40% {
+            transform: translate3d(8px, 2px, 0);
+        }
+        70% {
+            transform: translate3d(-4px, -1px, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .damage-recoil-right {
+        animation: damageRecoilRight 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)
+            forwards !important;
+    }
+
+    .damage-recoil-left {
+        animation: damageRecoilLeft 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)
+            forwards !important;
+    }
+</style>

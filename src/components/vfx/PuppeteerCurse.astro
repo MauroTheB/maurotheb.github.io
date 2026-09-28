@@ -2,8 +2,8 @@
 // Effetto Horror Avanzato: Living Viscous Blood & Eldritch Cells su Canvas 2D
 ---
 
-<canvas 
-  id="puppeteer-curse-canvas" 
+<canvas
+  id="puppeteer-curse-canvas"
   class="fixed inset-0 pointer-events-none z-20 opacity-0 transition-opacity duration-700 ease-out select-none"
 ></canvas>
 
@@ -15,7 +15,13 @@
     angle: number;
   }
 
-interface StalkerStain {
+  interface TrailPoint {
+    x: number;
+    y: number;
+    age: number;
+  }
+
+  interface StalkerStain {
     homeX: number;
     homeY: number;
     curX: number;
@@ -23,20 +29,32 @@ interface StalkerStain {
     vx: number;
     vy: number;
     angle: number;
+    wanderAngle: number;
+    noiseOffset: number;
     baseRadius: number;
     isLeft: boolean;
     lobes: number[];
     innerLobes: number[];
     phases: number[];
     satellites: SatelliteDrop[];
-    type: 'blood' | 'purple' | 'void';
-}
+    type: "blood" | "purple" | "void";
+    trail: TrailPoint[]; // Punti storici della scia vischiosa
+    shedDrops: {
+      x: number;
+      y: number;
+      r: number;
+      age: number;
+      maxAge: number;
+    }[]; // Gocce statiche rilasciate
+  }
 
   function setupPuppeteerCurse() {
-    const canvas = document.getElementById('puppeteer-curse-canvas') as HTMLCanvasElement | null;
+    const canvas = document.getElementById(
+      "puppeteer-curse-canvas",
+    ) as HTMLCanvasElement | null;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let isActive = false;
@@ -49,6 +67,9 @@ interface StalkerStain {
     const DETECT_RADIUS = 280;
     const STOP_RADIUS = 50;
 
+    // --- TEMPO DI VITA DELLA BAVA (Aumenta questo numero per farla durare di più!) ---
+    const TRAIL_LIFETIME = 960; // ~6-7 secondi di persistenza prima di asciugarsi
+
     function resize() {
       if (!canvas || !ctx) return;
       const dpr = window.devicePixelRatio || 1;
@@ -59,46 +80,63 @@ interface StalkerStain {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
     // Genera 20 macchie stratificate con profili a lobi interni
     function createStains() {
       stains = [];
       const screenW = window.innerWidth;
-      const types: ('blood' | 'purple' | 'void')[] = ['blood', 'purple', 'void', 'blood', 'purple', 'void'];
+      const types: ("blood" | "purple" | "void")[] = [
+        "blood",
+        "purple",
+        "void",
+        "blood",
+        "purple",
+        "void",
+      ];
 
-      // 1. Limite superiore assoluto: il fondo della Hero (la riga con il badge DDA)
-      const heroHeader = document.getElementById('hero-header');
-      const safeMinY = heroHeader ? (heroHeader.offsetTop + heroHeader.offsetHeight + 35) : 750;
+      const heroHeader = document.getElementById("hero-header");
+      const safeMinY = heroHeader
+        ? heroHeader.offsetTop + heroHeader.offsetHeight + 35
+        : 750;
 
-      // 2. Coordinate della scheda di spiegazione del gioco
-      const detailCard = document.getElementById('detail-card-container');
-      const cardRect = detailCard ? detailCard.getBoundingClientRect() : null;
-      const cardLeft = cardRect ? cardRect.left : 320;
-      const cardRight = cardRect ? cardRect.right : screenW - 320;
-      const cardHeight = cardRect && cardRect.height > 400 ? cardRect.height : 1100;
+      // Calcola le corsie definitive della scheda espansa (max-w-7xl = 1280px)
+      const finalGutter = Math.max(60, (screenW - 1280) / 2);
+      const cardLeft = finalGutter;
+      const cardRight = screenW - finalGutter;
+
+      // Calcola l'altezza dell'intero documento fino in fondo al sito
+      const maxDocY = Math.max(
+        document.documentElement.scrollHeight - 160,
+        safeMinY + 1200,
+      );
+      const verticalSpan = maxDocY - safeMinY;
+      const countPerSide = TOTAL_STAINS / 2; // 10 per lato
+      const slotH = verticalSpan / countPerSide; // Ampio spazio dedicato per ciascuna cellula
 
       for (let i = 0; i < TOTAL_STAINS; i++) {
-        const isLeft = i < TOTAL_STAINS / 2;
+        const isLeft = i < countPerSide;
+        const indexInSide = i % countPerSide;
         const type = types[i % types.length];
-        
-        const baseRadius = Math.random() * 24 + 26;
 
-        // Dispersione orizzontale su tutta la larghezza libera delle corsie (senza toccare la scheda)
+        const baseRadius = Math.random() * 22 + 25;
+
+        // Dispersione orizzontale aperta su tutta la corsia
         let homeX = 0;
         if (isLeft) {
           const minX = 20 + baseRadius;
-          const maxX = Math.max(minX + 15, cardLeft - baseRadius - 20);
+          const maxX = Math.max(minX + 15, cardLeft - baseRadius - 25);
           homeX = Math.random() * (maxX - minX) + minX;
         } else {
-          const minX = cardRight + baseRadius + 20;
+          const minX = cardRight + baseRadius + 25;
           const maxX = Math.max(minX + 15, screenW - 20 - baseRadius);
           homeX = Math.random() * (maxX - minX) + minX;
         }
-        
-        // Dispersione verticale completamente disordinata e confinata lungo la scheda (MAI sopra la Hero)
-        const verticalSpan = Math.max(500, cardHeight - 120);
-        const homeY = safeMinY + 40 + Math.random() * verticalSpan;
+
+        // Dispersione verticale non raggruppata: distanziata uniformemente lungo tutta la pagina
+        const homeY =
+          safeMinY + indexInSide * slotH + Math.random() * slotH * 0.7;
+        const wanderAngle = Math.random() * Math.PI * 2;
         const lobesCount = 10;
         const lobes: number[] = [];
         const innerLobes: number[] = [];
@@ -120,45 +158,49 @@ interface StalkerStain {
             x: Math.cos(satAngle) * satDist,
             y: Math.sin(satAngle) * satDist,
             r: Math.random() * 3 + 2,
-            angle: satAngle
+            angle: satAngle,
           });
         }
 
         stains.push({
-            homeX,
-            homeY,
-            curX: homeX,
-            curY: homeY,
-            vx: 0,
-            vy: 0,
-            angle: 0,
-            baseRadius,
-            isLeft,
-            lobes,
-            innerLobes,
-            phases,
-            satellites,
-            type
+          homeX,
+          homeY,
+          curX: homeX,
+          curY: homeY,
+          vx: Math.cos(wanderAngle) * 0.3,
+          vy: Math.sin(wanderAngle) * 0.3,
+          angle: 0,
+          wanderAngle,
+          noiseOffset: Math.random() * 100,
+          baseRadius,
+          isLeft,
+          lobes,
+          innerLobes,
+          phases,
+          satellites,
+          type,
+          trail: [],
+          shedDrops: [],
         });
       }
     }
 
-    window.addEventListener('pointermove', (e) => {
-        if (!isActive) return;
-        mouseClientX = e.clientX;
-        mouseClientY = e.clientY;
+    window.addEventListener("pointermove", (e) => {
+      if (!isActive) return;
+      mouseClientX = e.clientX;
+      mouseClientY = e.clientY;
     });
 
     let startTime = performance.now();
 
     // Disegna anelli fluidi chiusi raccordati a punti medi (zero spigoli)
     function drawFluidBlob(
-      radiusMult: number, 
-      lobesArr: number[], 
-      phasesArr: number[], 
-      speed: number, 
-      time: number, 
-      baseR: number
+      radiusMult: number,
+      lobesArr: number[],
+      phasesArr: number[],
+      speed: number,
+      time: number,
+      baseR: number,
     ) {
       if (!ctx) return;
       ctx.beginPath();
@@ -193,15 +235,15 @@ interface StalkerStain {
         return;
       }
 
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        const t = (performance.now() - startTime) * 0.001;
-        const scrollY = window.scrollY;
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const t = (performance.now() - startTime) * 0.001;
+      const scrollY = window.scrollY;
 
-        // Coordinate del mouse proiettate nello spazio del documento
-        const mouseX = mouseClientX;
-        const mouseY = mouseClientY + scrollY;
+      // Coordinate del mouse proiettate nello spazio del documento
+      const mouseX = mouseClientX;
+      const mouseY = mouseClientY + scrollY;
 
-        stains.forEach((s, idx) => {
+      stains.forEach((s, idx) => {
         const dxMouse = mouseX - s.curX;
         const dyMouse = mouseY - s.curY;
         const distMouse = Math.hypot(dxMouse, dyMouse);
@@ -210,11 +252,11 @@ interface StalkerStain {
 
         if (distMouse < DETECT_RADIUS && distMouse > 1) {
           // --- STATO 1: CACCIA AL MOUSE ---
-          const force = (1 - distMouse / DETECT_RADIUS);
+          const force = 1 - distMouse / DETECT_RADIUS;
           const chaseAngle = Math.atan2(dyMouse, dxMouse);
 
           if (distMouse > STOP_RADIUS) {
-            const chaseSpeed = force * 3.2;
+            const chaseSpeed = force * 3.4;
             s.vx += Math.cos(chaseAngle) * chaseSpeed;
             s.vy += Math.sin(chaseAngle) * chaseSpeed;
           }
@@ -222,19 +264,19 @@ interface StalkerStain {
           targetAngle = chaseAngle;
           const currentSpeed = Math.hypot(s.vx, s.vy);
           stretch = 1 + Math.min(0.45, currentSpeed * 0.08);
-
         } else {
-          // --- STATO 2: RIPOSO ELASTICO FLUIDO (Zero scatti o glitch) ---
-          // Molla elastica continua verso casa
-          s.vx += (s.homeX - s.curX) * 0.022;
-          s.vy += (s.homeY - s.curY) * 0.022;
+          // --- STATO 2: MOTO CELLULARE VISCIDO ULTRA-LENTO ---
+          // 1. Virata lentissima (abbassato da 0.6 a 0.25 per curve lunghissime e morbide)
+          s.wanderAngle += Math.sin(t * 0.25 + s.noiseOffset) * 0.001;
 
-          // Micro-moto organico naturale
-          s.vx += Math.sin(t * 1.5 + idx * 2) * 0.15;
-          s.vy += Math.cos(t * 1.3 + idx * 2) * 0.15;
+          // 2. Velocità base (abbassata a 0.12)
+          const slowSpeed = 0.12 + Math.sin(t * 0.2 + idx) * 0.03;
 
-          // Ritorno morbido dell'angolo a un respiro leggero
-          targetAngle = Math.sin(t * 0.8 + idx) * 0.25;
+          // 3. Spinta per frame (abbassata da 0.22 a 0.05: moto lentissimo)
+          s.vx += Math.cos(s.wanderAngle) * slowSpeed * 0.1;
+          s.vy += Math.sin(s.wanderAngle) * slowSpeed * 0.1;
+
+          targetAngle = s.wanderAngle;
           stretch = 1;
         }
 
@@ -244,54 +286,347 @@ interface StalkerStain {
         s.curX += s.vx;
         s.curY += s.vy;
 
-        // --- BARRIERE FISICHE INVALICABILI ---
-        const heroHeader = document.getElementById('hero-header');
-        const safeMinY = heroHeader ? (heroHeader.offsetTop + heroHeader.offsetHeight + 30) : 750;
-        const detailCard = document.getElementById('detail-card-container');
+        // --- BARRIERE FISICHE E RIMBALZO SUI CONFINI (Hero e Scheda protette al 100%) ---
+        const heroHeader = document.getElementById("hero-header");
+        const safeMinY = heroHeader
+          ? heroHeader.offsetTop + heroHeader.offsetHeight + 35
+          : 750;
+        const maxDocY = Math.max(
+          document.documentElement.scrollHeight - 160,
+          safeMinY + 1200,
+        );
+
+        const detailCard = document.getElementById("detail-card-container");
         const cardRect = detailCard ? detailCard.getBoundingClientRect() : null;
         const screenW = window.innerWidth;
-        const cardLeft = cardRect ? cardRect.left : 320;
-        const cardRight = cardRect ? cardRect.right : screenW - 320;
+        const finalGutter = Math.max(60, (screenW - 1280) / 2);
+        const cardLeft = cardRect ? cardRect.left : finalGutter;
+        const cardRight = cardRect ? cardRect.right : screenW - finalGutter;
 
-        // 1. Barriera Superiore: MAI salire sopra l'area Hero (nome, DDA, ecc.)
+        // 1. Limite Superiore: MAI invadere la Hero (nome, DDA, ecc.)
         if (s.curY < safeMinY + s.baseRadius) {
           s.curY = safeMinY + s.baseRadius;
-          s.vy = Math.abs(s.vy) * 0.3; // Rimbalzo morbido
+          s.vy = Math.abs(s.vy) * 0.85; // Rimbalzo verso il basso
+          s.wanderAngle = Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+        }
+        // 2. Limite Inferiore: Fondo della pagina
+        else if (s.curY > maxDocY - s.baseRadius) {
+          s.curY = maxDocY - s.baseRadius;
+          s.vy = -Math.abs(s.vy) * 0.85; // Rimbalzo verso l'alto
+          s.wanderAngle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
         }
 
-        // 2. Barriere Laterali: MAI sovrapporsi al riquadro centrale di spiegazione
+        // 3. Limiti Orizzontali: confinate nelle corsie laterali (MAI sulla scheda centrale)
         if (s.isLeft) {
-          const minX = 15 + s.baseRadius;
-          const maxX = cardLeft - s.baseRadius - 15;
-          if (s.curX > maxX) {
-            s.curX = maxX;
-            s.vx = -Math.abs(s.vx) * 0.3;
-          } else if (s.curX < minX) {
-            s.curX = minX;
-            s.vx = Math.abs(s.vx) * 0.3;
-          }
-        } else {
-          const minX = cardRight + s.baseRadius + 15;
-          const maxX = screenW - 15 - s.baseRadius;
+          const minX = 18 + s.baseRadius;
+          const maxX = cardLeft - s.baseRadius - 18;
           if (s.curX < minX) {
             s.curX = minX;
-            s.vx = Math.abs(s.vx) * 0.3;
+            s.vx = Math.abs(s.vx) * 0.85; // Rimbalzo verso destra
+            s.wanderAngle = 0 + (Math.random() - 0.5) * 0.6;
           } else if (s.curX > maxX) {
-            s.curX = maxX; 
-            s.vx = -Math.abs(s.vx) * 0.3;
+            s.curX = maxX;
+            s.vx = -Math.abs(s.vx) * 0.85; // Rimbalzo verso sinistra
+            s.wanderAngle = Math.PI + (Math.random() - 0.5) * 0.6;
+          }
+        } else {
+          const minX = cardRight + s.baseRadius + 18;
+          const maxX = screenW - 18 - s.baseRadius;
+          if (s.curX < minX) {
+            s.curX = minX;
+            s.vx = Math.abs(s.vx) * 0.85; // Rimbalzo verso destra
+            s.wanderAngle = 0 + (Math.random() - 0.5) * 0.6;
+          } else if (s.curX > maxX) {
+            s.curX = maxX;
+            s.vx = -Math.abs(s.vx) * 0.85; // Rimbalzo verso sinistra
+            s.wanderAngle = Math.PI + (Math.random() - 0.5) * 0.6;
           }
         }
 
-        // Interpolazione morbida dell'angolo
+        // Ripristino dell'interpolazione morbida dell'angolo
         s.angle += (targetAngle - s.angle) * 0.08;
 
-        // Rendering a strati liquidi definiti
+        // --- DEPOSITO PUNTI SCIA (Campionamento a passo regolare per curve perfette) ---
+        const lastTrail = s.trail[0];
+        const distMoved = lastTrail
+          ? Math.hypot(s.curX - lastTrail.x, s.curY - lastTrail.y)
+          : 0;
+
+        if (distMoved > 25) {
+          s.trail = [];
+        } else if (!lastTrail || distMoved >= 6) {
+          // Campionamento fluido a 6px
+          s.trail.unshift({ x: s.curX, y: s.curY, age: 0 });
+        }
+
+        s.trail = s.trail.filter((p) => ++p.age < TRAIL_LIFETIME);
+
+        // --- RILASCIO DI GOCCIOLINE STATICHE A PARETE (Zero glitch, coordinate fisse) ---
+        if (distMoved >= 6 && Math.random() < 0.22 && s.shedDrops.length < 16) {
+          const lateralDrop =
+            s.baseRadius *
+            (Math.random() * 0.35 + 0.25) *
+            (Math.random() > 0.5 ? 1 : -1);
+          s.shedDrops.push({
+            x: s.curX + (Math.random() - 0.5) * 6 + lateralDrop,
+            y: s.curY + (Math.random() - 0.5) * 6,
+            r: Math.random() * 2.2 + 1.2,
+            age: 0,
+            maxAge: Math.floor(TRAIL_LIFETIME * (Math.random() * 0.3 + 0.6)),
+          });
+        }
+        s.shedDrops = s.shedDrops.filter((d) => ++d.age < d.maxAge);
+
+        // --- RENDERING A NASTRO CONTINUO CON EVAPORAZIONE A GRADIENTE ALFA (ZERO SCATTI) ---
+        if (s.trail.length >= 3) {
+          const N = s.trail.length;
+          const leftPts: { x: number; y: number }[] = [];
+          const rightPts: { x: number; y: number }[] = [];
+
+          // 1. Calcola la geometria organica con grumi rigonfi e strozzature asimmetriche
+          for (let ti = 0; ti < N; ti++) {
+            const p = s.trail[ti];
+            const pPrev = s.trail[Math.max(0, ti - 1)];
+            const pNext = s.trail[Math.min(N - 1, ti + 1)];
+
+            const tx = pNext.x - pPrev.x;
+            const ty = pNext.y - pPrev.y;
+            const tLen = Math.hypot(tx, ty) || 1;
+            const nx = -ty / tLen;
+            const ny = tx / tLen;
+
+            const linearProg = Math.max(0, 1 - p.age / TRAIL_LIFETIME);
+            const progress = Math.pow(linearProg, 0.4);
+
+            // Modulazione multifrequenza disordinata: sacche dense alternate a strozzature
+            const lumpLeft =
+              1 +
+              0.38 * Math.sin(ti * 0.8 + s.phases[0]) +
+              0.22 * Math.cos(ti * 1.7);
+            const lumpRight =
+              1 +
+              0.38 * Math.sin(ti * 0.8 + s.phases[1]) +
+              0.22 * Math.sin(ti * 1.5);
+
+            // Larghezza asimmetrica tra bordo sinistro e destro
+            const halfWLeft = Math.max(
+              0,
+              (s.baseRadius * 0.44 * progress * lumpLeft) / 2,
+            );
+            const halfWRight = Math.max(
+              0,
+              (s.baseRadius * 0.44 * progress * lumpRight) / 2,
+            );
+
+            leftPts.push({ x: p.x + nx * halfWLeft, y: p.y + ny * halfWLeft });
+            rightPts.push({
+              x: p.x - nx * halfWRight,
+              y: p.y - ny * halfWRight,
+            });
+          }
+
+          ctx.save();
+
+          // 2. Disegna il nastro continuo
+          ctx.beginPath();
+          ctx.moveTo(leftPts[0].x, leftPts[0].y - scrollY);
+
+          for (let i = 0; i < leftPts.length - 1; i++) {
+            const midX = (leftPts[i].x + leftPts[i + 1].x) / 2;
+            const midY = (leftPts[i].y + leftPts[i + 1].y) / 2 - scrollY;
+            ctx.quadraticCurveTo(
+              leftPts[i].x,
+              leftPts[i].y - scrollY,
+              midX,
+              midY,
+            );
+          }
+
+          ctx.lineTo(rightPts[N - 1].x, rightPts[N - 1].y - scrollY);
+
+          for (let i = N - 1; i > 0; i--) {
+            const midX = (rightPts[i].x + rightPts[i - 1].x) / 2;
+            const midY = (rightPts[i].y + rightPts[i - 1].y) / 2 - scrollY;
+            ctx.quadraticCurveTo(
+              rightPts[i].x,
+              rightPts[i].y - scrollY,
+              midX,
+              midY,
+            );
+          }
+
+          ctx.closePath();
+
+          // 3. Gradiente di colore con evaporazione alfa (Svanisce progressivamente a 0.00)
+          const pHead = s.trail[0];
+          const pTail = s.trail[N - 1];
+          const trailGrad = ctx.createLinearGradient(
+            pHead.x,
+            pHead.y - scrollY,
+            pTail.x,
+            pTail.y - scrollY,
+          );
+
+          if (s.type === "blood") {
+            trailGrad.addColorStop(0, "rgba(136, 19, 55, 0.46)"); // Testa: densa
+            trailGrad.addColorStop(0.55, "rgba(110, 15, 42, 0.26)"); // Corpo
+            trailGrad.addColorStop(0.85, "rgba(75, 10, 30, 0.10)"); // Quasi asciutta
+            trailGrad.addColorStop(1, "rgba(40, 5, 15, 0.0)"); // Coda: zero assoluto!
+          } else if (s.type === "purple") {
+            trailGrad.addColorStop(0, "rgba(88, 28, 135, 0.46)");
+            trailGrad.addColorStop(0.55, "rgba(65, 18, 105, 0.26)");
+            trailGrad.addColorStop(0.85, "rgba(45, 12, 75, 0.10)");
+            trailGrad.addColorStop(1, "rgba(25, 5, 45, 0.0)");
+          } else {
+            trailGrad.addColorStop(0, "rgba(15, 23, 42, 0.52)");
+            trailGrad.addColorStop(0.55, "rgba(15, 23, 42, 0.28)");
+            trailGrad.addColorStop(0.85, "rgba(15, 23, 42, 0.10)");
+            trailGrad.addColorStop(1, "rgba(15, 23, 42, 0.0)");
+          }
+
+          ctx.fillStyle = trailGrad;
+          ctx.fill();
+
+          // --- BORDO COAGULATO A MENISCO (Coffee-Ring Effect) ---
+          ctx.strokeStyle =
+            s.type === "blood"
+              ? "rgba(35, 2, 8, 0.65)" // Bordo di sangue essiccato
+              : s.type === "purple"
+                ? "rgba(20, 3, 38, 0.65)" // Bordo viola nerastro
+                : "rgba(2, 6, 23, 0.7)"; // Bordo inchiostro denso
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+
+          // --- IDEA 2: NUCLEO DENSO CENTRALE (Fluido a due fasi: Siero esterno + Muco spesso interno) ---
+          ctx.beginPath();
+          ctx.moveTo(s.trail[0].x, s.trail[0].y - scrollY);
+          for (let i = 0; i < N - 1; i++) {
+            const midX = (s.trail[i].x + s.trail[i + 1].x) / 2;
+            const midY = (s.trail[i].y + s.trail[i + 1].y) / 2 - scrollY;
+            ctx.quadraticCurveTo(
+              s.trail[i].x,
+              s.trail[i].y - scrollY,
+              midX,
+              midY,
+            );
+          }
+
+          const coreGrad = ctx.createLinearGradient(
+            pHead.x,
+            pHead.y - scrollY,
+            pTail.x,
+            pTail.y - scrollY,
+          );
+
+          if (s.type === "blood") {
+            coreGrad.addColorStop(0, "rgba(185, 15, 55, 0.75)"); // Nucleo denso arterioso
+            coreGrad.addColorStop(0.6, "rgba(110, 10, 35, 0.40)");
+            coreGrad.addColorStop(1, "rgba(50, 5, 15, 0.0)");
+          } else if (s.type === "purple") {
+            coreGrad.addColorStop(0, "rgba(125, 30, 190, 0.75)"); // Nucleo viola vischioso
+            coreGrad.addColorStop(0.6, "rgba(75, 15, 115, 0.40)");
+            coreGrad.addColorStop(1, "rgba(30, 5, 50, 0.0)");
+          } else {
+            coreGrad.addColorStop(0, "rgba(5, 10, 25, 0.85)"); // Nucleo nero abissale denso
+            coreGrad.addColorStop(0.6, "rgba(10, 15, 30, 0.45)");
+            coreGrad.addColorStop(1, "rgba(2, 6, 23, 0.0)");
+          }
+
+          ctx.strokeStyle = coreGrad;
+          ctx.lineWidth = Math.max(1.5, s.baseRadius * 0.2); // Più stretto rispetto al velo esterno
+          ctx.lineCap = "round";
+          ctx.stroke();
+
+          // 4. Spina bagnata che si essicca prima della fine (solo sui primi 2/3 della scia)
+          const spineCount = Math.max(2, Math.floor(N * 0.65));
+          const pSpineEnd = s.trail[spineCount - 1];
+          const spineGrad = ctx.createLinearGradient(
+            pHead.x,
+            pHead.y - scrollY,
+            pSpineEnd.x,
+            pSpineEnd.y - scrollY,
+          );
+
+          if (s.type === "blood") {
+            spineGrad.addColorStop(0, "rgba(251, 113, 133, 0.38)");
+            spineGrad.addColorStop(1, "rgba(251, 113, 133, 0.0)");
+          } else if (s.type === "purple") {
+            spineGrad.addColorStop(0, "rgba(216, 180, 254, 0.38)");
+            spineGrad.addColorStop(1, "rgba(216, 180, 254, 0.0)");
+          } else {
+            spineGrad.addColorStop(0, "rgba(148, 163, 184, 0.30)");
+            spineGrad.addColorStop(1, "rgba(148, 163, 184, 0.0)");
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(s.trail[0].x, s.trail[0].y - scrollY);
+          for (let i = 0; i < spineCount - 1; i++) {
+            const midX = (s.trail[i].x + s.trail[i + 1].x) / 2;
+            const midY = (s.trail[i].y + s.trail[i + 1].y) / 2 - scrollY;
+            ctx.quadraticCurveTo(
+              s.trail[i].x,
+              s.trail[i].y - scrollY,
+              midX,
+              midY,
+            );
+          }
+          ctx.strokeStyle = spineGrad;
+          ctx.lineWidth = Math.max(0.8, s.baseRadius * 0.1);
+          ctx.lineCap = "round";
+          ctx.stroke();
+
+          ctx.restore();
+        }
+
+        // --- DISEGNO GOCCIOLINE STATICHE INCOLLATE AL MURO (Coordinate fisse) ---
+        for (let di = 0; di < s.shedDrops.length; di++) {
+          const d = s.shedDrops[di];
+          const dsy = d.y - scrollY;
+          if (dsy < -40 || dsy > window.innerHeight + 40) continue;
+
+          const dProg = Math.pow(Math.max(0, 1 - d.age / d.maxAge), 0.5);
+
+          ctx.save();
+          // 1. Micro-ombra di contatto a terra
+          ctx.beginPath();
+          ctx.arc(d.x, dsy + 1.2, d.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 0, 0, ${0.45 * dProg})`;
+          ctx.fill();
+
+          // 2. Corpo lucido della goccia (del colore della cellula madre)
+          ctx.beginPath();
+          ctx.arc(d.x, dsy, d.r, 0, Math.PI * 2);
+          ctx.fillStyle =
+            s.type === "blood"
+              ? `rgba(185, 15, 55, ${0.85 * dProg})`
+              : s.type === "purple"
+                ? `rgba(125, 30, 190, ${0.85 * dProg})`
+                : `rgba(10, 15, 30, ${0.9 * dProg})`;
+          ctx.fill();
+
+          // 3. Punto luce bagnato (wet gloss)
+          ctx.beginPath();
+          ctx.arc(
+            d.x - d.r * 0.3,
+            dsy - d.r * 0.3,
+            Math.max(0.4, d.r * 0.3),
+            0,
+            Math.PI * 2,
+          );
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.75 * dProg})`;
+          ctx.fill();
+          ctx.restore();
+        }
+
         // Calcola la posizione effettiva nella visuale dello schermo
         const screenY = s.curY - scrollY;
 
         // Se la macchia è completamente fuori dallo schermo durante lo scroll, salta il disegno (Culling GPU)
-        if (screenY < -s.baseRadius * 2 || screenY > window.innerHeight + s.baseRadius * 2) {
-            return;
+        if (
+          screenY < -s.baseRadius * 2 ||
+          screenY > window.innerHeight + s.baseRadius * 2
+        ) {
+          return;
         }
 
         ctx.save();
@@ -300,60 +635,64 @@ interface StalkerStain {
         ctx.scale(stretch, 1 / Math.sqrt(stretch));
 
         // 1. STRATO ESTERNO CON OMBRA DI CONTATTO 3D (Stacca la goccia dal muro)
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
         ctx.shadowBlur = 14;
         ctx.shadowOffsetY = 7;
         ctx.shadowOffsetX = 1;
 
         drawFluidBlob(1.0, s.lobes, s.phases, 1.8, t, s.baseRadius);
-        if (s.type === 'blood') {
-            ctx.fillStyle = 'rgba(76, 5, 25, 0.95)';
-            ctx.strokeStyle = 'rgba(30, 2, 8, 1)';
-        } else if (s.type === 'purple') {
-            ctx.fillStyle = 'rgba(46, 16, 101, 0.95)';
-            ctx.strokeStyle = 'rgba(15, 3, 35, 1)';
+        if (s.type === "blood") {
+          ctx.fillStyle = "rgba(76, 5, 25, 0.95)";
+          ctx.strokeStyle = "rgba(30, 2, 8, 1)";
+        } else if (s.type === "purple") {
+          ctx.fillStyle = "rgba(46, 16, 101, 0.95)";
+          ctx.strokeStyle = "rgba(15, 3, 35, 1)";
         } else {
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.98)';
-            ctx.strokeStyle = 'rgba(2, 6, 23, 1)';
+          ctx.fillStyle = "rgba(15, 23, 42, 0.98)";
+          ctx.strokeStyle = "rgba(2, 6, 23, 1)";
         }
         ctx.lineWidth = 2;
         ctx.fill();
         ctx.stroke();
 
         // Resettiamo l'ombra per mantenere gli strati interni limpidi
-        ctx.shadowColor = 'transparent';
+        ctx.shadowColor = "transparent";
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowOffsetX = 0;
 
-      // 2. STRATO INTERMEDIO FLUIDO CON VOLUMETRIA A CUPOLA (Luce zenitale eccentrica)
+        // 2. STRATO INTERMEDIO FLUIDO CON VOLUMETRIA A CUPOLA (Luce zenitale eccentrica)
         const lightX = -s.baseRadius * 0.22;
         const lightY = -s.baseRadius * 0.22;
 
         drawFluidBlob(0.68, s.innerLobes, s.phases, 2.4, t, s.baseRadius);
-        
+
         // Gradiente asimmetrico: luce in alto a sinistra -> penombra in basso a destra
         const domeGrad = ctx.createRadialGradient(
-          lightX, lightY, s.baseRadius * 0.05,
-          0, 0, s.baseRadius * 0.72
+          lightX,
+          lightY,
+          s.baseRadius * 0.05,
+          0,
+          0,
+          s.baseRadius * 0.72,
         );
 
-        if (s.type === 'blood') {
+        if (s.type === "blood") {
           // Subsurface Scattering: rubino vivido dove batte la luce, sangue scuro in ombra
-          domeGrad.addColorStop(0, 'rgba(225, 29, 72, 0.96)');
-          domeGrad.addColorStop(0.45, 'rgba(159, 18, 57, 0.92)');
-          domeGrad.addColorStop(1, 'rgba(45, 3, 12, 0.96)');
-          ctx.strokeStyle = 'rgba(114, 10, 36, 0.95)';
-        } else if (s.type === 'purple') {
-          domeGrad.addColorStop(0, 'rgba(168, 85, 247, 0.96)');
-          domeGrad.addColorStop(0.5, 'rgba(107, 33, 168, 0.92)');
-          domeGrad.addColorStop(1, 'rgba(25, 4, 50, 0.96)');
-          ctx.strokeStyle = 'rgba(88, 28, 135, 0.95)';
+          domeGrad.addColorStop(0, "rgba(225, 29, 72, 0.96)");
+          domeGrad.addColorStop(0.45, "rgba(159, 18, 57, 0.92)");
+          domeGrad.addColorStop(1, "rgba(45, 3, 12, 0.96)");
+          ctx.strokeStyle = "rgba(114, 10, 36, 0.95)";
+        } else if (s.type === "purple") {
+          domeGrad.addColorStop(0, "rgba(168, 85, 247, 0.96)");
+          domeGrad.addColorStop(0.5, "rgba(107, 33, 168, 0.92)");
+          domeGrad.addColorStop(1, "rgba(25, 4, 50, 0.96)");
+          ctx.strokeStyle = "rgba(88, 28, 135, 0.95)";
         } else {
-          domeGrad.addColorStop(0, 'rgba(51, 65, 85, 0.96)');
-          domeGrad.addColorStop(0.5, 'rgba(15, 23, 42, 0.92)');
-          domeGrad.addColorStop(1, 'rgba(2, 6, 23, 0.98)');
-          ctx.strokeStyle = 'rgba(15, 23, 42, 0.95)';
+          domeGrad.addColorStop(0, "rgba(51, 65, 85, 0.96)");
+          domeGrad.addColorStop(0.5, "rgba(15, 23, 42, 0.92)");
+          domeGrad.addColorStop(1, "rgba(2, 6, 23, 0.98)");
+          ctx.strokeStyle = "rgba(15, 23, 42, 0.95)";
         }
 
         ctx.fillStyle = domeGrad;
@@ -366,19 +705,23 @@ interface StalkerStain {
         drawFluidBlob(0.34, s.lobes, s.phases, 3.2, t, s.baseRadius);
 
         const clotGrad = ctx.createRadialGradient(
-          0, clotY, 0,
-          0, clotY, s.baseRadius * 0.36
+          0,
+          clotY,
+          0,
+          0,
+          clotY,
+          s.baseRadius * 0.36,
         );
 
-        if (s.type === 'blood') {
-          clotGrad.addColorStop(0, 'rgba(20, 1, 5, 0.98)');
-          clotGrad.addColorStop(1, 'rgba(65, 4, 16, 0.85)');
-        } else if (s.type === 'purple') {
-          clotGrad.addColorStop(0, 'rgba(15, 2, 30, 0.98)');
-          clotGrad.addColorStop(1, 'rgba(45, 8, 75, 0.85)');
+        if (s.type === "blood") {
+          clotGrad.addColorStop(0, "rgba(20, 1, 5, 0.98)");
+          clotGrad.addColorStop(1, "rgba(65, 4, 16, 0.85)");
+        } else if (s.type === "purple") {
+          clotGrad.addColorStop(0, "rgba(15, 2, 30, 0.98)");
+          clotGrad.addColorStop(1, "rgba(45, 8, 75, 0.85)");
         } else {
-          clotGrad.addColorStop(0, 'rgba(1, 3, 10, 0.99)');
-          clotGrad.addColorStop(1, 'rgba(10, 15, 30, 0.88)');
+          clotGrad.addColorStop(0, "rgba(1, 3, 10, 0.99)");
+          clotGrad.addColorStop(1, "rgba(10, 15, 30, 0.88)");
         }
 
         ctx.fillStyle = clotGrad;
@@ -386,10 +729,10 @@ interface StalkerStain {
 
         // 3.5 CUCITURE DEL BURATTINAIO (Puppet Sutures: Taglio, Fori d'Ago e Punti di Spago)
         ctx.save();
-        
+
         // Punti dell'incisione cutanea
         const sX = -s.baseRadius * 0.44;
-        const sY = -s.baseRadius * 0.20;
+        const sY = -s.baseRadius * 0.2;
         const eX = s.baseRadius * 0.42;
         const eY = s.baseRadius * 0.26;
         const cX = Math.sin(t * 1.3 + idx) * s.baseRadius * 0.14;
@@ -399,11 +742,10 @@ interface StalkerStain {
         ctx.beginPath();
         ctx.moveTo(sX, sY);
         ctx.quadraticCurveTo(cX, cY, eX, eY);
-        ctx.strokeStyle = s.type === 'blood' 
-          ? 'rgba(25, 1, 6, 0.88)' 
-          : 'rgba(12, 2, 24, 0.88)';
+        ctx.strokeStyle =
+          s.type === "blood" ? "rgba(25, 1, 6, 0.88)" : "rgba(12, 2, 24, 0.88)";
         ctx.lineWidth = Math.max(1.5, s.baseRadius * 0.05);
-        ctx.lineCap = 'round';
+        ctx.lineCap = "round";
         ctx.stroke();
 
         // B. Punti di sutura elastici e incurvati ad arco (Vero spago ritorto sotto tensione)
@@ -412,7 +754,7 @@ interface StalkerStain {
 
         for (let k = 1; k <= numStitches; k++) {
           const u = k / (numStitches + 1);
-          
+
           // Posizione sul taglio
           const px = (1 - u) * (1 - u) * sX + 2 * (1 - u) * u * cX + u * u * eX;
           const py = (1 - u) * (1 - u) * sY + 2 * (1 - u) * u * cY + u * u * eY;
@@ -424,8 +766,8 @@ interface StalkerStain {
 
           // Inclinazione manuale asimmetrica
           const jitter = Math.sin(k * 2.8 + idx) * 0.25;
-          const nx = (-ty / tLen) + jitter * (tx / tLen);
-          const ny = (tx / tLen) + jitter * (ty / tLen);
+          const nx = -ty / tLen + jitter * (tx / tLen);
+          const ny = tx / tLen + jitter * (ty / tLen);
           const nLen = Math.hypot(nx, ny) || 1;
 
           const p1x = px - (nx / nLen) * (stitchLength / 2);
@@ -440,16 +782,32 @@ interface StalkerStain {
 
           // 1. Fori dell'ago tirati dalla tensione (Puncture Holes)
           ctx.beginPath();
-          ctx.ellipse(p1x, p1y, Math.max(0.8, s.baseRadius * 0.035), Math.max(0.5, s.baseRadius * 0.02), Math.atan2(ny, nx), 0, Math.PI * 2);
-          ctx.ellipse(p2x, p2y, Math.max(0.8, s.baseRadius * 0.035), Math.max(0.5, s.baseRadius * 0.02), Math.atan2(ny, nx), 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(15, 1, 5, 0.98)';
+          ctx.ellipse(
+            p1x,
+            p1y,
+            Math.max(0.8, s.baseRadius * 0.035),
+            Math.max(0.5, s.baseRadius * 0.02),
+            Math.atan2(ny, nx),
+            0,
+            Math.PI * 2,
+          );
+          ctx.ellipse(
+            p2x,
+            p2y,
+            Math.max(0.8, s.baseRadius * 0.035),
+            Math.max(0.5, s.baseRadius * 0.02),
+            Math.atan2(ny, nx),
+            0,
+            Math.PI * 2,
+          );
+          ctx.fillStyle = "rgba(15, 1, 5, 0.98)";
           ctx.fill();
 
           // 2. Ombra morbida del filo inarcato
           ctx.beginPath();
           ctx.moveTo(p1x, p1y + 1);
           ctx.quadraticCurveTo(midX, midY + 1.2, p2x, p2y + 1);
-          ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+          ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
           ctx.lineWidth = Math.max(1, s.baseRadius * 0.03);
           ctx.stroke();
 
@@ -457,33 +815,50 @@ interface StalkerStain {
           ctx.beginPath();
           ctx.moveTo(p1x, p1y);
           ctx.quadraticCurveTo(midX, midY, p2x, p2y);
-          ctx.strokeStyle = s.type === 'blood' 
-            ? 'rgba(160, 140, 115, 0.85)' // Spago grezzo scuro
-            : 'rgba(140, 120, 180, 0.85)';
+          ctx.strokeStyle =
+            s.type === "blood"
+              ? "rgba(160, 140, 115, 0.85)" // Spago grezzo scuro
+              : "rgba(140, 120, 180, 0.85)";
           ctx.lineWidth = Math.max(1.4, s.baseRadius * 0.038);
-          ctx.lineCap = 'round';
+          ctx.lineCap = "round";
           ctx.stroke();
 
           // 4. Filamento di torsione chiaro (Fa sembrare il filo composto da fibre intrecciate)
           ctx.beginPath();
           ctx.moveTo(p1x + 0.3, p1y - 0.3);
           ctx.quadraticCurveTo(midX, midY - 0.4, p2x - 0.3, p2y - 0.3);
-          ctx.strokeStyle = s.type === 'blood' 
-            ? 'rgba(245, 235, 215, 0.92)' // Fibra avorio chiara in luce
-            : 'rgba(225, 215, 250, 0.9)';
+          ctx.strokeStyle =
+            s.type === "blood"
+              ? "rgba(245, 235, 215, 0.92)" // Fibra avorio chiara in luce
+              : "rgba(225, 215, 250, 0.9)";
           ctx.lineWidth = Math.max(0.7, s.baseRadius * 0.018);
           ctx.stroke();
 
           // 5. Micro-nodo del Burattinaio sul punto centrale (#3)
           if (k === 3) {
             ctx.beginPath();
-            ctx.arc(midX, midY, Math.max(1.2, s.baseRadius * 0.032), 0, Math.PI * 2);
-            ctx.fillStyle = s.type === 'blood' ? 'rgba(235, 220, 195, 0.95)' : 'rgba(220, 205, 240, 0.95)';
+            ctx.arc(
+              midX,
+              midY,
+              Math.max(1.2, s.baseRadius * 0.032),
+              0,
+              Math.PI * 2,
+            );
+            ctx.fillStyle =
+              s.type === "blood"
+                ? "rgba(235, 220, 195, 0.95)"
+                : "rgba(220, 205, 240, 0.95)";
             ctx.fill();
             // Ombra del nodo
             ctx.beginPath();
-            ctx.arc(midX, midY + 0.8, Math.max(1.2, s.baseRadius * 0.032), 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            ctx.arc(
+              midX,
+              midY + 0.8,
+              Math.max(1.2, s.baseRadius * 0.032),
+              0,
+              Math.PI * 2,
+            );
+            ctx.strokeStyle = "rgba(0, 0, 0, 0.4)";
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -492,22 +867,43 @@ interface StalkerStain {
         ctx.restore();
 
         // 4. RIFLESSO BAGNATO FISICO: Arco teso + Micro-punto luce + Contro-luce opposta
-        
+
         // A. Arco speculare primario allungato (Riflette la luce curva sulla cupola)
         ctx.save();
         const glintAngle = -Math.PI * 0.72; // Angolo in alto a sinistra
         const glintDist = s.baseRadius * 0.46;
-        ctx.translate(Math.cos(glintAngle) * glintDist, Math.sin(glintAngle) * glintDist);
+        ctx.translate(
+          Math.cos(glintAngle) * glintDist,
+          Math.sin(glintAngle) * glintDist,
+        );
         ctx.rotate(-0.85); // Orientamento tangente alla curvatura
-        
+
         ctx.beginPath();
-        ctx.ellipse(0, 0, s.baseRadius * 0.24, s.baseRadius * 0.08, 0, 0, Math.PI * 2);
-        
-        const glintGrad = ctx.createLinearGradient(-s.baseRadius * 0.2, 0, s.baseRadius * 0.2, 0);
-        glintGrad.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
-        glintGrad.addColorStop(0.5, s.type === 'blood' ? 'rgba(255, 230, 235, 0.85)' : 'rgba(255, 255, 255, 0.85)');
-        glintGrad.addColorStop(1, 'rgba(255, 255, 255, 0.15)');
-        
+        ctx.ellipse(
+          0,
+          0,
+          s.baseRadius * 0.24,
+          s.baseRadius * 0.08,
+          0,
+          0,
+          Math.PI * 2,
+        );
+
+        const glintGrad = ctx.createLinearGradient(
+          -s.baseRadius * 0.2,
+          0,
+          s.baseRadius * 0.2,
+          0,
+        );
+        glintGrad.addColorStop(0, "rgba(255, 255, 255, 0.15)");
+        glintGrad.addColorStop(
+          0.5,
+          s.type === "blood"
+            ? "rgba(255, 230, 235, 0.85)"
+            : "rgba(255, 255, 255, 0.85)",
+        );
+        glintGrad.addColorStop(1, "rgba(255, 255, 255, 0.15)");
+
         ctx.fillStyle = glintGrad;
         ctx.fill();
         ctx.restore();
@@ -517,23 +913,24 @@ interface StalkerStain {
         const pinAngle = -Math.PI * 0.58;
         const pinDist = s.baseRadius * 0.52;
         ctx.arc(
-          Math.cos(pinAngle) * pinDist, 
-          Math.sin(pinAngle) * pinDist, 
-          Math.max(1, s.baseRadius * 0.04), 
-          0, 
-          Math.PI * 2
+          Math.cos(pinAngle) * pinDist,
+          Math.sin(pinAngle) * pinDist,
+          Math.max(1, s.baseRadius * 0.04),
+          0,
+          Math.PI * 2,
         );
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
         ctx.fill();
 
         // C. Rim Bounce Light (Contro-luce di rimbalzo dalla parete sul bordo inferiore)
         ctx.beginPath();
         ctx.arc(0, 0, s.baseRadius * 0.88, 0.35, 1.35); // Arco in basso a destra
-        ctx.strokeStyle = s.type === 'blood' 
-          ? 'rgba(251, 113, 133, 0.35)' 
-          : s.type === 'purple' 
-            ? 'rgba(192, 132, 252, 0.3)' 
-            : 'rgba(148, 163, 184, 0.22)';
+        ctx.strokeStyle =
+          s.type === "blood"
+            ? "rgba(251, 113, 133, 0.35)"
+            : s.type === "purple"
+              ? "rgba(192, 132, 252, 0.3)"
+              : "rgba(148, 163, 184, 0.22)";
         ctx.lineWidth = 1.3;
         ctx.stroke();
 
@@ -545,24 +942,31 @@ interface StalkerStain {
           const dropY = drop.y + dropWobble;
 
           // Ombra della singola micro-goccia
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+          ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
           ctx.shadowBlur = 4;
           ctx.shadowOffsetY = 2;
 
           ctx.beginPath();
           ctx.arc(dropX, dropY, drop.r, 0, Math.PI * 2);
-          ctx.fillStyle = s.type === 'blood' 
-            ? 'rgba(159, 18, 57, 0.95)' 
-            : s.type === 'purple' 
-              ? 'rgba(107, 33, 168, 0.92)' 
-              : 'rgba(15, 23, 42, 0.95)';
+          ctx.fillStyle =
+            s.type === "blood"
+              ? "rgba(159, 18, 57, 0.95)"
+              : s.type === "purple"
+                ? "rgba(107, 33, 168, 0.92)"
+                : "rgba(15, 23, 42, 0.95)";
           ctx.fill();
 
           // Piccolo punto luce bianco sulla micro-goccia (effetto bagnato)
-          ctx.shadowColor = 'transparent';
+          ctx.shadowColor = "transparent";
           ctx.beginPath();
-          ctx.arc(dropX - drop.r * 0.3, dropY - drop.r * 0.3, Math.max(0.6, drop.r * 0.3), 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.arc(
+            dropX - drop.r * 0.3,
+            dropY - drop.r * 0.3,
+            Math.max(0.6, drop.r * 0.3),
+            0,
+            Math.PI * 2,
+          );
+          ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
           ctx.fill();
 
           ctx.restore();
@@ -574,11 +978,16 @@ interface StalkerStain {
       requestAnimationFrame(renderLoop);
     }
 
-    window.addEventListener('puppeteer:curse:start', () => {
+    let clearTimer: number | undefined;
+
+    window.addEventListener("puppeteer:curse:start", () => {
+      // Annulla immediatamente qualsiasi timer di chiusura in corso
+      if (clearTimer) clearTimeout(clearTimer);
+
       isActive = true;
       resize();
       createStains();
-      canvas.style.opacity = '1';
+      canvas.style.opacity = "1";
       startTime = performance.now();
       if (!isLoopRunning) {
         isLoopRunning = true;
@@ -586,9 +995,11 @@ interface StalkerStain {
       }
     });
 
-    window.addEventListener('puppeteer:curse:clear', () => {
-      canvas.style.opacity = '0';
-      setTimeout(() => {
+    window.addEventListener("puppeteer:curse:clear", () => {
+      if (clearTimer) clearTimeout(clearTimer);
+      canvas.style.opacity = "0";
+
+      clearTimer = window.setTimeout(() => {
         isActive = false;
         if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
       }, 700);
@@ -596,5 +1007,5 @@ interface StalkerStain {
   }
 
   setupPuppeteerCurse();
-  document.addEventListener('astro:page-load', setupPuppeteerCurse);
+  document.addEventListener("astro:page-load", setupPuppeteerCurse);
 </script>
