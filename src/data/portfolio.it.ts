@@ -45,6 +45,7 @@ export const PORTFOLIO_IT = {
     authorsLabel: "Team di Sviluppo",
     watchDriveVideo: "Guarda il Gameplay su Google Drive ↗",
     headphonesBadge: "CUFFIE CONSIGLIATE // AUDIO 3D",
+    playDemo: "Gioca alla Demo su itch.io",
   },
   projects: [
     {
@@ -101,6 +102,7 @@ export const PORTFOLIO_IT = {
       description: "Avventura horror in prima persona in una villa abbandonata. Il giocatore segue una voce femminile raccogliendo indizi e documenti, eludendo il Burattinaio: uno stregone che muta le sue vittime in marionette viventi. Meccaniche di evasione, gestione dell'ansia e puzzle narrativo.",
       tags: ["Unity3D", "C#", "Meta XR", "AI Stealth", "Audio Spaziale", "Horror Exploration"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#a-childs-tale",
+      videoUrl: "/videos/puppeteer.mp4",
       platform: "PC (Meta XR VR in lavorazione)",
       engine: "Unity3D",
       authors: "Mauro Brochier",
@@ -161,15 +163,23 @@ export const PORTFOLIO_IT = {
       ]
     },
     {
-      id: "murder-mystery",
-      title: "Murder Mystery Incorporated",
-      tagline: "2D Strategy-Puzzle per PC & Web",
-      role: "AI Programmer, Game Designer",
-      period: "2025",
-      description: "Nei panni di un agente alle prime armi di un'agenzia segreta, il giocatore pianifica ed esegue l'omicidio perfetto disponendo azioni e oggetti su una linea temporale strategica per eliminare il target senza destare sospetti.",
-      tags: ["2D Strategy", "AI Systems", "Timeline Mechanics", "Puzzle Design"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
-      storySteps: [
+        id: "murder-mystery",
+        title: "Murder Mystery Incorporated",
+        tagline: "2D Strategy-Puzzle per PC e Browser Web",
+        role: "AI Programmer, Game Designer (Sistemi AI)",
+        period: "2025",
+        description: "Nei panni di un agente alle prime armi di un'agenzia segreta, il giocatore pianifica ed esegue l'omicidio perfetto disponendo azioni e oggetti su una linea temporale strategica per eliminare il target senza destare sospetti.",
+        tags: ["2D Strategy", "AI Systems", "Timeline Mechanics", "Puzzle Design", "PC & WebGL"],
+        githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
+        platform: "PC & Browser Web",
+        engine: "Unity (2D) / WebGL",
+        authors: "Mauro Brochier, Matteo Mangioni, Anthony Baiamonte, Christian Colombo",
+        teamRoles: "Game Programmer, AI Programmer, Game Designer (Sistemi AI)",
+        gddUrl: "https://github.com/MauroTheB/MurderMysteryInfo/blob/main/Documents/GameDesignDocument.md",
+        demoUrl: "https://polimi-game-collective.itch.io/murder-mystery-incorporated",
+        trailerId: "ZpdFg5MHrdI",
+        gameplayId: "wDj0Gx3CgIQ",
+        storySteps: [
         {
           tag: "01 // MECCANICHE TEMPORALI",
           title: "Pianificazione Strategica su Timeline",

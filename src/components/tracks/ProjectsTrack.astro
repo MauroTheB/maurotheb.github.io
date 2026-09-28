@@ -52,13 +52,13 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
           </div>
 
           <div>
-            <div class="flex flex-wrap gap-2 mb-8">
-              {proj.tags.map((tag) => (
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">
-                  {tag}
-                </span>
-              ))}
-            </div>
+              <div class="flex flex-wrap gap-2 mb-8">
+                {proj.tags?.map((tag) => (
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">
+                    {tag}
+                  </span>
+                ))}
+              </div>
 
             <div class="inline-flex items-center gap-2.5 text-sm sm:text-base font-mono font-bold text-violet-400 group-hover:text-violet-300 transition">
               <span>{UI.exploreProject}</span>
@@ -81,20 +81,23 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     <!-- Contenitore dell'espansione del gioco (Morphing Card) -->
       <div id="detail-card-container" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-14 md:p-16 backdrop-blur-2xl shadow-2xl relative overflow-hidden will-change-transform">
         
-        <!-- Background Video di Gameplay (Living Ambient Texture) -->
-        <div id="detail-video-container" class="absolute inset-0 pointer-events-none overflow-hidden opacity-0 transition-opacity duration-1000 ease-out z-0">
-          <video 
-            id="detail-bg-video" 
-            class="w-full h-full object-cover filter blur-[1px] scale-105"
-            autoplay
-            muted 
-            loop 
-            playsinline 
-          ></video>
-          <!-- Overlay di contrasto calibrato: fa risaltare il testo senza nascondere il video -->
-          <div class="absolute inset-0 bg-slate-950/65"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-slate-950/70"></div>
-        </div>
+        <!-- Background Video di Gameplay (Header Ambient con Fade Morbido in Basso) -->
+          <div 
+            id="detail-video-container" 
+            class="absolute top-0 inset-x-0 h-[480px] sm:h-[560px] md:h-[620px] pointer-events-none overflow-hidden opacity-0 transition-opacity duration-1000 ease-out z-0 [mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)]"
+          >
+            <video 
+              id="detail-bg-video" 
+              class="w-full h-full object-cover object-top filter blur-[0.5px]"
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+            ></video>
+            <!-- Overlay di contrasto per garantire la perfetta leggibilità del titolo -->
+            <div class="absolute inset-0 bg-slate-950/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/70"></div>
+          </div>
 
         <div class="relative z-10 text-center max-w-3xl mx-auto space-y-5 mb-14">
         <span id="detail-tagline" class="text-sm sm:text-base font-mono text-cyan-400 tracking-wider uppercase">Tagline</span>
@@ -159,6 +162,18 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
                         </a>
                       )}
                     </div>
+                    {proj.demoUrl && (
+                        <a 
+                          href={proj.demoUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          class="px-4 py-2 rounded-xl bg-rose-600/90 hover:bg-rose-500 text-white text-xs font-mono font-bold transition flex items-center gap-2 shadow-lg shadow-rose-600/25 hover:scale-102"
+                        >
+                          <span>🎮</span>
+                          <span>{UI.playDemo || 'Play Demo'}</span>
+                          <span class="text-[10px]">↗</span>
+                        </a>
+                      )}
                   </div>
 
                   <!-- Badge Speciali (VR Meta XR & Audio Spaziale 3D) -->
@@ -289,12 +304,17 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
         }
       });
       
-      // Attiva i melograni solo se il progetto aperto è Pomegranade: Limbo
-      if (clickedProjId === 'pomegranade') {
-        window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
-      } else {
-        window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-      }
+      // Gestione eventi ambientali dedicati per singolo gioco
+    if (clickedProjId === 'pomegranade') {
+      window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+    } else if (clickedProjId === 'puppeteer') {
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
+      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+    } else {
+      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+    }
 
       if (detailTags) {
         const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
@@ -354,6 +374,7 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     
     // Spegni e rimuovi immediatamente i melograni tornando alla griglia
     window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+    window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
     
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
