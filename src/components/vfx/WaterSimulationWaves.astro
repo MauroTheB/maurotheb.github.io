@@ -1,0 +1,225 @@
+---
+// Effetto Ambientale: Simulazione Ondosa Fluidodinamica Multi-Strato (CUDA Inspired)
+---
+
+<canvas
+    id="water-waves-canvas"
+    class="fixed inset-0 pointer-events-none z-0 opacity-0 transition-opacity duration-1000 ease-out select-none"
+></canvas>
+
+<script>
+    interface WaveLayer {
+        baseYFraction: number; // Altezza base sullo schermo
+        amplitude1: number;
+        amplitude2: number;
+        wavelength1: number;
+        wavelength2: number;
+        speed1: number;
+        speed2: number;
+        crestColor: string;
+        fillGradient: [string, string];
+        lineWidth: number;
+    }
+
+    function setupWaterSimulationWaves() {
+        const canvas = document.getElementById(
+            "water-waves-canvas",
+        ) as HTMLCanvasElement | null;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        let isActive = false;
+        let isLoopRunning = false;
+        let clearTimer: number | undefined;
+
+        function resize() {
+            if (!canvas || !ctx) return;
+            const dpr = window.devicePixelRatio || 1;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
+            canvas.style.width = `${w}px`;
+            canvas.style.height = `${h}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        // I 4 strati di onde: dal fondo scuro abissale alla cresta luminosa ciano
+        const WAVES: WaveLayer[] = [
+            // Strato 1: Onda di fondo profonda (Notte / Indaco scuro)
+            {
+                baseYFraction: 0.62,
+                amplitude1: 35,
+                amplitude2: 18,
+                wavelength1: 0.0035,
+                wavelength2: 0.007,
+                speed1: 0.0006,
+                speed2: -0.0009,
+                crestColor: "rgba(30, 58, 138, 0.4)",
+                fillGradient: [
+                    "rgba(15, 23, 42, 0.75)",
+                    "rgba(2, 6, 23, 0.95)",
+                ],
+                lineWidth: 1.5,
+            },
+            // Strato 2: Onda intermedia zaffiro
+            {
+                baseYFraction: 0.68,
+                amplitude1: 42,
+                amplitude2: 24,
+                wavelength1: 0.0042,
+                wavelength2: 0.009,
+                speed1: -0.0008,
+                speed2: 0.0011,
+                crestColor: "rgba(2, 132, 199, 0.55)",
+                fillGradient: [
+                    "rgba(3, 105, 161, 0.5)",
+                    "rgba(15, 23, 42, 0.9)",
+                ],
+                lineWidth: 1.8,
+            },
+            // Strato 3: Onda turchese traslucida
+            {
+                baseYFraction: 0.76,
+                amplitude1: 38,
+                amplitude2: 22,
+                wavelength1: 0.0055,
+                wavelength2: 0.012,
+                speed1: 0.001,
+                speed2: -0.0014,
+                crestColor: "rgba(6, 182, 212, 0.75)",
+                fillGradient: [
+                    "rgba(8, 145, 178, 0.45)",
+                    "rgba(3, 105, 161, 0.8)",
+                ],
+                lineWidth: 2.2,
+            },
+            // Strato 4: Cresta caustica al neon (Luce superficiale ad alta rifrazione)
+            {
+                baseYFraction: 0.84,
+                amplitude1: 28,
+                amplitude2: 16,
+                wavelength1: 0.007,
+                wavelength2: 0.015,
+                speed1: -0.0013,
+                speed2: 0.0018,
+                crestColor: "rgba(165, 243, 252, 0.92)", // Bianco-ciano incandescente
+                fillGradient: [
+                    "rgba(6, 182, 212, 0.4)",
+                    "rgba(8, 145, 178, 0.75)",
+                ],
+                lineWidth: 2.8,
+            },
+        ];
+
+        let startTime = performance.now();
+
+        function renderLoop() {
+            if (!isActive || !ctx || !canvas) {
+                isLoopRunning = false;
+                return;
+            }
+
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const time = performance.now() - startTime;
+
+            // Disegna ciascuno dei 4 strati ondosi sovrapposti
+            WAVES.forEach((wave) => {
+                const baseY = h * wave.baseYFraction;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(0, h); // Parte dall'angolo in basso a sinistra
+
+                const STEP = 10; // Campionamento orizzontale a 10px (curva fluida e zero consumo CPU)
+
+                for (let x = 0; x <= w + STEP; x += STEP) {
+                    // Sovrapposizione di 2 armoniche sinusoidali a frequenza sfasata (interferenza ondosa)
+                    const y1 =
+                        Math.sin(x * wave.wavelength1 + time * wave.speed1) *
+                        wave.amplitude1;
+                    const y2 =
+                        Math.cos(x * wave.wavelength2 + time * wave.speed2) *
+                        wave.amplitude2;
+                    const y = baseY + y1 + y2;
+
+                    if (x === 0) {
+                        ctx.lineTo(0, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                // Chiude la figura scendendo lungo i bordi inferiori dello schermo
+                ctx.lineTo(w, h);
+                ctx.closePath();
+
+                // Gradiente verticale dalla cresta al fondo
+                const grad = ctx.createLinearGradient(
+                    0,
+                    baseY - wave.amplitude1,
+                    0,
+                    h,
+                );
+                grad.addColorStop(0, wave.fillGradient[0]);
+                grad.addColorStop(1, wave.fillGradient[1]);
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Disegna la cresta luminosa superiore dell'onda (Caustic Crest)
+                ctx.beginPath();
+                for (let x = 0; x <= w + STEP; x += STEP) {
+                    const y1 =
+                        Math.sin(x * wave.wavelength1 + time * wave.speed1) *
+                        wave.amplitude1;
+                    const y2 =
+                        Math.cos(x * wave.wavelength2 + time * wave.speed2) *
+                        wave.amplitude2;
+                    const y = baseY + y1 + y2;
+
+                    if (x === 0) ctx.moveTo(0, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = wave.crestColor;
+                ctx.lineWidth = wave.lineWidth;
+                ctx.stroke();
+
+                ctx.restore();
+            });
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        // Ascolto eventi condizionati per Water Simulation
+        window.addEventListener("water:sim:start", () => {
+            if (clearTimer) clearTimeout(clearTimer);
+            isActive = true;
+            resize();
+            canvas.style.opacity = "1";
+            startTime = performance.now();
+            if (!isLoopRunning) {
+                isLoopRunning = true;
+                requestAnimationFrame(renderLoop);
+            }
+        });
+
+        window.addEventListener("water:sim:clear", () => {
+            if (clearTimer) clearTimeout(clearTimer);
+            canvas.style.opacity = "0";
+            clearTimer = window.setTimeout(() => {
+                isActive = false;
+                if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 1000);
+        });
+    }
+
+    setupWaterSimulationWaves();
+    document.addEventListener("astro:page-load", setupWaterSimulationWaves);
+</script>

@@ -2,15 +2,17 @@
 interface Props {
   trailerId?: string;
   gameplayId?: string;
+  localVideoUrl?: string;
   trailerLabel?: string;
   gameplayLabel?: string;
 }
 
-const { 
-  trailerId, 
-  gameplayId, 
-  trailerLabel = "Watch Trailer", 
-  gameplayLabel = "Full Gameplay" 
+const {
+  trailerId,
+  gameplayId,
+  localVideoUrl,
+  trailerLabel = "Watch Trailer",
+  gameplayLabel = "Full Gameplay",
 } = Astro.props;
 
 const defaultId = trailerId || gameplayId || "";
@@ -18,53 +20,76 @@ const defaultId = trailerId || gameplayId || "";
 
 <div class="project-video-station space-y-4 my-6">
   <!-- 1. Selettore Canali (Trailer / Gameplay) -->
-  {(trailerId && gameplayId) && (
-    <div class="flex items-center gap-2">
-      <button 
-        data-video-switch={trailerId}
-        class="video-tab-btn active px-4 py-1.5 rounded-xl text-xs font-mono font-bold transition-all bg-violet-600 text-white shadow-md shadow-violet-600/30 flex items-center gap-2"
-      >
-        <span>🎬</span>
-        <span>{trailerLabel}</span>
-      </button>
-      <button 
-        data-video-switch={gameplayId}
-        class="video-tab-btn px-4 py-1.5 rounded-xl text-xs font-mono font-bold transition-all text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 flex items-center gap-2"
-      >
-        <span>🎮</span>
-        <span>{gameplayLabel}</span>
-      </button>
-    </div>
-  )}
+  {
+    trailerId && gameplayId && (
+      <div class="flex items-center gap-2">
+        <button
+          data-video-switch={trailerId}
+          class="video-tab-btn active px-4 py-1.5 rounded-xl text-xs font-mono font-bold transition-all bg-violet-600 text-white shadow-md shadow-violet-600/30 flex items-center gap-2"
+        >
+          <span>🎬</span>
+          <span>{trailerLabel}</span>
+        </button>
+        <button
+          data-video-switch={gameplayId}
+          class="video-tab-btn px-4 py-1.5 rounded-xl text-xs font-mono font-bold transition-all text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 flex items-center gap-2"
+        >
+          <span>🎮</span>
+          <span>{gameplayLabel}</span>
+        </button>
+      </div>
+    )
+  }
 
-  <!-- 2. Screen Cinema con Lazy Embed -->
-  <div 
+  <!-- 2. Screen Cinema con Lazy Embed (Corretto il doppio <div) -->
+  <div
     data-video-screen
     data-current-id={defaultId}
+    data-local-src={localVideoUrl || ""}
     class="video-screen-container relative aspect-video w-full rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl group flex items-center justify-center cursor-pointer select-none"
   >
-    <!-- Thumbnail HD di anteprima (Zero script esterni caricati) -->
-    <img 
-      data-video-thumb
-      src={`https://img.youtube.com/vi/${defaultId}/maxresdefault.jpg`}
-      onerror="this.src=`https://img.youtube.com/vi/${this.dataset.id || ''}/hqdefault.jpg`"
-      data-id={defaultId}
-      alt="Video Preview"
-      class="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-102 transition-all duration-700 ease-out"
-    />
+    <!-- Thumbnail di anteprima (Supporta sia YouTube sia poster/video locale) -->
+    {
+      localVideoUrl ? (
+        <video
+          src={localVideoUrl}
+          preload="metadata"
+          class="w-full h-full object-cover opacity-75 group-hover:opacity-90 transition-opacity"
+        />
+      ) : (
+        <img
+          data-video-thumb
+          src={`https://img.youtube.com/vi/${defaultId}/maxresdefault.jpg`}
+          onerror="this.src=`https://img.youtube.com/vi/${this.dataset.id || ''}/hqdefault.jpg`"
+          data-id={defaultId}
+          alt="Video Preview"
+          class="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-102 transition-all duration-700 ease-out"
+        />
+      )
+    }
 
     <!-- Overlay scuro e bordo lucido cinematografico -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/40 pointer-events-none"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-slate-950/40 pointer-events-none"
+    >
+    </div>
 
     <!-- Bottone Play al neon -->
-    <div class="play-btn absolute flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-violet-600/90 text-white border border-violet-400/50 shadow-[0_0_40px_rgba(139,92,246,0.6)] group-hover:scale-110 group-hover:bg-violet-500 transition-all duration-300">
-      <svg class="w-7 h-7 sm:w-8 sm:h-8 translate-x-0.5 fill-current" viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z"/>
+    <div
+      class="play-btn pointer-events-none absolute flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-violet-600/90 text-white border border-violet-400/50 shadow-[0_0_40px_rgba(139,92,246,0.6)] group-hover:scale-110 group-hover:bg-violet-500 transition-all duration-300"
+    >
+      <svg
+        class="w-7 h-7 sm:w-8 sm:h-8 translate-x-0.5 fill-current"
+        viewBox="0 0 24 24"
+      >
+        <path d="M8 5v14l11-7z"></path>
       </svg>
     </div>
 
     <!-- Etichetta in sovrimpressione -->
-    <div class="absolute bottom-4 left-4 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-[11px] font-mono text-cyan-400 backdrop-blur-md pointer-events-none">
+    <div
+      class="absolute bottom-4 left-4 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-[11px] font-mono text-cyan-400 backdrop-blur-md pointer-events-none"
+    >
       <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
       <span>CLICK TO LAUNCH CINEMA PLAYER</span>
     </div>
@@ -73,54 +98,87 @@ const defaultId = trailerId || gameplayId || "";
 
 <script>
   function setupVideoPlayers() {
-    const stations = document.querySelectorAll('.project-video-station');
+    const stations = document.querySelectorAll(".project-video-station");
 
     stations.forEach((station) => {
-      const screen = station.querySelector<HTMLElement>('[data-video-screen]');
-      const thumb = station.querySelector<HTMLImageElement>('[data-video-thumb]');
-      const tabBtns = station.querySelectorAll<HTMLButtonElement>('[data-video-switch]');
+      const screen = station.querySelector<HTMLElement>("[data-video-screen]");
+      const thumb =
+        station.querySelector<HTMLImageElement>("[data-video-thumb]");
+      const tabBtns = station.querySelectorAll<HTMLButtonElement>(
+        "[data-video-switch]",
+      );
 
-      if (!screen || !thumb) return;
+      // Si attiva sempre non appena lo schermo è presente nel DOM
+      if (!screen) return;
 
-      // Click sul player: inietta l'iframe YouTube solo adesso
-      screen.addEventListener('click', () => {
-        const videoId = screen.getAttribute('data-current-id');
-        if (!videoId || screen.querySelector('iframe')) return;
+      // Click sul player: inietta l'iframe YouTube o il video MP4 locale
+      screen.addEventListener("click", () => {
+        const videoId = screen.getAttribute("data-current-id");
+        const localSrc = screen.getAttribute("data-local-src");
+
+        // Se è un video locale MP4:
+        if (localSrc) {
+          screen.innerHTML = `
+          <video 
+            src="${localSrc}" 
+            controls 
+            autoplay 
+            playsinline
+            class="w-full h-full object-contain bg-black rounded-3xl"
+          ></video>
+        `;
+          screen.classList.remove("cursor-pointer");
+          return;
+        }
+
+        // Altrimenti carica YouTube
+        if (!videoId || screen.querySelector("iframe")) return;
 
         screen.innerHTML = `
-          <iframe 
-            class="w-full h-full"
-            src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
-            title="Video Player"
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen
-          ></iframe>
-        `;
-        screen.classList.remove('cursor-pointer');
+        <iframe 
+          class="w-full h-full"
+          src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+          title="Video Player"
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen
+        ></iframe>
+      `;
+        screen.classList.remove("cursor-pointer");
       });
 
       // Cambio Canale (Trailer vs Gameplay)
       tabBtns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener("click", (e) => {
           e.stopPropagation();
-          const targetId = btn.getAttribute('data-video-switch') || '';
+          const targetId = btn.getAttribute("data-video-switch") || "";
 
           // Aggiorna stile bottoni
           tabBtns.forEach((b) => {
-            b.classList.remove('bg-violet-600', 'text-white', 'shadow-md', 'shadow-violet-600/30');
-            b.classList.add('text-slate-400', 'bg-slate-900/80');
+            b.classList.remove(
+              "bg-violet-600",
+              "text-white",
+              "shadow-md",
+              "shadow-violet-600/30",
+            );
+            b.classList.add("text-slate-400", "bg-slate-900/80");
           });
-          btn.classList.add('bg-violet-600', 'text-white', 'shadow-md', 'shadow-violet-600/30');
-          btn.classList.remove('text-slate-400', 'bg-slate-900/80');
+          btn.classList.add(
+            "bg-violet-600",
+            "text-white",
+            "shadow-md",
+            "shadow-violet-600/30",
+          );
+          btn.classList.remove("text-slate-400", "bg-slate-900/80");
 
           // Aggiorna video o ripristina preview
-          screen.setAttribute('data-current-id', targetId);
+          screen.setAttribute("data-current-id", targetId);
           screen.innerHTML = `
             <img 
               data-video-thumb
               src="https://img.youtube.com/vi/${targetId}/maxresdefault.jpg"
               onerror="this.src='https://img.youtube.com/vi/${targetId}/hqdefault.jpg'"
+              data-id="${targetId}"
               alt="Video Preview"
               class="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-102 transition-all duration-700 ease-out"
             />
@@ -135,8 +193,7 @@ const defaultId = trailerId || gameplayId || "";
               <span>CLICK TO LAUNCH CINEMA PLAYER</span>
             </div>
           `;
-          screen.classList.add('cursor-pointer');
-          // Ri-aggancia il click
+          screen.classList.add("cursor-pointer");
           setupVideoPlayers();
         });
       });
@@ -144,5 +201,5 @@ const defaultId = trailerId || gameplayId || "";
   }
 
   setupVideoPlayers();
-  document.addEventListener('astro:page-load', setupVideoPlayers);
+  document.addEventListener("astro:page-load", setupVideoPlayers);
 </script>

@@ -174,6 +174,18 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
                           <span class="text-[10px]">↗</span>
                         </a>
                       )}
+                      {proj.driveVideoUrl && (
+                        <a 
+                          href={proj.driveVideoUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-500/10 hover:border-cyan-400"
+                        >
+                          <span>🎬</span>
+                          <span>{UI.watchDriveVideo || 'Watch Simulation on Google Drive'}</span>
+                          <span class="text-[10px]">↗</span>
+                        </a>
+                      )}
                   </div>
 
                   <!-- Badge Speciali (VR Meta XR & Audio Spaziale 3D) -->
@@ -202,20 +214,21 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
             </div>
           )}
 
-                <!-- B. Cinema Video Station (Trailer Ufficiale & Gameplay Walkthrough) -->
-                {(proj.trailerId || proj.gameplayId) && (
-                  <div>
-                    <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">
-                      Cinema Player & Showcase
-                    </h4>
-                    <ProjectVideoPlayer 
-                      trailerId={proj.trailerId}
-                      gameplayId={proj.gameplayId}
-                      trailerLabel={UI.watchTrailer}
-                      gameplayLabel={UI.watchGameplay}
-                    />
-                  </div>
-                )}
+                <!-- B. Cinema Video Station (Supporta YouTube oppure MP4 Locale) -->
+              {(proj.trailerId || proj.gameplayId || proj.localVideoUrl) && (
+                <div>
+                  <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">
+                    Cinema Player & Simulation Showcase
+                  </h4>
+                  <ProjectVideoPlayer 
+                    trailerId={proj.trailerId}
+                    gameplayId={proj.gameplayId}
+                    localVideoUrl={proj.localVideoUrl}
+                    trailerLabel={UI.watchTrailer}
+                    gameplayLabel={UI.watchGameplay}
+                  />
+                </div>
+              )}
 
                 <!-- C. Interactive Scrollytelling Showcase -->
                 {proj.storySteps && (
@@ -304,24 +317,32 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
         }
       });
       
-     // Gestione eventi ambientali dedicati per singolo gioco
     // Gestione eventi ambientali dedicati per singolo gioco (Senza auto-cancellazione)
     if (clickedProjId === 'pomegranade') {
       window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
       window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('water:sim:clear'));
       window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
     } else if (clickedProjId === 'puppeteer') {
       window.dispatchEvent(new CustomEvent('pomegranate:clear'));
       window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('water:sim:clear'));
       window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
     } else if (clickedProjId === 'murder-mystery') {
       window.dispatchEvent(new CustomEvent('pomegranate:clear'));
       window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+      window.dispatchEvent(new CustomEvent('water:sim:clear'));
       window.dispatchEvent(new CustomEvent('murder:mystery:start'));
+    } else if (clickedProjId === 'water-sim') {
+      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('water:sim:start'));
     } else {
       window.dispatchEvent(new CustomEvent('pomegranate:clear'));
       window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
       window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+      window.dispatchEvent(new CustomEvent('water:sim:clear'));
     }
 
       if (detailTags) {
@@ -380,10 +401,10 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
 
   closeDetailBtn?.addEventListener('click', () => {
     
-    // Spegni e rimuovi immediatamente i melograni tornando alla griglia
     window.dispatchEvent(new CustomEvent('pomegranate:clear'));
     window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
     window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+    window.dispatchEvent(new CustomEvent('water:sim:clear'));
 
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
