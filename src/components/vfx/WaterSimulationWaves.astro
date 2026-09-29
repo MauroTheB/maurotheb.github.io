@@ -34,6 +34,15 @@
         let isLoopRunning = false;
         let clearTimer: number | undefined;
 
+        // Coordinate con inerzia idraulica del fluido
+        let targetMouseX = -1000;
+        let mouseX = -1000;
+
+        window.addEventListener("pointermove", (e) => {
+            if (!isActive) return;
+            targetMouseX = e.clientX;
+        });
+
         function resize() {
             if (!canvas || !ctx) return;
             const dpr = window.devicePixelRatio || 1;
@@ -140,22 +149,120 @@
 
                 const STEP = 10; // Campionamento orizzontale a 10px (curva fluida e zero consumo CPU)
 
-                for (let x = 0; x <= w + STEP; x += STEP) {
-                    // Sovrapposizione di 2 armoniche sinusoidali a frequenza sfasata (interferenza ondosa)
-                    const y1 =
-                        Math.sin(x * wave.wavelength1 + time * wave.speed1) *
-                        wave.amplitude1;
-                    const y2 =
-                        Math.cos(x * wave.wavelength2 + time * wave.speed2) *
-                        wave.amplitude2;
-                    const y = baseY + y1 + y2;
+                // Interpolazione fluida dell'inerzia del mouse (L'acqua segue con peso e ritardo)
+                mouseX += (targetMouseX - mouseX) * 0.075;
 
-                    if (x === 0) {
-                        ctx.lineTo(0, y);
-                    } else {
-                        ctx.lineTo(x, y);
+                // Disegna ciascuno dei 4 strati ondosi sovrapposti
+                WAVES.forEach((wave, waveIdx) => {
+                    const baseY = h * wave.baseYFraction;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(0, h);
+
+                    const STEP = 10;
+                    const SWELL_RADIUS = 280; // Raggio d'influenza orizzontale del cursore
+
+                    for (let x = 0; x <= w + STEP; x += STEP) {
+                        const y1 =
+                            Math.sin(
+                                x * wave.wavelength1 + time * wave.speed1,
+                            ) * wave.amplitude1;
+                        const y2 =
+                            Math.cos(
+                                x * wave.wavelength2 + time * wave.speed2,
+                            ) * wave.amplitude2;
+
+                        // Calcolo del rigonfiamento idraulico a campana verso l'alto
+                        let mouseSwell = 0;
+                        const distToMouse = Math.abs(x - mouseX);
+                        if (distToMouse < SWELL_RADIUS) {
+                            const bellFactor = Math.cos(
+                                (distToMouse / SWELL_RADIUS) * (Math.PI / 2),
+                            );
+                            // Gli strati superiori si gonfiano di più per simulare la tensione superficiale
+                            mouseSwell =
+                                Math.pow(bellFactor, 2.2) * (28 + waveIdx * 10);
+                        }
+
+                        // Sottraendo mouseSwell l'onda si solleva verso l'alto (-Y)
+                        const y = baseY + y1 + y2 - mouseSwell;
+
+                        if (x === 0) ctx.lineTo(0, y);
+                        else ctx.lineTo(x, y);
                     }
-                }
+
+                    ctx.lineTo(w, h);
+                    ctx.closePath();
+
+                    const grad = ctx.createLinearGradient(
+                        0,
+                        baseY - wave.amplitude1 - 40,
+                        0,
+                        h,
+                    );
+                    grad.addColorStop(0, wave.fillGradient[0]);
+                    grad.addColorStop(1, wave.fillGradient[1]);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+
+                    // Disegna la cresta luminosa
+                    ctx.beginPath();
+                    for (let x = 0; x <= w + STEP; x += STEP) {
+                        const y1 =
+                            Math.sin(
+                                x * wave.wavelength1 + time * wave.speed1,
+                            ) * wave.amplitude1;
+                        const y2 =
+                            Math.cos(
+                                x * wave.wavelength2 + time * wave.speed2,
+                            ) * wave.amplitude2;
+
+                        let mouseSwell = 0;
+                        const distToMouse = Math.abs(x - mouseX);
+                        if (distToMouse < SWELL_RADIUS) {
+                            const bellFactor = Math.cos(
+                                (distToMouse / SWELL_RADIUS) * (Math.PI / 2),
+                            );
+                            mouseSwell =
+                                Math.pow(bellFactor, 2.2) * (28 + waveIdx * 10);
+                        }
+
+                        const y = baseY + y1 + y2 - mouseSwell;
+
+                        if (x === 0) ctx.moveTo(0, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.strokeStyle = wave.crestColor;
+                    ctx.lineWidth = wave.lineWidth;
+                    ctx.stroke();
+
+                    // BAGLIORE CAUSTICO SUPERFICIALE (Si accende sulla cresta dell'onda più alta sotto il cursore)
+                    if (waveIdx === 3 && mouseX > -100 && mouseX < w + 100) {
+                        const swellCenterY = baseY - 50;
+                        const causticGrad = ctx.createRadialGradient(
+                            mouseX,
+                            swellCenterY,
+                            0,
+                            mouseX,
+                            swellCenterY,
+                            90,
+                        );
+                        causticGrad.addColorStop(
+                            0,
+                            "rgba(165, 243, 252, 0.45)",
+                        );
+                        causticGrad.addColorStop(0.5, "rgba(6, 182, 212, 0.2)");
+                        causticGrad.addColorStop(1, "rgba(6, 182, 212, 0)");
+
+                        ctx.beginPath();
+                        ctx.arc(mouseX, swellCenterY, 90, 0, Math.PI * 2);
+                        ctx.fillStyle = causticGrad;
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                });
 
                 // Chiude la figura scendendo lungo i bordi inferiori dello schermo
                 ctx.lineTo(w, h);
