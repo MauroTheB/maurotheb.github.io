@@ -175,6 +175,23 @@ a,
     opacity 1.8s ease-out;
 }
 
+/* Spegnimento istantaneo della superficie d'oro quando la pellicola si frantuma al click */
+#projects-cards-container>article.shattered-instant-reset::before,
+#projects-cards-container>article.shattered-instant-reset::after {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+#projects-cards-container>article.shattered-instant-reset h3,
+#projects-cards-container>article.shattered-instant-reset p,
+#projects-cards-container>article.shattered-instant-reset .italic,
+#projects-cards-container>article.shattered-instant-reset span {
+  animation: none !important;
+  text-shadow: none !important;
+  transition: none !important;
+  color: inherit !important;
+}
+
 /* ==========================================================================
    SCATTO MAGICO DEI TESTI: GUIDATO UNICAMENTE DA --text-ignition-delay
    ========================================================================== */

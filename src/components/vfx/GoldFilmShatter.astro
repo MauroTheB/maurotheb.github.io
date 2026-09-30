@@ -1,0 +1,328 @@
+---
+// Effetto Rottura della Pellicola d'Oro (High-Performance 120fps Shard Shatter)
+---
+
+<canvas 
+  id="gold-shatter-canvas" 
+  class="fixed inset-0 pointer-events-none z-50 select-none"
+></canvas>
+
+<script>
+  interface Shard {
+    pts: { x: number; y: number }[];
+    cx: number;
+    cy: number;
+    vx: number;
+    vy: number;
+    angle: number;
+    va: number;
+    tilt: number;
+    vtilt: number;
+    alpha: number;
+    r: number;
+    g: number;
+    b: number;
+  }
+
+  interface Spark {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    alpha: number;
+    decay: number;
+  }
+
+  interface ImpactFlash {
+    x: number;
+    y: number;
+    radius: number;
+    maxRadius: number;
+    alpha: number;
+    rays: { angle: number; length: number }[];
+  }
+
+  function setupGoldFilmShatter() {
+    const canvas = document.getElementById('gold-shatter-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let shards: Shard[] = [];
+    let sparks: Spark[] = [];
+    let impactFlash: ImpactFlash | null = null;
+    let isLoopRunning = false;
+
+    // Palette numerica pura RGB (Zero parsing di stringhe o regex nel loop)
+    const GOLD_RGB = [
+      { r: 254, g: 240, b: 138 }, // Oro chiarissimo
+      { r: 251, g: 191, b: 36 },  // Oro brillante
+      { r: 245, g: 158, b: 11 },  // Oro classico
+      { r: 217, g: 119, b: 6 },   // Oro ambra scuro
+    ];
+
+    function resize() {
+      if (!canvas || !ctx) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function createShatter(rect: DOMRect, clickX: number, clickY: number) {
+      shards = [];
+      sparks = [];
+
+      const rays: { angle: number; length: number }[] = [];
+      for (let r = 0; r < 5; r++) {
+        rays.push({
+          angle: Math.random() * Math.PI * 2,
+          length: Math.random() * 26 + 18
+        });
+      }
+      impactFlash = {
+        x: clickX,
+        y: clickY,
+        radius: 4,
+        maxRadius: 42,
+        alpha: 1.0,
+        rays
+      };
+
+      // Griglia calibrata: 7x5 (~60 micro-schegge ultra-veloci)
+      const COLS = 7;
+      const ROWS = 5;
+      const cellW = rect.width / COLS;
+      const cellH = rect.height / ROWS;
+
+      const grid: { x: number; y: number }[][] = [];
+      for (let r = 0; r <= ROWS; r++) {
+        grid[r] = [];
+        for (let c = 0; c <= COLS; c++) {
+          const isEdge = r === 0 || r === ROWS || c === 0 || c === COLS;
+          const jitterX = isEdge ? 0 : (Math.random() - 0.5) * (cellW * 0.55);
+          const jitterY = isEdge ? 0 : (Math.random() - 0.5) * (cellH * 0.55);
+
+          grid[r][c] = {
+            x: rect.left + c * cellW + jitterX,
+            y: rect.top + r * cellH + jitterY
+          };
+        }
+      }
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const v00 = grid[r][c];
+          const v10 = grid[r + 1][c];
+          const v01 = grid[r][c + 1];
+          const v11 = grid[r + 1][c + 1];
+
+          const makeChippedShard = (a: { x: number; y: number }, b: { x: number; y: number }, c: { x: number; y: number }) => {
+            const chipT = Math.random() * 0.4 + 0.3;
+            const midAB = {
+              x: a.x + (b.x - a.x) * chipT + (Math.random() - 0.5) * 4,
+              y: a.y + (b.y - a.y) * chipT + (Math.random() - 0.5) * 4
+            };
+
+            const rawPts = Math.random() > 0.4 ? [a, midAB, b, c] : [a, b, c];
+
+            let sumX = 0, sumY = 0;
+            rawPts.forEach((p) => { sumX += p.x; sumY += p.y; });
+            const cx = sumX / rawPts.length;
+            const cy = sumY / rawPts.length;
+
+            const pts = rawPts.map((p) => ({ x: p.x - cx, y: p.y - cy }));
+
+            const dx = cx - clickX;
+            const dy = cy - clickY;
+            const dist = Math.hypot(dx, dy) || 1;
+            const blastForce = Math.random() * 8.5 + 6.5;
+
+            const colorRGB = GOLD_RGB[Math.floor(Math.random() * GOLD_RGB.length)];
+
+            shards.push({
+              pts,
+              cx,
+              cy,
+              vx: (dx / dist) * blastForce + (Math.random() - 0.5) * 4,
+              vy: (dy / dist) * blastForce - Math.random() * 3.5,
+              angle: Math.random() * Math.PI * 2,
+              va: (Math.random() - 0.5) * 0.4,
+              tilt: Math.random() * Math.PI,
+              vtilt: (Math.random() - 0.5) * 0.45,
+              alpha: 1,
+              r: colorRGB.r,
+              g: colorRGB.g,
+              b: colorRGB.b
+            });
+          };
+
+          makeChippedShard(v00, v10, v01);
+          makeChippedShard(v10, v11, v01);
+        }
+      }
+    }
+
+    function renderLoop() {
+      if (!ctx || !canvas || (shards.length === 0 && sparks.length === 0 && !impactFlash)) {
+        isLoopRunning = false;
+        if (ctx && canvas) ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        return;
+      }
+
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      // 1. RENDERING SCHEGGE POLIGONALI (Ottimizzato: Zero allocazioni / Zero shadowBlur)
+      for (let i = shards.length - 1; i >= 0; i--) {
+        const s = shards[i];
+
+        s.cx += s.vx;
+        s.cy += s.vy;
+        s.vy += 0.22;
+        s.vx *= 0.94;
+        s.angle += s.va;
+        s.tilt += s.vtilt;
+        s.alpha *= 0.925;
+
+        // Scia di particelle
+        if (s.alpha > 0.25 && Math.random() < 0.35) {
+          sparks.push({
+            x: s.cx + (Math.random() - 0.5) * 6,
+            y: s.cy + (Math.random() - 0.5) * 6,
+            vx: s.vx * 0.18 + (Math.random() - 0.5) * 2,
+            vy: s.vy * 0.18 - Math.random() * 1.5,
+            size: Math.random() * 2.0 + 1.0,
+            alpha: 1,
+            decay: Math.random() * 0.035 + 0.035
+          });
+        }
+
+        const a = s.alpha;
+        const P = s.pts.length;
+
+        ctx.save();
+        ctx.translate(s.cx, s.cy);
+        ctx.rotate(s.angle);
+        ctx.scale(Math.cos(s.tilt), 1);
+
+        // A. Spessore 3D d'ombra
+        const depthOffset = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(s.pts[0].x, s.pts[0].y);
+        ctx.lineTo(s.pts[1].x, s.pts[1].y);
+        ctx.lineTo(s.pts[1].x + depthOffset, s.pts[1].y + depthOffset);
+        ctx.lineTo(s.pts[0].x + depthOffset, s.pts[0].y + depthOffset);
+        ctx.closePath();
+        ctx.fillStyle = `rgba(146, 64, 14, ${(a * 0.8).toFixed(2)})`;
+        ctx.fill();
+
+        // B. Faccia della scheggia (Colorazione diretta ad alta velocità)
+        ctx.beginPath();
+        ctx.moveTo(s.pts[0].x, s.pts[0].y);
+        for (let j = 1; j < P; j++) {
+          ctx.lineTo(s.pts[j].x, s.pts[j].y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = `rgba(${s.r}, ${s.g}, ${s.b}, ${a.toFixed(2)})`;
+        ctx.fill();
+
+        // C. Glint speculare bianco sui bordi
+        const glintFactor = Math.pow(Math.abs(Math.cos(s.tilt)), 5);
+        if (glintFactor > 0.35) {
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(a * glintFactor * 0.95).toFixed(2)})`;
+          ctx.lineWidth = 1.0 + glintFactor * 1.4;
+          ctx.stroke();
+        } else {
+          ctx.strokeStyle = `rgba(254, 240, 138, ${(a * 0.45).toFixed(2)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+
+        ctx.restore();
+
+        if (s.alpha <= 0.02) {
+          shards.splice(i, 1);
+        }
+      }
+
+      // 2. RENDERING SCINTILLE (Blending Additivo GPU: Zero costo CPU)
+      if (sparks.length > 0) {
+        ctx.globalCompositeOperation = 'lighter';
+        for (let j = sparks.length - 1; j >= 0; j--) {
+          const sp = sparks[j];
+          sp.x += sp.vx;
+          sp.y += sp.vy;
+          sp.vy += 0.08;
+          sp.alpha -= sp.decay;
+
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, Math.max(0.5, sp.size * sp.alpha), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(254, 240, 138, ${Math.max(0, sp.alpha).toFixed(2)})`;
+          ctx.fill();
+
+          if (sp.alpha <= 0.02) {
+            sparks.splice(j, 1);
+          }
+        }
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      // 3. RENDERING FLASH D'IMPATTO SUL CLICK
+      if (impactFlash) {
+        impactFlash.radius += (impactFlash.maxRadius - impactFlash.radius) * 0.28;
+        impactFlash.alpha *= 0.82;
+
+        ctx.save();
+        ctx.translate(impactFlash.x, impactFlash.y);
+
+        ctx.beginPath();
+        ctx.arc(0, 0, impactFlash.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${(impactFlash.alpha * 0.6).toFixed(2)})`;
+        ctx.fill();
+
+        for (let ray of impactFlash.rays) {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          const currentLen = ray.length * (1 - impactFlash.alpha * 0.2);
+          ctx.lineTo(Math.cos(ray.angle) * currentLen, Math.sin(ray.angle) * currentLen);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(impactFlash.alpha * 0.9).toFixed(2)})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        ctx.restore();
+
+        if (impactFlash.alpha <= 0.03) {
+          impactFlash = null;
+        }
+      }
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    window.addEventListener('card:gold-shatter', (e: Event) => {
+      const customEvent = e as CustomEvent<{ rect: DOMRect; clickX: number; clickY: number }>;
+      const { rect, clickX, clickY } = customEvent.detail;
+
+      resize();
+      createShatter(rect, clickX, clickY);
+
+      if (!isLoopRunning) {
+        isLoopRunning = true;
+        requestAnimationFrame(renderLoop);
+      }
+    });
+  }
+
+  setupGoldFilmShatter();
+  document.addEventListener('astro:page-load', setupGoldFilmShatter);
+</script>

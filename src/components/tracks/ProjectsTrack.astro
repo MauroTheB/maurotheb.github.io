@@ -273,7 +273,6 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
 
 <!-- Logica FLIP Morphing Incapsulata -->
 <script>
-  const projectCards = document.querySelectorAll('[data-project-card]');
   const projectsGrid = document.getElementById('projects-grid-view');
   const projectDetail = document.getElementById('project-detail-view');
   const closeDetailBtn = document.getElementById('close-project-detail');
@@ -294,115 +293,144 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
   let savedScaleY = 1;
   let isAnimating = false;
 
+  // Query tipizzata esplicitamente come HTMLElement (risolve TS2769)
+  const projectCards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+
   projectCards.forEach((card) => {
-    card.addEventListener('click', () => {
+    // Tracciamento del momento in cui il mouse entra sulla card
+    let hoverStartTime = 0;
+    card.addEventListener('mouseenter', () => {
+      hoverStartTime = performance.now();
+    });
+    card.addEventListener('mouseleave', () => {
+      hoverStartTime = 0;
+    });
+
+    card.addEventListener('click', (e: Event) => {
+      const mouseEvt = e as MouseEvent;
       if (isAnimating) return;
       isAnimating = true;
 
       if (!detailCardContainer || !detailTitle || !detailBodyContent) return;
 
       const firstCardRect = card.getBoundingClientRect();
+      const clickX = mouseEvt.clientX;
+      const clickY = mouseEvt.clientY;
 
-      projectCards.forEach((otherCard) => {
-        if (otherCard !== card) {
-          otherCard.classList.add('disintegrate');
-        }
-      });
+      // Controlla se la pellicola d'oro è arrivata a fine corsa (>= 2.75s, corrispondente a --gold-rise-duration)
+      const isGoldFullyCharged = hoverStartTime > 0 && (performance.now() - hoverStartTime >= 2750);
 
-      detailTitle.textContent = card.querySelector('h3')?.textContent || '';
-      if (detailTagline) detailTagline.textContent = card.querySelector('.text-cyan-400')?.textContent || '';
-      if (detailRole) detailRole.textContent = card.querySelector('.italic')?.textContent || '';
-      if (detailDescription) detailDescription.textContent = card.querySelector('p.text-slate-300')?.textContent || '';
-      // Mostra solo il blocco media corrispondente al progetto cliccato
-      const clickedProjId = card.getAttribute('data-project-card');
-      const allMediaBlocks = document.querySelectorAll('[data-project-media-block]');
-      allMediaBlocks.forEach((block) => {
-        if (block.getAttribute('data-project-media-block') === clickedProjId) {
-          block.classList.remove('hidden');
-        } else {
-          block.classList.add('hidden');
-        }
-      });
-      
-    // Gestione eventi ambientali dedicati per singolo gioco (Senza auto-cancellazione)
-    if (clickedProjId === 'pomegranade') {
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-      window.dispatchEvent(new CustomEvent('water:sim:clear'));
-      window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
-    } else if (clickedProjId === 'puppeteer') {
-      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-      window.dispatchEvent(new CustomEvent('water:sim:clear'));
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
-    } else if (clickedProjId === 'murder-mystery') {
-      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-      window.dispatchEvent(new CustomEvent('water:sim:clear'));
-      window.dispatchEvent(new CustomEvent('murder:mystery:start'));
-    } else if (clickedProjId === 'water-sim') {
-      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-      window.dispatchEvent(new CustomEvent('water:sim:start'));
-    } else {
-      window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-      window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-      window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-      window.dispatchEvent(new CustomEvent('water:sim:clear'));
-    }
+      if (isGoldFullyCharged) {
+        // Spegne istantaneamente la pellicola sulla card (è esplosa via!)
+        card.classList.add('shattered-instant-reset');
 
-      if (detailTags) {
-        const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map(t => t.textContent);
-        detailTags.innerHTML = tags.map(t => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
+        // Lancia l'esplosione delle schegge dorate dal punto del click!
+        window.dispatchEvent(new CustomEvent('card:gold-shatter', {
+          detail: { rect: firstCardRect, clickX, clickY }
+        }));
       }
 
-      detailBodyContent.classList.add('blur-md', 'opacity-30');
-
-      if (projectsGrid) projectsGrid.classList.add('hidden');
-      if (projectDetail) projectDetail.classList.remove('hidden');
-
-      const lastCardRect = detailCardContainer.getBoundingClientRect();
-
-      savedDeltaX = firstCardRect.left - lastCardRect.left;
-      savedDeltaY = firstCardRect.top - lastCardRect.top;
-      savedScaleX = firstCardRect.width / lastCardRect.width;
-      savedScaleY = firstCardRect.height / lastCardRect.height;
-
-      detailCardContainer.style.transformOrigin = 'top left';
-      detailCardContainer.style.transition = 'none';
-      detailCardContainer.style.transform = `translate3d(${savedDeltaX}px, ${savedDeltaY}px, 0) scale(${savedScaleX}, ${savedScaleY})`;
-
-      // Recupera l'eventuale URL video del progetto
-    const videoSrc = card.getAttribute('data-project-video');
-
-    requestAnimationFrame(() => {
-      detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
-      detailCardContainer.style.transform = 'translate3d(0, 0, 0) scale(1, 1)';
+      // Se la pellicola è esplosa, diamo un micro-ritardo (180ms) per godersi lo scoppio prima che la card voli
+      const startDelay = isGoldFullyCharged ? 180 : 0;
 
       setTimeout(() => {
-        detailBodyContent.classList.remove('blur-md', 'opacity-30');
-        isAnimating = false;
-
-        // Avvia il video eliminando ogni deadlock
-          if (videoSrc && detailBgVideo && detailVideoContainer) {
-            detailBgVideo.muted = true;
-            detailBgVideo.defaultMuted = true;
-            detailBgVideo.src = videoSrc;
-            detailBgVideo.load();
-
-            // Mostra il layer in dissolvenza graduale
-            detailVideoContainer.classList.remove('opacity-0');
-
-            detailBgVideo.play().catch((err) => {
-              console.warn("Autoplay notice:", err);
-            });
-          } else if (detailVideoContainer) {
-            // Se il progetto non ha video, assicurati che sia invisibile
-            detailVideoContainer.classList.add('opacity-0');
+        // 1. Disintegrazione fluida delle altre card
+        projectCards.forEach((otherCard) => {
+          if (otherCard !== card) {
+            otherCard.classList.add('disintegrate');
           }
-      }, 700);
-    });
+        });
+
+        // 2. Popolamento dati
+        detailTitle.textContent = card.querySelector('h3')?.textContent || '';
+        if (detailTagline) detailTagline.textContent = card.querySelector('.text-cyan-400')?.textContent || '';
+        if (detailRole) detailRole.textContent = card.querySelector('.italic')?.textContent || '';
+        if (detailDescription) detailDescription.textContent = card.querySelector('p.text-slate-300')?.textContent || '';
+        if (detailTags) {
+          const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map((t) => t.textContent);
+          detailTags.innerHTML = tags.map((t) => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
+        }
+
+        // Mostra solo il blocco media corrispondente al progetto cliccato
+        const clickedProjId = card.getAttribute('data-project-card');
+        const allMediaBlocks = document.querySelectorAll('[data-project-media-block]');
+        allMediaBlocks.forEach((block) => {
+          if (block.getAttribute('data-project-media-block') === clickedProjId) {
+            block.classList.remove('hidden');
+          } else {
+            block.classList.add('hidden');
+          }
+        });
+
+        // Gestione eventi ambientali dedicati per singolo gioco (Senza auto-cancellazione)
+        if (clickedProjId === 'pomegranade') {
+          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+          window.dispatchEvent(new CustomEvent('water:sim:clear'));
+          window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
+        } else if (clickedProjId === 'puppeteer') {
+          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+          window.dispatchEvent(new CustomEvent('water:sim:clear'));
+          window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
+        } else if (clickedProjId === 'murder-mystery') {
+          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+          window.dispatchEvent(new CustomEvent('water:sim:clear'));
+          window.dispatchEvent(new CustomEvent('murder:mystery:start'));
+        } else if (clickedProjId === 'water-sim') {
+          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+          window.dispatchEvent(new CustomEvent('water:sim:start'));
+        } else {
+          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+          window.dispatchEvent(new CustomEvent('water:sim:clear'));
+        }
+
+        detailBodyContent.classList.add('blur-md', 'opacity-30');
+
+        if (projectsGrid) projectsGrid.classList.add('hidden');
+        if (projectDetail) projectDetail.classList.remove('hidden');
+
+        const lastCardRect = detailCardContainer.getBoundingClientRect();
+
+        savedDeltaX = firstCardRect.left - lastCardRect.left;
+        savedDeltaY = firstCardRect.top - lastCardRect.top;
+        savedScaleX = firstCardRect.width / lastCardRect.width;
+        savedScaleY = firstCardRect.height / lastCardRect.height;
+
+        detailCardContainer.style.transformOrigin = 'top left';
+        detailCardContainer.style.transition = 'none';
+        detailCardContainer.style.transform = `translate3d(${savedDeltaX}px, ${savedDeltaY}px, 0) scale(${savedScaleX}, ${savedScaleY})`;
+
+        const videoSrc = card.getAttribute('data-project-video');
+
+        requestAnimationFrame(() => {
+          detailCardContainer.style.transition = 'transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)';
+          detailCardContainer.style.transform = 'translate3d(0, 0, 0) scale(1, 1)';
+
+          setTimeout(() => {
+            detailBodyContent.classList.remove('blur-md', 'opacity-30');
+            isAnimating = false;
+
+            if (videoSrc && detailBgVideo && detailVideoContainer) {
+              detailBgVideo.muted = true;
+              detailBgVideo.defaultMuted = true;
+              detailBgVideo.src = videoSrc;
+              detailBgVideo.load();
+              detailVideoContainer.classList.remove('opacity-0');
+              detailBgVideo.play().catch((err) => {
+                console.warn("Autoplay notice:", err);
+              });
+            } else if (detailVideoContainer) {
+              detailVideoContainer.classList.add('opacity-0');
+            }
+          }, 700);
+        });
+      }, startDelay);
     });
   });
 
@@ -437,7 +465,7 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
 
       requestAnimationFrame(() => {
         projectCards.forEach((card) => {
-          card.classList.remove('disintegrate');
+          card.classList.remove('disintegrate', 'shattered-instant-reset');
         });
       });
 
