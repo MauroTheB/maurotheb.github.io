@@ -216,8 +216,16 @@ export const PORTFOLIO_EN = {
       role: "Game Designer & Programmer",
       period: "2021",
       description: "Game centered on visuo-spatial memory: 30 seconds to memorize the maze layout in 2D, followed by real 3D third-person navigation with hidden merchants, potions, and resource management.",
-      tags: ["Unity3D", "C#", "Mobile Development", "Cognitive Mechanics"],
+      tags: ["Unity3D", "C#", "Mobile Development", "Spatial Cognition", "Cognitive Mechanics"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
+      platform: "Mobile (iOS & Android)",
+      isMobile: true,
+      engine: "Unity3D / C#",
+      authors: "Mauro Brochier",
+      teamRoles: "Solo Developer — Game Designer, Gameplay Programmer",
+      trailerId: "OP1fEbdZbjk",
+      gameplayId: "WI-OsY6SoKs",
+      thesisBadge: "COGNITIVE R&D // BACHELOR THESIS PROJECT",
       storySteps: [
         {
           tag: "01 // COGNITIVE MECHANICS",

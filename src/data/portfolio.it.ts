@@ -214,8 +214,16 @@ export const PORTFOLIO_IT = {
       role: "Game Designer & Programmer",
       period: "2021",
       description: "Gioco basato sulla memoria visuo-spaziale: 30 secondi per memorizzare la pianta del labirinto in 2D, seguiti dalla navigazione reale in terza persona 3D con mercanti nascosti, pozioni e gestione risorse.",
-      tags: ["Unity3D", "C#", "Mobile Development", "Cognitive Mechanics"],
+      tags: ["Unity3D", "C#", "Sviluppo Mobile", "Cognizione Spaziale", "Meccaniche Cognitive"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
+      platform: "Mobile (iOS & Android)",
+      isMobile: true,
+      engine: "Unity3D / C#",
+      authors: "Mauro Brochier",
+      teamRoles: "Sviluppatore Unico — Game Designer, Gameplay Programmer",
+      trailerId: "OP1fEbdZbjk",
+      gameplayId: "WI-OsY6SoKs",
+      thesisBadge: "R&D COGNITIVO // PROGETTO DI TESI TRIENNALE",
       storySteps: [
         {
           tag: "01 // COGNIZIONE VISIVA",

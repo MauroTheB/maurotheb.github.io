@@ -188,9 +188,15 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
                       )}
                   </div>
 
-                  <!-- Badge Speciali (VR Meta XR & Audio Spaziale 3D) -->
-                  {(proj.vrBadge || proj.audioNotice) && (
+                  <!-- Badge Speciali (VR Meta XR, Audio 3D & Tesi Triennale) -->
+                  {(proj.vrBadge || proj.audioNotice || proj.thesisBadge) && (
                     <div class="flex flex-wrap gap-3 pt-2">
+                      {proj.thesisBadge && (
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono">
+                          <span>🎓</span>
+                          <span>{proj.thesisBadge}</span>
+                        </span>
+                      )}
                       {proj.vrBadge && (
                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-400 text-xs font-mono">
                           <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-pulse"></span>
@@ -224,6 +230,7 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
                     trailerId={proj.trailerId}
                     gameplayId={proj.gameplayId}
                     localVideoUrl={proj.localVideoUrl}
+                    isMobile={Boolean(proj.isMobile)}
                     trailerLabel={UI.watchTrailer}
                     gameplayLabel={UI.watchGameplay}
                   />
