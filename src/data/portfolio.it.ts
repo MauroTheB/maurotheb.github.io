@@ -116,19 +116,22 @@ export const PORTFOLIO_IT = {
           tag: "01 // HORROR ATMOSFERICO",
           title: "Esplorazione Guidata dall'Audio",
           description: "Progettazione della tensione psicologica in una villa abbandonata. Il giocatore si orienta tramite una misteriosa voce guida femminile, indizi acustici e diari per ricostruire la tragedia evitando allarmi rumorosi.",
-          mediaLabel: "[ Gameplay Esplorativo // Audio Spaziale & Illuminazione Atmosferica ]"
+          mediaLabel: "[ Gameplay Esplorativo // Audio Spaziale & Illuminazione Atmosferica ]",
+          imageSrc: "/images/puppeteer_immagine1.png"
         },
         {
           tag: "02 // STEALTH & COMPORTAMENTO AI",
           title: "Pattugliamento e Percezione del Burattinaio",
           description: "Implementazione delle meccaniche stealth e degli stati sensoriali dell'IA nemica (Pattuglia, Allerta, Caccia). La fuga richiede spezzare la linea di vista, nascondersi e gestire la stamina dello scatto.",
-          mediaLabel: "[ Architettura AI // Macchina a Stati Finiti (FSM) & Gizmo Line of Sight ]"
+          mediaLabel: "[ Architettura AI // Macchina a Stati Finiti (FSM) & Gizmo Line of Sight ]",
+          imageSrc: "/images/puppeteer_immagine2.png"
         },
         {
           tag: "03 // MECCANICHE DI SALVATAGGIO",
           title: "Dilemmi di Rischio e Finali Multipli",
           description: "Integrazione di scenari puzzle basati su rischio/rendimento: scappare subito per salvarsi o rischiare la cattura per liberare altre vittime intrappolate come marionette viventi.",
-          mediaLabel: "[ Level Design // Percorsi Multipli & Narrativa Ambientale ]"
+          mediaLabel: "[ Level Design // Percorsi Multipli & Narrativa Ambientale ]",
+          imageSrc: "/images/puppeteer_immagine3.png"
         }
       ]
     },

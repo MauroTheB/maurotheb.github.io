@@ -117,19 +117,22 @@ export const PORTFOLIO_EN = {
           tag: "01 // ATMOSPHERIC HORROR",
           title: "Audio-Driven Environmental Exploration",
           description: "Engineered tension building inside an abandoned estate. The player relies on a mysterious guiding female voice, acoustic cues, and found journals to reconstruct the tragedy while avoiding sound-triggered alarms.",
-          mediaLabel: "[ Gameplay Exploration // Dynamic Audio Panning & Lighting ]"
+          mediaLabel: "[ Gameplay Exploration // Dynamic Audio Panning & Lighting ]",
+          imageSrc: "/images/puppeteer_immagine1.png"
         },
         {
           tag: "02 // STEALTH & AI BEHAVIOR",
           title: "The Puppeteer's Patrol & Perception",
           description: "Developed stealth mechanics and sensory AI states (Patrol, Alert, Hunt) for the Puppeteer sorcerer. Evasion requires line-of-sight breaking, hiding spots, and careful sprint stamina management.",
-          mediaLabel: "[ AI Architecture // Finite State Machine & Line of Sight Gizmos ]"
+          mediaLabel: "[ AI Architecture // Finite State Machine & Line of Sight Gizmos ]",
+          imageSrc: "/images/puppeteer_immagine2.png"
         },
         {
           tag: "03 // ESCAPE MECHANICS",
           title: "Rescue Objections & Multiple Endings",
           description: "Integrated risk-reward puzzle scenarios where players decide whether to sprint straight for escape or risk uncovering additional victims trapped as living marionettes.",
-          mediaLabel: "[ Level Design // Branching Paths & Environmental Narrative ]"
+          mediaLabel: "[ Level Design // Branching Paths & Environmental Narrative ]",
+          imageSrc: "/images/puppeteer_immagine3.png"
         }
       ]
     },
