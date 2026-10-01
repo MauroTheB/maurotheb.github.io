@@ -2,10 +2,9 @@
 // Effetto Rottura della Pellicola d'Oro (High-Performance 120fps Shard Shatter)
 ---
 
-<canvas 
-  id="gold-shatter-canvas" 
-  class="fixed inset-0 pointer-events-none z-50 select-none"
-></canvas>
+<canvas
+  id="gold-shatter-canvas"
+  class="fixed inset-0 pointer-events-none z-50 select-none"></canvas>
 
 <script>
   interface Shard {
@@ -22,6 +21,7 @@
     r: number;
     g: number;
     b: number;
+    crack?: { x: number; y: number }[]; // Micro-crepa capillare interna
   }
 
   interface Spark {
@@ -40,14 +40,16 @@
     radius: number;
     maxRadius: number;
     alpha: number;
-    rays: { angle: number; length: number }[];
+    //rays: { angle: number; length: number }[];
   }
 
   function setupGoldFilmShatter() {
-    const canvas = document.getElementById('gold-shatter-canvas') as HTMLCanvasElement | null;
+    const canvas = document.getElementById(
+      "gold-shatter-canvas",
+    ) as HTMLCanvasElement | null;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let shards: Shard[] = [];
@@ -58,9 +60,9 @@
     // Palette numerica pura RGB (Zero parsing di stringhe o regex nel loop)
     const GOLD_RGB = [
       { r: 254, g: 240, b: 138 }, // Oro chiarissimo
-      { r: 251, g: 191, b: 36 },  // Oro brillante
-      { r: 245, g: 158, b: 11 },  // Oro classico
-      { r: 217, g: 119, b: 6 },   // Oro ambra scuro
+      { r: 251, g: 191, b: 36 }, // Oro brillante
+      { r: 245, g: 158, b: 11 }, // Oro classico
+      { r: 217, g: 119, b: 6 }, // Oro ambra scuro
     ];
 
     function resize() {
@@ -76,106 +78,163 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
     function createShatter(rect: DOMRect, clickX: number, clickY: number) {
       shards = [];
       sparks = [];
 
-      const rays: { angle: number; length: number }[] = [];
-      for (let r = 0; r < 5; r++) {
-        rays.push({
-          angle: Math.random() * Math.PI * 2,
-          length: Math.random() * 26 + 18
-        });
-      }
       impactFlash = {
         x: clickX,
         y: clickY,
         radius: 4,
-        maxRadius: 42,
+        maxRadius: 48,
         alpha: 1.0,
-        rays
       };
 
-      // Griglia calibrata: 7x5 (~60 micro-schegge ultra-veloci)
-      const COLS = 7;
-      const ROWS = 5;
-      const cellW = rect.width / COLS;
-      const cellH = rect.height / ROWS;
+      // --- 2. FRATTURA A CUNEI E DIAMANTI BILANCIATI (Zero forme allungate ad ago) ---
+      const NUM_RAYS = 8; // 8 settori angolari ampi a 45° (forme corpose e non a spillo)
+      const NUM_RINGS = 3; // 3 anelli concentrici proporzionati
 
-      const grid: { x: number; y: number }[][] = [];
-      for (let r = 0; r <= ROWS; r++) {
-        grid[r] = [];
-        for (let c = 0; c <= COLS; c++) {
-          const isEdge = r === 0 || r === ROWS || c === 0 || c === COLS;
-          const jitterX = isEdge ? 0 : (Math.random() - 0.5) * (cellW * 0.55);
-          const jitterY = isEdge ? 0 : (Math.random() - 0.5) * (cellH * 0.55);
+      const maxDistToCorner = Math.max(
+        Math.hypot(rect.left - clickX, rect.top - clickY),
+        Math.hypot(rect.right - clickX, rect.top - clickY),
+        Math.hypot(rect.left - clickX, rect.bottom - clickY),
+        Math.hypot(rect.right - clickX, rect.bottom - clickY),
+      );
 
-          grid[r][c] = {
-            x: rect.left + c * cellW + jitterX,
-            y: rect.top + r * cellH + jitterY
-          };
+      // Distanze progressive bilanciate (anello 1 proporzionato a diamante)
+      const ringRadii = [
+        Math.min(18, maxDistToCorner * 0.08),
+        maxDistToCorner * 0.36,
+        maxDistToCorner * 0.72,
+        maxDistToCorner * 1.1,
+      ];
+
+      const rayAngles: number[] = [];
+      let currentAngle = Math.random() * Math.PI * 2;
+      for (let i = 0; i < NUM_RAYS; i++) {
+        rayAngles.push(currentAngle);
+        currentAngle += (Math.PI * 2) / NUM_RAYS + (Math.random() - 0.5) * 0.18;
+      }
+
+      const polarGrid: { x: number; y: number }[][] = [];
+
+      for (let ring = 0; ring <= NUM_RINGS; ring++) {
+        polarGrid[ring] = [];
+        const r = ring === 0 ? 0 : ringRadii[ring - 1];
+
+        for (let ray = 0; ray < NUM_RAYS; ray++) {
+          if (ring === 0) {
+            // Piccolo nucleo centrale a diamante (non collassa in un unico punto)
+            const coreAngle = rayAngles[ray];
+            const coreR = Math.random() * 8 + 4;
+            polarGrid[ring].push({
+              x: clickX + Math.cos(coreAngle) * coreR,
+              y: clickY + Math.sin(coreAngle) * coreR,
+            });
+          } else {
+            const angle = rayAngles[ray] + (Math.random() - 0.5) * 0.15;
+            const jitterR = r + (Math.random() - 0.5) * (r * 0.15);
+
+            let px = clickX + Math.cos(angle) * jitterR;
+            let py = clickY + Math.sin(angle) * jitterR;
+
+            px = Math.max(rect.left - 8, Math.min(rect.right + 8, px));
+            py = Math.max(rect.top - 8, Math.min(rect.bottom + 8, py));
+
+            polarGrid[ring].push({ x: px, y: py });
+          }
         }
       }
 
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          const v00 = grid[r][c];
-          const v10 = grid[r + 1][c];
-          const v01 = grid[r][c + 1];
-          const v11 = grid[r + 1][c + 1];
+      // Generazione delle schegge trapezoidali e a diamante
+      for (let ring = 0; ring < NUM_RINGS; ring++) {
+        for (let ray = 0; ray < NUM_RAYS; ray++) {
+          const nextRay = (ray + 1) % NUM_RAYS;
 
-          const makeChippedShard = (a: { x: number; y: number }, b: { x: number; y: number }, c: { x: number; y: number }) => {
-            const chipT = Math.random() * 0.4 + 0.3;
-            const midAB = {
-              x: a.x + (b.x - a.x) * chipT + (Math.random() - 0.5) * 4,
-              y: a.y + (b.y - a.y) * chipT + (Math.random() - 0.5) * 4
-            };
+          const vInner1 = polarGrid[ring][ray];
+          const vInner2 = polarGrid[ring][nextRay];
+          const vOuter1 = polarGrid[ring + 1][ray];
+          const vOuter2 = polarGrid[ring + 1][nextRay];
 
-            const rawPts = Math.random() > 0.4 ? [a, midAB, b, c] : [a, b, c];
+          // Schegge poligonali a 4 lati asimmetriche con rapporto d'aspetto bilanciato
+          let rawPts: { x: number; y: number }[] = [];
+          if (Math.random() > 0.5) {
+            const midX =
+              (vOuter1.x + vOuter2.x) / 2 + (Math.random() - 0.5) * 4;
+            const midY =
+              (vOuter1.y + vOuter2.y) / 2 + (Math.random() - 0.5) * 4;
+            rawPts = [vInner1, vOuter1, { x: midX, y: midY }, vOuter2, vInner2];
+          } else {
+            rawPts = [vInner1, vOuter1, vOuter2, vInner2];
+          }
 
-            let sumX = 0, sumY = 0;
-            rawPts.forEach((p) => { sumX += p.x; sumY += p.y; });
-            const cx = sumX / rawPts.length;
-            const cy = sumY / rawPts.length;
+          let sumX = 0,
+            sumY = 0;
+          rawPts.forEach((p) => {
+            sumX += p.x;
+            sumY += p.y;
+          });
+          const cx = sumX / rawPts.length;
+          const cy = sumY / rawPts.length;
 
-            const pts = rawPts.map((p) => ({ x: p.x - cx, y: p.y - cy }));
+          const pts = rawPts.map((p) => ({ x: p.x - cx, y: p.y - cy }));
 
-            const dx = cx - clickX;
-            const dy = cy - clickY;
-            const dist = Math.hypot(dx, dy) || 1;
-            const blastForce = Math.random() * 8.5 + 6.5;
+          const dx = cx - clickX;
+          const dy = cy - clickY;
+          const dist = Math.hypot(dx, dy) || 1;
 
-            const colorRGB = GOLD_RGB[Math.floor(Math.random() * GOLD_RGB.length)];
+          const speedRatio = 1 - Math.min(0.65, dist / maxDistToCorner);
+          const blastForce =
+            (Math.random() * 5.0 + 7.0) * (0.85 + speedRatio * 0.6);
 
-            shards.push({
-              pts,
-              cx,
-              cy,
-              vx: (dx / dist) * blastForce + (Math.random() - 0.5) * 4,
-              vy: (dy / dist) * blastForce - Math.random() * 3.5,
-              angle: Math.random() * Math.PI * 2,
-              va: (Math.random() - 0.5) * 0.4,
-              tilt: Math.random() * Math.PI,
-              vtilt: (Math.random() - 0.5) * 0.45,
-              alpha: 1,
-              r: colorRGB.r,
-              g: colorRGB.g,
-              b: colorRGB.b
-            });
-          };
+          const colorRGB =
+            GOLD_RGB[Math.floor(Math.random() * GOLD_RGB.length)];
 
-          makeChippedShard(v00, v10, v01);
-          makeChippedShard(v10, v11, v01);
+          // Genera una micro-crepa interna a zig-zag su circa il 35% dei frammenti
+          let crack: { x: number; y: number }[] | undefined = undefined;
+          if (Math.random() > 0.65 && pts.length >= 3) {
+            const vStart = pts[0];
+            const vEnd = pts[Math.floor(pts.length / 2)];
+            const midX = (vStart.x + vEnd.x) * 0.35 + (Math.random() - 0.5) * 3;
+            const midY = (vStart.y + vEnd.y) * 0.35 + (Math.random() - 0.5) * 3;
+            crack = [
+              { x: vStart.x * 0.82, y: vStart.y * 0.82 },
+              { x: midX, y: midY },
+              { x: vEnd.x * 0.25, y: vEnd.y * 0.25 },
+            ];
+          }
+
+          shards.push({
+            pts,
+            cx,
+            cy,
+            vx: (dx / dist) * blastForce + (Math.random() - 0.5) * 3.5,
+            vy: (dy / dist) * blastForce - Math.random() * 3.2,
+            angle: Math.random() * Math.PI * 2,
+            va: (Math.random() - 0.5) * 0.4,
+            tilt: Math.random() * Math.PI,
+            vtilt: (Math.random() - 0.5) * 0.42,
+            alpha: 1,
+            r: colorRGB.r,
+            g: colorRGB.g,
+            b: colorRGB.b,
+            crack,
+          });
         }
       }
     }
 
     function renderLoop() {
-      if (!ctx || !canvas || (shards.length === 0 && sparks.length === 0 && !impactFlash)) {
+      if (
+        !ctx ||
+        !canvas ||
+        (shards.length === 0 && sparks.length === 0 && !impactFlash)
+      ) {
         isLoopRunning = false;
-        if (ctx && canvas) ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        if (ctx && canvas)
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         return;
       }
 
@@ -202,7 +261,7 @@
             vy: s.vy * 0.18 - Math.random() * 1.5,
             size: Math.random() * 2.0 + 1.0,
             alpha: 1,
-            decay: Math.random() * 0.035 + 0.035
+            decay: Math.random() * 0.035 + 0.035,
           });
         }
 
@@ -212,38 +271,57 @@
         ctx.save();
         ctx.translate(s.cx, s.cy);
         ctx.rotate(s.angle);
-        ctx.scale(Math.cos(s.tilt), 1);
 
-        // A. Spessore 3D d'ombra
-        const depthOffset = 1.8;
+        // Clamping di rotazione 3D: impedisce al cristallo di collassare in un bastoncino a 90°
+        const rawCos = Math.cos(s.tilt);
+        const sign = Math.sign(rawCos) || 1;
+        const tiltScale = Math.max(0.24, Math.abs(rawCos)) * sign;
+        ctx.scale(tiltScale, 1);
+
+        // 1. Spessore 3D laterale (Faccetta di taglio traslucida in bronzo dorato)
+        const depthOffset = 1.6;
         ctx.beginPath();
         ctx.moveTo(s.pts[0].x, s.pts[0].y);
         ctx.lineTo(s.pts[1].x, s.pts[1].y);
         ctx.lineTo(s.pts[1].x + depthOffset, s.pts[1].y + depthOffset);
         ctx.lineTo(s.pts[0].x + depthOffset, s.pts[0].y + depthOffset);
         ctx.closePath();
-        ctx.fillStyle = `rgba(146, 64, 14, ${(a * 0.8).toFixed(2)})`;
+        ctx.fillStyle = `rgba(180, 83, 9, ${(a * 0.45).toFixed(2)})`;
         ctx.fill();
 
-        // B. Faccia della scheggia (Colorazione diretta ad alta velocità)
+        // 2. FACCIA DELLA SCHEGGIA IN VETRO
         ctx.beginPath();
         ctx.moveTo(s.pts[0].x, s.pts[0].y);
         for (let j = 1; j < P; j++) {
           ctx.lineTo(s.pts[j].x, s.pts[j].y);
         }
         ctx.closePath();
-        ctx.fillStyle = `rgba(${s.r}, ${s.g}, ${s.b}, ${a.toFixed(2)})`;
+
+        // Riempimento trasparente al 22% (si vede la pagina dietro)
+        ctx.fillStyle = `rgba(${s.r}, ${s.g}, ${s.b}, ${(a * 0.22).toFixed(2)})`;
         ctx.fill();
 
-        // C. Glint speculare bianco sui bordi
-        const glintFactor = Math.pow(Math.abs(Math.cos(s.tilt)), 5);
-        if (glintFactor > 0.35) {
-          ctx.strokeStyle = `rgba(255, 255, 255, ${(a * glintFactor * 0.95).toFixed(2)})`;
-          ctx.lineWidth = 1.0 + glintFactor * 1.4;
-          ctx.stroke();
+        // 3. BORDO PRISMATICO LUMINOSO (Filo sottilissimo ad alta definizione)
+        const glintFactor = Math.pow(Math.abs(Math.cos(s.tilt)), 4);
+        if (glintFactor > 0.32) {
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(a * 0.6).toFixed(2)})`;
+          ctx.lineWidth = 0.55 + glintFactor * 0.45; // Massimo ~0.95px durante il lampo
         } else {
-          ctx.strokeStyle = `rgba(254, 240, 138, ${(a * 0.45).toFixed(2)})`;
-          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = `rgba(254, 240, 138, ${(a * 0.65).toFixed(2)})`;
+          ctx.lineWidth = 0.30; // Filo di taglio sottilissimo da 0.45px
+        }
+        ctx.stroke();
+
+        // 4. MICRO-CREPA CAPILLARE INTERNA (Stress fracture nel cristallo)
+        if (s.crack) {
+          ctx.beginPath();
+          ctx.moveTo(s.crack[0].x, s.crack[0].y);
+          for (let c = 1; c < s.crack.length; c++) {
+            ctx.lineTo(s.crack[c].x, s.crack[c].y);
+          }
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(a * 0.65).toFixed(2)})`;
+          ctx.lineWidth = 0.75; // Tratto capillare sottilissimo
+          ctx.lineCap = "round";
           ctx.stroke();
         }
 
@@ -256,7 +334,7 @@
 
       // 2. RENDERING SCINTILLE (Blending Additivo GPU: Zero costo CPU)
       if (sparks.length > 0) {
-        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalCompositeOperation = "lighter";
         for (let j = sparks.length - 1; j >= 0; j--) {
           const sp = sparks[j];
           sp.x += sp.vx;
@@ -265,7 +343,13 @@
           sp.alpha -= sp.decay;
 
           ctx.beginPath();
-          ctx.arc(sp.x, sp.y, Math.max(0.5, sp.size * sp.alpha), 0, Math.PI * 2);
+          ctx.arc(
+            sp.x,
+            sp.y,
+            Math.max(0.5, sp.size * sp.alpha),
+            0,
+            Math.PI * 2,
+          );
           ctx.fillStyle = `rgba(254, 240, 138, ${Math.max(0, sp.alpha).toFixed(2)})`;
           ctx.fill();
 
@@ -273,31 +357,44 @@
             sparks.splice(j, 1);
           }
         }
-        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalCompositeOperation = "source-over";
       }
 
-      // 3. RENDERING FLASH D'IMPATTO SUL CLICK
+      // --- RENDERING MICRO-FLASH DI FRATTURA RADIALE SUL PUNTO DEL CLICK ---
       if (impactFlash) {
-        impactFlash.radius += (impactFlash.maxRadius - impactFlash.radius) * 0.28;
-        impactFlash.alpha *= 0.82;
+        impactFlash.radius +=
+          (impactFlash.maxRadius - impactFlash.radius) * 0.32;
+        impactFlash.alpha *= 0.8;
 
         ctx.save();
         ctx.translate(impactFlash.x, impactFlash.y);
 
+        const fGrad = ctx.createRadialGradient(
+          0,
+          0,
+          0,
+          0,
+          0,
+          impactFlash.radius,
+        );
+        fGrad.addColorStop(
+          0,
+          `rgba(255, 255, 255, ${impactFlash.alpha.toFixed(3)})`,
+        );
+        fGrad.addColorStop(
+          0.4,
+          `rgba(254, 240, 138, ${(impactFlash.alpha * 0.85).toFixed(3)})`,
+        );
+        fGrad.addColorStop(
+          0.8,
+          `rgba(245, 158, 11, ${(impactFlash.alpha * 0.4).toFixed(3)})`,
+        );
+        fGrad.addColorStop(1, "rgba(217, 119, 6, 0)");
+
         ctx.beginPath();
         ctx.arc(0, 0, impactFlash.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${(impactFlash.alpha * 0.6).toFixed(2)})`;
+        ctx.fillStyle = fGrad;
         ctx.fill();
-
-        for (let ray of impactFlash.rays) {
-          ctx.beginPath();
-          ctx.moveTo(0, 0);
-          const currentLen = ray.length * (1 - impactFlash.alpha * 0.2);
-          ctx.lineTo(Math.cos(ray.angle) * currentLen, Math.sin(ray.angle) * currentLen);
-          ctx.strokeStyle = `rgba(255, 255, 255, ${(impactFlash.alpha * 0.9).toFixed(2)})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
 
         ctx.restore();
 
@@ -309,8 +406,12 @@
       requestAnimationFrame(renderLoop);
     }
 
-    window.addEventListener('card:gold-shatter', (e: Event) => {
-      const customEvent = e as CustomEvent<{ rect: DOMRect; clickX: number; clickY: number }>;
+    window.addEventListener("card:gold-shatter", (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        rect: DOMRect;
+        clickX: number;
+        clickY: number;
+      }>;
       const { rect, clickX, clickY } = customEvent.detail;
 
       resize();
@@ -324,5 +425,5 @@
   }
 
   setupGoldFilmShatter();
-  document.addEventListener('astro:page-load', setupGoldFilmShatter);
+  document.addEventListener("astro:page-load", setupGoldFilmShatter);
 </script>
