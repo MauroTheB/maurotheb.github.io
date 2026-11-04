@@ -43,24 +43,104 @@ export const PORTFOLIO_IT = {
     platformLabel: "Piattaforma",
     engineLabel: "Motore & Networking",
     authorsLabel: "Team di Sviluppo",
+    contributionsHeading: "Contributi Personali & Ownership Tecnica",
+    designedLabel: "Progettato & Implementato Autonomamente",
+    implementedLabel: "Implementazione Tecnica & Sistemi",
+    coDevelopedLabel: "Co-Sviluppato con il Team",
+    docsLabel: "Documentazione Tecnica & di Design",
+    ipNoticeHeading: "Ricerca Proprietaria & Tutela della Proprietà Intellettuale",
+    empiricalStudyLabel: "Validazione Empirica & Playtest",
     watchDriveVideo: "Guarda il Gameplay su Google Drive ↗",
     headphonesBadge: "CUFFIE CONSIGLIATE // AUDIO 3D",
     playDemo: "Gioca alla Demo su itch.io",
   },
   projects: [
     {
+      id: "dda-thesis",
+      title: "Framework DDA Euristico in Prototipo Soulslike",
+      year: "2025–2026",
+      period: "2025–2026",
+      category: "Tesi Magistrale / Progetto di Ricerca Individuale",
+      genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
+      tagline: "Prototipo Soulslike · Framework di Ricerca · PC",
+      role: "Technical Game Designer · Systems Engineer",
+      highlight: "Progetto di Tesi Magistrale · Studio Empirico su 15 Giocatori",
+      gameplaySummary: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.",
+      personalContributionSummary: "Ideazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
+      description: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.\n\nIdeazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
+      confidentialityNotice: "Nota di Riservatezza e Proprietà Intellettuale: Variabili algoritmiche specifiche, formule matematiche e parametri euristici interni sono omessi a tutela della ricerca in corso e di una potenziale commercializzazione futura.",
+      playtestNotice: "Validato attraverso uno studio empirico qualitativo e quantitativo su 15 playtester.",
+      detailedContributions: {
+        designed: [
+          "Architettura integrale del framework DDA euristico, progettata per modulare la frizione in tempo reale preservando la sfida del genere Soulslike.",
+          "Modellazione teorica e matematica dello stato di Flow basata su psicologia del giocatore, telemetria degli errori e ritmo di recupero.",
+          "Bilanciamento dinamico dei parametri: soglie adattive di aggressività dei nemici, scaling del danno e rilascio risorse.",
+          "Meccaniche centrali di combattimento e loop di scontro del prototipo Soulslike in Unity e C# nativo."
+        ],
+        authoredDocs: [
+          "Tesi di Ricerca di Laurea Magistrale sotto la supervisione della Prof.ssa Laura Ripamonti (Università degli Studi di Milano).",
+          "Report completo di analisi telemetrica quantitativa e qualitativa sulla ritenzione del Flow nei giocatori."
+        ]
+      },
+      platform: "PC",
+      engine: "Unity · C#",
+      authors: "Mauro Brochier (Relatrice: Prof.ssa Laura Ripamonti)",
+      teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
+      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
+      storySteps: [
+        {
+          tag: "01 // FORMULAZIONE DEL PROBLEMA",
+          title: "Il Dilemma della Frizione nei Soulslike",
+          description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
+          mediaLabel: "[ Architettura di Ricerca // Mappatura Canale di Flow & Telemetria ]"
+        },
+        {
+          tag: "02 // ARCHITETTURA EURISTICA",
+          title: "Modulazione Non Invasiva della Sfida",
+          description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
+          mediaLabel: "[ Systems Design // Modulazione Parametri & Soglie di Stato ]"
+        },
+        {
+          tag: "03 // VALIDAZIONE EMPIRICA",
+          title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
+          description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
+          mediaLabel: "[ Studio Empirico // Analisi Telemetrica & Risultati Questionari Flow ]"
+        }
+      ]
+    },
+    {
       id: "pomegranade",
       title: "Pomegranade: Limbo",
-      tagline: "Co-op Survival Game (2–4 giocatori) in un limbo incantato",
-      role: "Team Leader, Lead Designer, Game Programmer",
+      year: "2025",
       period: "2025",
-      description: "I giocatori alternano combattimenti frenetici (usando munizioni estratte da melograni magici) e fasi strategiche di riparazione rifugi e gestione del falò prima dell'alba pietrificante. Presentato e testato con demo hands-on davanti a studi leader del settore come Ubisoft, Milestone e Nacon all'evento New Game Designer.",
-      tags: ["Unity3D", "C#", "Mirror Networking", "Co-op Multiplayer", "Game Design", "Team Leadership"],
+      category: "Progetto Accademico di Team / Industry Showcase",
+      genrePlatform: "Gioco Survival Co-op · 2–4 Giocatori · PC",
+      tagline: "Gioco Survival Co-op · 2–4 Giocatori · PC",
+      role: "Team Leader · Lead Designer · Game Programmer",
+      highlight: "Industry Showcase · New Game Designer 2025 · 3° Posto",
+      gameplaySummary: "Un survival cooperativo ambientato in una foresta incantata sospesa nel limbo. I giocatori alternano combattimenti frenetici, usando munizioni ricavate da melograni magici raccolti, a fasi strategiche di riparazione rifugi e cura del falò prima che l'alba pietrificante resetti la minaccia.",
+      personalContributionSummary: "Ho guidato la direzione di design del gioco, redatto l'intero Technical Design Document (TDD) e circa l'80% del Game Design Document (GDD), e progettato e implementato i sistemi chiave di shooting, combattimento e gameplay multiplayer.",
+      detailedContributions: {
+      designed: [
+        "Meccaniche centrali di shooting e fisica dei proiettili basate sui semi di melograno magico come munizioni dinamiche.",
+        "Comportamenti di attacco dei nemici e regole di interazione con i giocatori.",
+        "Parametri di bilanciamento del gioco: pacing delle ondate, scaling del danno e obiettivo nemico di spegnere il falò.",
+        "Ciclo giorno-notte che bilancia la sopravvivenza notturna ad alta intensità con la calma strategica diurna."
+      ],
+      coDeveloped: [
+        "Funzionalità di gameplay multiplayer cooperativo con Mirror, collaborando direttamente con il programmatore responsabile dell'infrastruttura di rete sottostante."
+      ],
+      authoredDocs: [
+        "100% del Technical Design Document (TDD) con definizione di architetture di sistema, componenti e gestione degli stati.",
+        "Circa il 70% del Game Design Document (GDD) con formalizzazione di core loop, tipologie di nemici e meccaniche."
+      ]
+    },
+      description: "Un survival cooperativo ambientato in una foresta incantata sospesa nel limbo. I giocatori alternano combattimenti frenetici, usando munizioni ricavate da melograni magici raccolti, a fasi strategiche di riparazione rifugi e cura del falò prima che l'alba pietrificante resetti la minaccia.\n\nHo guidato la direzione di design del gioco, redatto l'intero Technical Design Document (TDD) e circa l'80% del Game Design Document (GDD), e progettato e implementato i sistemi chiave di shooting, combattimento e gameplay multiplayer.",
+      tags: ["Unity", "C#", "Mirror Networking", "Co-op Multiplayer", "Combat Design", "Team Leadership"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#pomegranade",
       videoUrl: "/videos/pomegranade.mp4",
-      highlight: "Showcase a studi leader tra cui Ubisoft, Milestone, Nacon e altri",
       platform: "PC",
-      engine: "Unity3D",
+      engine: "Unity · C#",
       networking: "Mirror Networking",
       authors: "Mauro Brochier, Leandro Bognanni, Luca Iovine",
       teamRoles: "Team Leader, Lead Designer, Game Programmer",
@@ -74,8 +154,7 @@ export const PORTFOLIO_IT = {
           title: "Combattimento Survival & Custodia del Falò",
           description: "I giocatori alternano combattimenti ad alta intensità—usando munizioni estratte da melograni magici—a fasi strategiche di riparazione. Alimentare il falò centrale è indispensabile per respingere l'alba pietrificante e proteggere i rifugi del team.",
           mediaLabel: "[ Gameplay Combat // Crafting Munizioni Melograno & Manutenzione Rifugio ]",
-          imageSrc: "/images/immagine_falo_personaggio.png",
-          blendMode: "screen"
+          imageSrc: "/images/immagine_falo_personaggio.png"
         },
         {
           tag: "02 // MULTIPLAYER SYSTEMS",
@@ -96,21 +175,41 @@ export const PORTFOLIO_IT = {
     {
       id: "puppeteer",
       title: "A Child's Tale: Whisper of the Puppeteer",
-      tagline: "First-Person Psychological Horror & Exploration",
-      role: "Game Designer, Programmer",
-      period: "2025",
-      description: "Avventura horror in prima persona in una villa abbandonata. Il giocatore segue una voce femminile raccogliendo indizi e documenti, eludendo il Burattinaio: uno stregone che muta le sue vittime in marionette viventi. Meccaniche di evasione, gestione dell'ansia e puzzle narrativo.",
-      tags: ["Unity3D", "C#", "Meta XR", "AI Stealth", "Audio Spaziale", "Horror Exploration"],
+      year: "2026",
+      period: "2026",
+      category: "Progetto Personale",
+      genrePlatform: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
+      tagline: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
+      role: "Game Designer · Gameplay Programmer · Sviluppatore Unico",
+      gameplaySummary: "Un'avventura horror psicologica in prima persona ambientata in una villa abbandonata. Guidato da un'enigmatica voce femminile, il giocatore esplora scenari suggestivi, raccoglie documenti per ricostruire una tragedia nascosta ed elude il Burattinaio: uno stregone che muta le sue vittime in marionette viventi.",
+      personalContributionSummary: "Ideazione autonoma del concept, gameplay design e soundscape ambientale. Progettazione e implementazione di sistemi audio adattivi stratificati con FMOD Studio, logica euristica di comparsa del boss AI, enigmi interattivi e controlli di movimento VR completi.",
+      description: "Un'avventura horror psicologica in prima persona ambientata in una villa abbandonata. Guidato da un'enigmatica voce femminile, il giocatore esplora scenari suggestivi, raccoglie documenti per ricostruire una tragedia nascosta ed elude il Burattinaio: uno stregone che muta le sue vittime in marionette viventi.\n\nIdeazione autonoma del concept, gameplay design e soundscape ambientale. Progettazione e implementazione di sistemi audio adattivi stratificati con FMOD Studio, logica euristica di comparsa del boss AI, enigmi interattivi e controlli di movimento VR completi.",
+      tags: ["Unity", "C#", "Meta XR", "FMOD Studio", "Sistemi AI", "Horror Exploration"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#a-childs-tale",
       videoUrl: "/videos/puppeteer.mp4",
       platform: "PC (Meta XR VR in lavorazione)",
-      engine: "Unity3D",
+      engine: "Unity · C# · FMOD Studio · Steam Audio",
       authors: "Mauro Brochier",
       teamRoles: "Sviluppatore Unico — Game Designer, Gameplay Programmer",
       gddUrl: "https://docs.google.com/document/d/12cTheqaPUP9HEnYansgj9i_p2kzd_NlF/edit?usp=sharing&ouid=118263974300292559359&rtpof=true&sd=true",
       trailerId: "gVvd9aPJDlY",
       vrBadge: "META XR // VR IN SVILUPPO",
       audioNotice: "Implementate tecniche audio avanzate e spazializzazione binaurale 3D — consigliato l'uso delle cuffie.",
+      detailedContributions: {
+        designed: [
+          "Concept horror originale, premessa narrativa e curva di tensione che bilancia l'esplorazione ambientale con l'ansia psicologica.",
+          "Regole di ingaggio del boss basate su euristiche di comparsa dinamica nelle stanze per spezzare le routine sicure del giocatore.",
+          "Meccaniche di navigazione guidate da indizi audio, bivi di fuga e puzzle interattivi, incluso un pianoforte interamente suonabile via fisica."
+        ],
+        implemented: [
+          "Pipeline audio adattiva a strati in Unity con FMOD Studio e Steam Audio, basata su crossfade in tempo reale guidati da parametri e spazializzazione binaurale 3D.",
+          "Macchina a stati finiti (FSM) per l'IA sensoriale (Pattuglia, Allerta, Caccia) con gestione del cono visivo, soglie uditive e meccaniche stealth.",
+          "Architettura di controllo e interazione VR per Meta XR, convertendo manipolazione fisica di oggetti, porte e dialoghi con PNG da PC a visore."
+        ],
+        authoredDocs: [
+          "Game Design Document (GDD - Versione Sintetica) con formalizzazione delle curve di tensione, mappe degli indizi audio e logica dei puzzle."
+        ]
+      },
       storySteps: [
         {
           tag: "01 // HORROR ATMOSFERICO",
@@ -136,13 +235,78 @@ export const PORTFOLIO_IT = {
       ]
     },
     {
-      id: "water-sim",
-      title: "Real-Time Water Simulation (OpenGL + CUDA)",
-      tagline: "Simulazione fluidodinamica con accelerazione hardware su GPU",
-      role: "Graphics / Systems Programmer",
+      id: "murder-mystery",
+      title: "Murder Mystery Incorporated",
+      year: "2024",
       period: "2024",
-      description: "Simulazione fluidodinamica in tempo reale sviluppata in C++ e OpenGL, con calcoli fisici accelerati tramite kernel CUDA. Gestione delle interazioni fisiche tra corpi rigidi di forme arbitrarie e propagazione della superficie del fluido.",
-      tags: ["C++", "NVIDIA CUDA", "OpenGL", "Calcolo Parallelo GPGPU", "Simulazione Fisica", "Low-Level"],
+      category: "Progetto Accademico di Team / Industry Showcase",
+      genrePlatform: "Strategia-Puzzle 2D · PC e Browser Web",
+      tagline: "Strategia-Puzzle 2D · PC e Browser Web",
+      role: "AI Programmer · Gameplay Designer",
+      highlight: "New Game Designer 2025 · 3° Posto · Game Design & Programming",
+      gameplaySummary: "Un puzzle game strategico in 2D in cui il giocatore impersona un operativo incaricato di orchestrare 'omicidi perfetti'. Manipolando le routine deterministiche dei PNG, sfruttando i coni visivi e disponendo oggetti su una linea temporale tattica, i bersagli vengono eliminati senza destare sospetti.",
+      personalContributionSummary: "Implementazione autonoma dell'architettura AI dei PNG tramite Behavior Trees e sviluppo di un tool visuale personalizzato per l'Editor di Unity per ispezionare i BT. Co-progettazione delle routine dei PNG e integrazione dell'IA in uno dei cinque scenari di gioco.",
+      description: "Un puzzle game strategico in 2D in cui il giocatore impersona un operativo incaricato di orchestrare 'omicidi perfetti'. Manipolando le routine deterministiche dei PNG, sfruttando i coni visivi e disponendo oggetti su una linea temporale tattica, i bersagli vengono eliminati senza destare sospetti.\n\nImplementazione autonoma dell'architettura AI dei PNG tramite Behavior Trees e sviluppo di un tool visuale personalizzato per l'Editor di Unity per ispezionare i BT. Co-progettazione delle routine dei PNG e integrazione dell'IA in uno dei cinque scenari di gioco.",
+      tags: ["Unity", "C#", "Behavior Trees", "Sistemi AI", "Editor Tooling", "Puzzle Design"],
+      githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
+      platform: "PC & Browser Web",
+      engine: "Unity (2D) / WebGL",
+      authors: "Mauro Brochier, Matteo Mangioni, Anthony Baiamonte, Christian Colombo",
+      teamRoles: "Game Programmer, AI Programmer, Game Designer (Sistemi AI)",
+      gddUrl: "https://github.com/MauroTheB/MurderMysteryInfo/blob/main/Documents/GameDesignDocument.md",
+      demoUrl: "https://polimi-game-collective.itch.io/murder-mystery-incorporated",
+      trailerId: "ZpdFg5MHrdI",
+      gameplayId: "wDj0Gx3CgIQ",
+      detailedContributions: {
+        designed: [
+          "Co-progettazione dei sistemi di comportamento dei PNG, coni di percezione sensoriale e reazioni ambientali insieme al team di design.",
+          "Progettazione e bilanciamento dei tratti caratteriali dei PNG che influenzano il processo decisionale autonomo e le deviazioni dalle routine.",
+          "Design dei puzzle temporali, delle trappole di distrazione delle guardie e della timeline interattiva per uno dei cinque scenari del gioco."
+        ],
+        implemented: [
+          "Implementazione autonoma dell'architettura AI completa dei PNG tramite Behavior Trees in Unity e C# nativo.",
+          "Sviluppo di un tool visuale personalizzato integrato direttamente nell'Editor di Unity per ispezionare e fare il debug live degli alberi di comportamento.",
+          "Programmazione delle routine di pattugliamento autonomo, scambio d'informazioni tra PNG e risposte dinamiche di allerta.",
+          "Ingegnerizzazione e integrazione della logica di gameplay, trappole e transizioni di stato AI per uno dei cinque scenari giocabili."
+        ],
+        authoredDocs: [
+          "Redazione delle sezioni del Game Design Document (GDD) relative a logiche di stato dei PNG, modificatori di tratti e meccaniche della timeline."
+        ]
+      },
+      storySteps: [
+        {
+          tag: "01 // MECCANICHE TEMPORALI",
+          title: "Pianificazione Strategica su Timeline",
+          description: "Progettazione del core loop puzzle-strategico in cui il giocatore organizza azioni, posiziona oggetti e coordina le traiettorie degli agenti lungo una linea temporale tattica a tracce.",
+          mediaLabel: "[ UI & Design // Scrubber Temporale & Griglia di Pianificazione Azioni ]"
+        },
+        {
+          tag: "02 // PATTERN COMPORTAMENTALI AI",
+          title: "Sfruttamento delle Routine di Pattuglia",
+          description: "Sviluppo di routine deterministiche per gli NPC con coni visivi di allerta. Il giocatore calcola i tempi di ronda delle guardie per orchestrare incidenti fatali senza destare sospetti.",
+          mediaLabel: "[ Sistemi AI // Percorsi di Routine, Coni di Sospetto & Trappole ]"
+        },
+        {
+          tag: "03 // FASE DI ESECUZIONE",
+          title: "Riproduzione Autonoma e Valutazione",
+          description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
+          mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]"
+        }
+      ]
+    },
+    {
+      id: "water-sim",
+      title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
+      year: "2025",
+      period: "2025",
+      category: "Progetto Accademico Individuale",
+      genrePlatform: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
+      tagline: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
+      role: "Graphics & Simulation Programmer",
+      gameplaySummary: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.",
+      personalContributionSummary: "Ideazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
+      description: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.\n\nIdeazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
+      tags: ["C++", "NVIDIA CUDA", "OpenGL", "GPGPU", "Simulazione Fisica", "Matematica 3D"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
       platform: "PC (Windows / Linux)",
       engine: "Motore Custom C++ + OpenGL",
@@ -173,60 +337,27 @@ export const PORTFOLIO_IT = {
       ]
     },
     {
-      id: "murder-mystery",
-      title: "Murder Mystery Incorporated",
-      tagline: "2D Strategy-Puzzle per PC e Browser Web",
-      role: "AI Programmer, Game Designer (Sistemi AI)",
-      period: "2025",
-      description: "Nei panni di un agente alle prime armi di un'agenzia segreta, il giocatore pianifica ed esegue l'omicidio perfetto disponendo azioni e oggetti su una linea temporale strategica per eliminare il target senza destare sospetti.",
-      tags: ["2D Strategy", "AI Systems", "Timeline Mechanics", "Puzzle Design", "PC & WebGL"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
-      platform: "PC & Browser Web",
-      engine: "Unity (2D) / WebGL",
-      authors: "Mauro Brochier, Matteo Mangioni, Anthony Baiamonte, Christian Colombo",
-      teamRoles: "Game Programmer, AI Programmer, Game Designer (Sistemi AI)",
-      gddUrl: "https://github.com/MauroTheB/MurderMysteryInfo/blob/main/Documents/GameDesignDocument.md",
-      demoUrl: "https://polimi-game-collective.itch.io/murder-mystery-incorporated",
-      trailerId: "ZpdFg5MHrdI",
-      gameplayId: "wDj0Gx3CgIQ",
-      storySteps: [
-        {
-          tag: "01 // MECCANICHE TEMPORALI",
-          title: "Pianificazione Strategica su Timeline",
-          description: "Progettazione del core loop puzzle-strategico in cui il giocatore organizza azioni, posiziona oggetti e coordina le traiettorie degli agenti lungo una linea temporale tattica a tracce.",
-          mediaLabel: "[ UI & Design // Scrubber Temporale & Griglia di Pianificazione Azioni ]"
-        },
-        {
-          tag: "02 // PATTERN COMPORTAMENTALI AI",
-          title: "Sfruttamento delle Routine di Pattuglia",
-          description: "Sviluppo di routine deterministiche per gli NPC con coni visivi di allerta. Il giocatore calcola i tempi di ronda delle guardie per orchestrare incidenti fatali senza destare sospetti.",
-          mediaLabel: "[ Sistemi AI // Percorsi di Routine, Coni di Sospetto & Trappole ]"
-        },
-        {
-          tag: "03 // FASE DI ESECUZIONE",
-          title: "Riproduzione Autonoma e Valutazione",
-          description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
-          mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]"
-        }
-      ]
-    },
-    {
       id: "mazes-soul",
       title: "Maze’s Soul",
-      tagline: "Spatial Cognitive 3D/2D Maze Game (Mobile)",
-      role: "Game Designer & Programmer",
+      year: "2021",
       period: "2021",
-      description: "Gioco basato sulla memoria visuo-spaziale: 30 secondi per memorizzare la pianta del labirinto in 2D, seguiti dalla navigazione reale in terza persona 3D con mercanti nascosti, pozioni e gestione risorse.",
-      tags: ["Unity3D", "C#", "Sviluppo Mobile", "Cognizione Spaziale", "Meccaniche Cognitive"],
+      category: "Progetto di Tirocinio Individuale",
+      genrePlatform: "Gioco di Navigazione e Memoria Spaziale · Android Mobile",
+      tagline: "Gioco di Navigazione e Memoria Spaziale · Android Mobile",
+      role: "Game Designer · Programmer",
+      gameplaySummary: "Una sfida mobile in terza persona basata sulla ricerca sulla memoria visuo-spaziale. I giocatori hanno 30 secondi per studiare la mappa 2D del labirinto prima di passare fluidamente a una visuale 3D alle spalle, navigando a memoria attraverso corridoi identici e gestendo risorse e pozioni.",
+      personalContributionSummary: "Ideazione, design e sviluppo integrale autonomo del titolo durante un tirocinio professionale di 238 ore presso Nextrek S.r.l. Progettazione della meccanica centrale di transizione prospettica, controlli touch per dispositivi mobili e bilanciamento della memoria.",
+      description: "Una sfida mobile in terza persona basata sulla ricerca sulla memoria visuo-spaziale. I giocatori hanno 30 secondi per studiare la mappa 2D del labirinto prima di passare fluidamente a una visuale 3D alle spalle, navigando a memoria attraverso corridoi identici e gestendo risorse e pozioni.\n\nIdeazione, design e sviluppo integrale autonomo del titolo durante un tirocinio professionale di 238 ore presso Nextrek S.r.l. Progettazione della meccanica centrale di transizione prospettica, controlli touch per dispositivi mobili e bilanciamento della memoria.",
+      tags: ["Unity", "C#", "Sviluppo Android", "Cognizione Spaziale", "Controlli Mobile"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
       platform: "Mobile (iOS & Android)",
       isMobile: true,
-      engine: "Unity3D / C#",
-      authors: "Mauro Brochier",
+      engine: "Unity · C#",
+      authors: "Mauro Brochier (Tirocinio Nextrek S.r.l.)",
       teamRoles: "Sviluppatore Unico — Game Designer, Gameplay Programmer",
       trailerId: "OP1fEbdZbjk",
       gameplayId: "WI-OsY6SoKs",
-      thesisBadge: "R&D COGNITIVO // PROGETTO DI TESI TRIENNALE",
+      thesisBadge: "R&D COGNITIVO // RICERCA TESI TRIENNALE",
       storySteps: [
         {
           tag: "01 // COGNIZIONE VISIVA",
