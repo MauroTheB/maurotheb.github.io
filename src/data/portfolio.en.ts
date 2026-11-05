@@ -6,7 +6,7 @@ export const PORTFOLIO_EN = {
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
     cvUrl: "/cv_mauro_brochier.pdf",
-    graduationStatus: "Master's Degree in Computer Science (Game Design) — Graduating Oct 2026",
+    graduationStatus: "Master's Degree in Computer Science (Game Design) — Graduated Oct 2026",
     languages: [
       { name: "French", level: "Mother Tongue / Native" },
       { name: "Italian", level: "Mother Tongue / Native" },
