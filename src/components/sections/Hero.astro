@@ -60,25 +60,40 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
     {PROFILE.subheading}
   </p>
 
-  <!-- Pulsanti di azione rapida -->
-  <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
-    <a 
-      href={PROFILE.github} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 transition flex items-center gap-2 shadow-lg"
-    >
-      <span>{UI.heroBtnGithub}</span>
-      <span class="text-xs text-slate-500">↗</span>
-    </a>
-    <a 
-      href={`mailto:${PROFILE.email}`}
-      class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2"
-    >
-      <span>{UI.heroBtnContact}</span>
-      <span class="text-xs">✉</span>
-    </a>
-  </div>
+  <!-- Pulsanti di azione rapida (GitHub, Contatto Diretto & Download CV Ufficiale) -->
+    <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
+      {PROFILE.cvUrl && (
+        <a 
+          href={PROFILE.cvUrl} 
+          download="CV_Mauro_Brochier.pdf"
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-2 shadow-lg shadow-amber-500/10 font-bold hover:scale-102"
+        >
+          <span>📄</span>
+          <span>{UI.heroBtnCv || "Download CV (PDF)"}</span>
+          <span class="text-xs text-amber-400">↓</span>
+        </a>
+      )}
+
+      <a 
+        href={PROFILE.github} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="px-5 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700/80 transition flex items-center gap-2 shadow-lg hover:border-slate-600"
+      >
+        <span>GitHub Preview</span>
+        <span class="text-xs text-slate-500">↗</span>
+      </a>
+
+      <a 
+        href={`mailto:${PROFILE.email}`}
+        class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2 hover:scale-102"
+      >
+        <span>{UI.heroBtnContact}</span>
+        <span class="text-xs">✉</span>
+      </a>
+    </div>
 
   <!-- Lingue parlate in pillole -->
   <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-3 text-xs font-mono text-slate-400">

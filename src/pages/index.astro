@@ -16,11 +16,16 @@ import PuppeteerCurse from "../components/vfx/PuppeteerCurse.astro";
 import MurderMysteryAssassination from "../components/vfx/MurderMysteryAssassination.astro";
 import WaterSimulationWaves from "../components/vfx/WaterSimulationWaves.astro";
 import GoldFilmShatter from "../components/vfx/GoldFilmShatter.astro";
+import Footer from '../components/sections/Footer.astro';
 
 const { profile: PROFILE, ui: UI } = getPortfolio("en");
 ---
 
-<BaseLayout title={`${PROFILE.name} | ${PROFILE.title}`}>
+<BaseLayout 
+  title={`${PROFILE.name} | ${PROFILE.title}`}
+  description={PROFILE.subheading}
+  lang="en"
+>  
   <AmbientEnvironment />
   <CursorTrail />
   <PomegranateHarvest />
@@ -41,10 +46,5 @@ const { profile: PROFILE, ui: UI } = getPortfolio("en");
     <SkillsTrack lang="en" />
   </main>
 
-  <footer
-    class="py-16 text-center text-slate-500 text-xs font-mono border-t border-slate-900 mt-20"
-  >
-    <p>{PROFILE.name} • {PROFILE.title}</p>
-    <p class="text-slate-600 mt-1">{UI.footerText}</p>
-  </footer>
+  <Footer lang="en" />
 </BaseLayout>

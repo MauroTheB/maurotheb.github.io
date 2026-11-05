@@ -1,20 +1,22 @@
 export const PORTFOLIO_IT = {
   profile: {
     name: "Mauro Julien Brochier",
-    title: "Game Designer & Gameplay Programmer",
-    subheading: "Ingegnere Informatico specializzato in Game Design, gameplay systems, intelligenza artificiale e calcolo ad alte prestazioni.",
+    title: "Technical Game Designer",
+    subheading: "Technical Game Designer & Systems Engineer. Unione tra design dei sistemi di gameplay, psicologia del giocatore e implementazione tecnica nativa su motore in C# e C++.",
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
+    cvUrl: "/cv_mauro_brochier.pdf",
     graduationStatus: "Laurea Magistrale in Informatica (Game Design) — Laurea Ottobre 2026",
     languages: [
       { name: "Francese", level: "Madrelingua" },
-      { name: "Italiano", level: "C2 (Madrelingua / Bilingue)" },
+      { name: "Italiano", level: "Madrelingua" },
       { name: "Inglese", level: "B2 (Professionale)" },
     ],
   },
   ui: {
     heroBtnGithub: "GitHub Preview",
     heroBtnContact: "Contattami",
+    heroBtnCv: "Scarica CV (PDF)",
     ddaBadge: "DDA RESEARCH // IN PROGRESS",
     hudProjects: "Progetti",
     hudExperience: "Esperienze",
@@ -50,6 +52,12 @@ export const PORTFOLIO_IT = {
     docsLabel: "Documentazione Tecnica & di Design",
     ipNoticeHeading: "Ricerca Proprietaria & Tutela della Proprietà Intellettuale",
     empiricalStudyLabel: "Validazione Empirica & Playtest",
+    gradeLabel: "Votazione",
+    supervisorLabel: "Relatore / Relatrice",
+    subjectLabel: "Materia",
+    footerHeading: "Creiamo Sistemi di Gameplay Immersivi",
+    footerSubheading: "Disponibile per posizioni di Technical Game Designer, Gameplay Systems e AI Design a livello internazionale.",
+    backToTop: "Torna in cima ↑",
     watchDriveVideo: "Guarda il Gameplay su Google Drive ↗",
     headphonesBadge: "CUFFIE CONSIGLIATE // AUDIO 3D",
     playDemo: "Gioca alla Demo su itch.io",
@@ -58,7 +66,7 @@ export const PORTFOLIO_IT = {
     {
       id: "dda-thesis",
       title: "Framework DDA Euristico in Prototipo Soulslike",
-      year: "2025–2026",
+      year: "Ott 2025– Ott 2026",
       period: "2025–2026",
       category: "Tesi Magistrale / Progetto di Ricerca Individuale",
       genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
@@ -111,7 +119,7 @@ export const PORTFOLIO_IT = {
     {
       id: "pomegranade",
       title: "Pomegranade: Limbo",
-      year: "2025",
+      year: "Apr 2025 – Lu 2025",
       period: "2025",
       category: "Progetto Accademico di Team / Industry Showcase",
       genrePlatform: "Gioco Survival Co-op · 2–4 Giocatori · PC",
@@ -175,7 +183,7 @@ export const PORTFOLIO_IT = {
     {
       id: "puppeteer",
       title: "A Child's Tale: Whisper of the Puppeteer",
-      year: "2026",
+      year: "Apr 2024 – Lu 2024",
       period: "2026",
       category: "Progetto Personale",
       genrePlatform: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
@@ -237,7 +245,7 @@ export const PORTFOLIO_IT = {
     {
       id: "murder-mystery",
       title: "Murder Mystery Incorporated",
-      year: "2024",
+      year: "Ott 2023 – Feb 2024",
       period: "2024",
       category: "Progetto Accademico di Team / Industry Showcase",
       genrePlatform: "Strategia-Puzzle 2D · PC e Browser Web",
@@ -297,7 +305,7 @@ export const PORTFOLIO_IT = {
     {
       id: "water-sim",
       title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
-      year: "2025",
+      year: "Feb 2025 – Apr 2025",
       period: "2025",
       category: "Progetto Accademico Individuale",
       genrePlatform: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
@@ -315,6 +323,21 @@ export const PORTFOLIO_IT = {
       teamRoles: "Graphics Programmer, Systems Engineer",
       driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
       localVideoUrl: "/videos/water_sim.mp4",
+      detailedContributions: {
+        designed: [
+          "Ideazione e formulazione del framework matematico per le equazioni di propagazione delle onde di superficie basate su griglia (height-field wave physics).",
+          "Progettazione delle regole di accoppiamento dinamico bidirezionale tra fluido e corpi rigidi 3D arbitrari, consentendo galleggiamento, attrito e generazione di onde di scia realistiche.",
+          "Architettura modulare della pipeline, disaccoppiando in modo pulito il calcolo fisico parallelo su GPU dal rendering grafico in tempo reale."
+        ],
+        implemented: [
+          "Parallelizzazione della pipeline di simulazione fisica in C++ tramite kernel NVIDIA CUDA dedicati, eseguendo il calcolo delle onde su migliaia di thread GPU concorrenti.",
+          "Ingegnerizzazione del rendering realistico della superficie dell'acqua in OpenGL moderno con shader GLSL basati su riflessione di Fresnel, rifrazione e caustiche.",
+          "Sviluppo di algoritmi per condizioni al contorno 3D per calcolare la spinta idrostatica di galleggiamento e lo spostamento volumetrico per corpi rigidi di forma arbitraria."
+        ],
+        authoredDocs: [
+          "Relazione tecnica accademica (Università degli Studi di Milano) con formalizzazione matematica del fluido, ottimizzazione della memoria CUDA e profilazione dei benchmark."
+        ]
+      },
       storySteps: [
         {
           tag: "01 // CALCOLO GPGPU",
@@ -339,7 +362,7 @@ export const PORTFOLIO_IT = {
     {
       id: "mazes-soul",
       title: "Maze’s Soul",
-      year: "2021",
+      year: "Mar 2021 – Apr 2021",
       period: "2021",
       category: "Progetto di Tirocinio Individuale",
       genrePlatform: "Gioco di Navigazione e Memoria Spaziale · Android Mobile",
@@ -358,6 +381,22 @@ export const PORTFOLIO_IT = {
       trailerId: "OP1fEbdZbjk",
       gameplayId: "WI-OsY6SoKs",
       thesisBadge: "R&D COGNITIVO // RICERCA TESI TRIENNALE",
+      detailedContributions: {
+        designed: [
+          "Ideazione del core loop cognitivo incentrato sullo studio di come la memoria umana memorizza mappe 2D e le applica alla navigazione spaziale 3D.",
+          "Progettazione della meccanica di transizione prospettica da una visuale 2D aerea con timer di 30 secondi a una visuale d'esplorazione 3D in terza persona alle spalle.",
+          "Bilanciamento della conformazione dei labirinti, gestione delle risorse, economia delle pozioni con mercanti segreti e curve di affaticamento mnemonico."
+        ],
+        implemented: [
+          "Ingegnerizzazione e sviluppo integrale autonomo del videogioco in Unity e C# durante un tirocinio professionale di 238 ore presso Nextrek S.r.l.",
+          "Programmazione dei controlli touch mobile per smartphone, interpolazione fluida della telecamera da 2D ortografica a 3D prospettica e generazione delle griglie del labirinto.",
+          "Implementazione dei sistemi di inventario mobile, logiche di interazione con i mercanti nascosti e meccaniche di consumo delle pozioni."
+        ],
+        authoredDocs: [
+          "Tesi di Laurea Triennale in Ingegneria Informatica ('Player's memory, from 2d to 3d') presso l'Università degli Studi Roma Tre.",
+          "Relazione tecnica finale di tirocinio e documentazione di game design consegnata a Nextrek S.r.l."
+        ]
+      },
       storySteps: [
         {
           tag: "01 // COGNIZIONE VISIVA",
@@ -383,68 +422,162 @@ export const PORTFOLIO_IT = {
   experiences: [
     {
       id: "edison",
-      role: "Game Design & Programming Instructor",
+      role: "Docente di Game Design & Programmazione",
       company: "Edison School",
-      period: "10/2025 — Presente",
-      location: "Roma",
-      description: "Docente di Game Design e programmazione su Unity3D. Progettazione ed erogazione di moduli didattici strutturati, dal livello base a quello avanzato, coprendo logiche di gameplay in C#, architettura delle scene e game balance.",
-      skills: ["Unity3D", "C#", "Mentoring", "Game Design Education"]
+      period: "Ott 2025 – Presente",
+      location: "Roma, Italia",
+      course: "Corso: Game Developer – Unity 3D",
+      description: "Insegnamento dei principi di game design e programmazione tecnica di gameplay a studenti di diverse fasce d'età e livelli di competenza, dalle basi ai workflow avanzati.",
+      bullets: [
+        "Insegnamento di Game Design e Game Programming a studenti con diversi background, dal livello base a quello avanzato.",
+        "Erogazione di formazione pratica su Unity, C# e Visual Scripting.",
+        "Mentoring degli studenti durante l'intero ciclo di sviluppo dei loro progetti individuali di gioco, dall'idea iniziale all'implementazione tecnica.",
+        "Docenza erogata a 9 classi differenti ad oggi con copertura completa del programma."
+      ],
+      skills: ["Unity 3D", "C#", "Visual Scripting", "Architettura Gameplay", "Mentoring", "Didattica"]
     },
     {
       id: "cristaltec",
       role: "Game Designer & Programmer",
       company: "Cristaltec SpA",
-      period: "02/2022 — 08/2022",
-      location: "Roma",
-      description: "Sviluppo integrale di giochi su sistemi proprietari. Apprendimento e implementazione di logiche di gioco avanzate, ottimizzazione delle risorse e rilascio software in ambiente industriale regolamentato.",
-      skills: ["Game Programming", "Proprietary Languages", "Industrial Gaming Systems"]
+      period: "Feb 2022 – Ago 2022",
+      location: "Roma, Italia",
+      description: "Sviluppo di sistemi di gameplay e bilanciamento matematico all'interno di un ambiente industriale regolamentato.",
+      bullets: [
+        "Progettazione e implementazione della feature di gameplay rolling-card, definendo condizioni logiche, timing e comportamenti di caduta delle carte.",
+        "Apprendimento e applicazione rapida di un linguaggio di programmazione e tool proprietari, impiegandoli direttamente nello sviluppo di logiche di gioco in pipeline industriale."
+      ],
+      skills: ["Sistemi di Gameplay", "Linguaggi Proprietari", "Comportamenti di Stato", "Logica di Gioco", "Timing & Bilanciamento"]
     },
     {
-      id: "nextrek",
+      id: "nextrek-social",
       role: "Videogame Designer & Programmer",
       company: "Nextrek S.r.l.",
-      period: "03/2021 — 08/2021",
-      location: "Roma",
-      description: "Sviluppo completo e autonomo di un videogioco 3D per dispositivi mobile/multipiattaforma su Unity3D con programmazione nativa C#. Collaborazione successiva all'interno di team di sviluppo organizzato su repository condivisi.",
-      skills: ["Unity3D", "C#", "Mobile Optimization", "Git Workflow"]
+      period: "Lug 2021 – Ago 2021",
+      location: "Roma, Italia",
+      description: "Ingegnerizzazione dell'architettura AI e simulazione sociale per un titolo 3D in Unity ispirato a The Sims.",
+      bullets: [
+        "Progettazione e implementazione di un sistema integrale di interazione sociale per PNG in un gioco 3D su Unity ispirato a The Sims, combinando Finite State Machines (FSM) e Behavior Trees.",
+        "Sviluppo di un ampio spettro di comportamenti e interazioni autonome dei PNG: conversazioni contestuali, corteggiamento, ballo, reazioni emotive, scambio d'informazioni, memoria a breve termine e dinamiche di gruppo."
+      ],
+      skills: ["Unity 3D", "C#", "Behavior Trees", "Finite State Machines (FSM)", "Sistemi AI per PNG", "Simulazione Sociale"]
+    },
+    {
+      id: "nextrek-internship",
+      role: "Game Designer & Programmer (Tirocinio Universitario)",
+      company: "Nextrek S.r.l.",
+      period: "Mar 2021 – Apr 2021",
+      location: "Roma, Italia",
+      description: "Ideazione, design e sviluppo integrale autonomo di Maze's Soul come titolo individuale durante un tirocinio universitario curriculare.",
+      bullets: [
+        "Ideazione, progettazione e sviluppo autonomo di Maze's Soul come progetto di gioco individuale durante un tirocinio professionale di 238 ore.",
+        "Gestione dell'intero ciclo di vita del titolo in piena autonomia, dal concept iniziale e design cognitivo all'implementazione mobile nativa in C#."
+      ],
+      skills: ["Unity 3D", "C#", "Sviluppo Mobile", "Prototipazione Rapida", "Sviluppo Autonomo"]
     }
   ],
   education: [
     {
       id: "master",
-      degree: "Laurea Magistrale in Informatica — Videogame Design & Programming (LM-18)",
+      degree: "Laurea Magistrale in Informatica – Videogame Design and Programming (LM-18)",
       institution: "Università degli Studi di Milano",
-      period: "2023 — 2026",
-      thesisTitle: "Design and Evaluation of Heuristic Dynamic Difficulty Adjustment Systems for Maintaining Flow in Indie Development Contexts",
-      thesisDetails: "Ricerca e implementazione di algoritmi euristici di Dynamic Difficulty Adjustment (DDA) per preservare lo stato di Flow nel giocatore nei giochi indie. Relatrice: Prof.ssa Laura Ripamonti.",
-      skills: ["Dynamic Difficulty Adjustment (DDA)", "Flow Theory", "Heuristic Systems", "AI for Games"]
+      period: "2023 – Ott 2026",
+      grade: "106 / 110",
+      supervisor: "Prof.ssa Anna Laura Ripamonti",
+      thesisSubject: "Videogame Design",
+      thesisTitle: "Framework Euristico per il Dynamic Difficulty Adjustment (DDA), mediante un'Architettura 'Glass-Box' a supporto del Game Designer",
+      thesisDetails: "Ideazione, modellazione matematica e validazione empirica di un framework di Dynamic Difficulty Adjustment euristico. Ingegnerizzazione di un'architettura di telemetria trasparente ('glass-box') che fornisce ai game designer visibilità totale e controllo manuale sulla modulazione del Flow in tempo reale in titoli action punitivi.",
+      skills: ["Dynamic Difficulty Adjustment (DDA)", "Teoria del Flow", "Telemetria Giocatore", "Game Balance", "Architettura Glass-Box", "Psicologia del Gioco"]
     },
     {
       id: "bachelor",
       degree: "Laurea Triennale in Ingegneria Informatica (L-8)",
       institution: "Università degli Studi Roma Tre",
-      period: "2015 — 2021",
-      thesisTitle: "Player's memory, from 2d to 3d",
-      thesisDetails: "Studio e analisi della cognizione spaziale e della memoria del giocatore nella transizione tra mappe bidimensionali e visuali tridimensionali. Relatore: Prof. Giuseppe Di Battista.",
-      skills: ["Computer Engineering", "Algoritmi & Strutture Dati", "Architettura dei Calcolatori", "Reti"]
+      period: "2015 – 2021",
+      supervisor: "Prof. Giuseppe Di Battista",
+      thesisSubject: "Game Design & Psicologia",
+      thesisTitle: "Player's memory, from 2d to 3d [Videogame – Maze's Soul]",
+      thesisDetails: "Studio empirico sulla ritenzione della memoria visuo-spaziale umana durante la transizione prospettica in tempo reale tra mappe bidimensionali zenitali e navigazione tridimensionale in terza persona, formalmente implementato e dimostrato attraverso il videogioco mobile Maze's Soul.",
+      skills: ["Ingegneria Informatica", "Algoritmi e Strutture Dati", "Architettura dei Calcolatori", "Cognizione Spaziale", "Sistemi Operativi", "Reti"]
     }
   ],
   skills: [
     {
-      category: "Game Dev & Engines",
-      items: ["Unity (Avanzato / C#)", "Gameplay Architecture", "FMOD Studio (Audio Dinamico)", "Level Design & Prototyping"]
+      category: "Gameplay & Technical Design",
+      level: "Avanzato",
+      icon: "⚡",
+      items: [
+        "Design dei Sistemi di Gameplay",
+        "Implementazione Tecnica di Meccaniche",
+        "Meccaniche e Controlli del Giocatore",
+        "Prototipazione Rapida di Gameplay",
+        "Iterazione di Design & Bilanciamento",
+        "Redazione Documenti GDD / TDD / LDD",
+        "Fogli di Calcolo per il Game Balance"
+      ]
     },
     {
-      category: "Graphics & High-Performance Computing",
-      items: ["OpenGL", "CUDA (Calcolo Parallelo su GPU)", "C++", "C", "Assembly", "Shaders & Physics Simulation"]
+      category: "Sistemi AI, PNG & Combattimento",
+      level: "Specializzato",
+      icon: "🧠",
+      items: [
+        "Architettura dell'Intelligenza Artificiale per PNG",
+        "Behavior Trees (BT) & Custom Editor Tooling",
+        "Macchine a Stati Finiti (FSM)",
+        "Sistemi di Combattimento (Melee & Shooting)",
+        "Coni di Percezione Sensoriale & Line-of-Sight",
+        "Pacing dei Nemici & Bilanciamento della Sfida"
+      ]
     },
     {
-      category: "Game Design & Metodologia",
-      items: ["GDD / TDD / LDD Technical Writing", "Dynamic Difficulty Adjustment (DDA)", "Artificial Intelligence for Games", "Git & Version Control"]
+      category: "Motori di Gioco & Programmazione",
+      level: "Avanzato",
+      icon: "🎮",
+      items: [
+        "Unity Engine (Avanzato 3D & 2D)",
+        "C# (Programmazione Nativa di Gameplay)",
+        "Programmazione Orientata agli Oggetti (OOP)",
+        "Architettura Component-Based",
+        "Visual Scripting",
+        "Ottimizzazione per Dispositivi Mobili Android"
+      ]
     },
     {
-      category: "Linguaggi & Altre Tecnologie",
-      items: ["C#", "C++", "C", "Python", "Java", "SQL", "OCaml", "Eiffel"]
+      category: "Networking Multiplayer & Version Control",
+      level: "Avanzato",
+      icon: "🌐",
+      items: [
+        "Mirror Networking (Co-op Multiplayer)",
+        "Architettura Client-Server",
+        "Sincronizzazione di Stato & Chiamate RPC",
+        "Git (Branching Avanzato & Workflow di Merge)",
+        "Pipeline di Sviluppo Collaborativo in Team"
+      ]
+    },
+    {
+      category: "Audio Interattivo & Spaziale 3D",
+      level: "Avanzato",
+      icon: "🎧",
+      items: [
+        "FMOD Studio (Architettura Eventi & Routing Parametri)",
+        "Steam Audio (Spazializzazione Binaurale HRTF 3D)",
+        "Musica Adattiva & Crossfade Guidati da Parametri",
+        "Integrazione Audio 3D in Unity",
+        "Occlusione Acustica Ambientale"
+      ]
+    },
+    {
+      category: "Grafica, GPGPU & Sistemi",
+      level: "Ingegneristico",
+      icon: "⚙️",
+      items: [
+        "C++ (Programmazione di Sistemi)",
+        "NVIDIA CUDA (Fisica Ondosa Parallela su GPGPU)",
+        "OpenGL & Shader GLSL Personalizzati",
+        "Simulazione Fluidodinamica in Tempo Reale",
+        "Shader Ottici basati su Fresnel",
+        "Python, Java, C"
+      ]
     }
   ]
 };

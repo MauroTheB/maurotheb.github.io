@@ -4,25 +4,52 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'en' | 'it';
+  image?: string;
 }
 
 const {
-  title = "Mauro | Software Engineer",
-  description = "Portfolio personale, progetti ed esperienze professionali."
+  title = "Mauro Julien Brochier | Technical Game Designer",
+  description = "Technical Game Designer & Systems Engineer. Gameplay systems, AI architecture, DDA research, and high-performance C#/C++ implementation.",
+  lang = "en",
+  image = "/images/pomegranate.png"
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://maurotheb.github.io");
+const socialImageURL = new URL(image, Astro.site || "https://maurotheb.github.io");
 ---
 
 <!doctype html>
-<html lang="it" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+
+    <!-- Meta Tag Principali -->
     <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="Mauro Julien Brochier Portfolio" />
+
+    <!-- Twitter / X / Discord Embeds -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500/20 selection:text-emerald-300">
+  <body class="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-violet-500/25 selection:text-violet-300">
     <div class="relative min-h-screen flex flex-col justify-between">
       <!-- Contenuto dinamico delle pagine iniettato qui -->
       <slot />

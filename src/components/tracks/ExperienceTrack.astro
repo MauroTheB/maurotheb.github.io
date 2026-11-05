@@ -29,9 +29,29 @@ const { experiences: EXPERIENCES, ui: UI } = getPortfolio(lang);
           
           <div class="text-base font-mono text-violet-400 mt-1 mb-4">{exp.company} • {exp.location}</div>
           
-          <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-6">
-            {exp.description}
-          </p>
+          <!-- Badge Corso (se presente) -->
+              {exp.course && (
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-mono font-bold mb-4">
+                  <span>🎓</span>
+                  <span>{exp.course}</span>
+                </div>
+              )}
+
+              <p class="text-base text-slate-300 leading-relaxed mb-4">
+                {exp.description}
+              </p>
+
+              <!-- Elenco Puntato delle Responsabilità & Sistemi Realizzati -->
+              {exp.bullets && (
+                <ul class="space-y-2.5 mb-6 text-sm sm:text-base text-slate-300 font-mono">
+                  {exp.bullets.map((bullet) => (
+                    <li class="flex items-start gap-2.5">
+                      <span class="text-violet-400 font-bold mt-1 text-sm">›</span>
+                      <span class="leading-relaxed">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
           <div class="flex flex-wrap gap-2">
             {exp.skills.map((skill) => (

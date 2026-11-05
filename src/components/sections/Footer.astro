@@ -1,0 +1,100 @@
+---
+import { getPortfolio, type Locale } from '../../data/portfolio';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const { profile: PROFILE, ui: UI } = getPortfolio(lang);
+---
+
+<footer class="relative mt-24 border-t border-slate-900 bg-slate-950/80 backdrop-blur-xl">
+  <!-- Sottile linea laser decorativa sulla sommità del footer -->
+  <div class="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-violet-500/30 to-transparent"></div>
+
+  <div class="max-w-7xl mx-auto px-6 sm:px-8 py-16 flex flex-col md:flex-row items-center justify-between gap-10">
+    
+    <!-- Sezione Identità e CTA -->
+    <div class="space-y-3 text-center md:text-left max-w-xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Open to Opportunities · Worldwide</span>
+      </div>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+        {UI.footerHeading}
+      </h3>
+
+      <p class="text-xs sm:text-sm text-slate-400 font-mono leading-relaxed">
+        {UI.footerSubheading}
+      </p>
+
+      <p class="text-xs text-slate-500 font-mono pt-2">
+        {PROFILE.name} • {PROFILE.title}
+      </p>
+    </div>
+
+    <!-- Pulsanti di Contatto Rapido e Torna in Cima -->
+    <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+      <a 
+        href={`mailto:${PROFILE.email}`}
+        class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-violet-600/20 hover:scale-102"
+      >
+        <span>✉</span>
+        <span>{UI.heroBtnContact}</span>
+      </a>
+
+      {PROFILE.cvUrl && (
+        <a 
+          href={PROFILE.cvUrl}
+          download="CV_Mauro_Brochier.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-2 shadow-lg hover:border-amber-400"
+        >
+          <span>📄</span>
+          <span>{UI.heroBtnCv || "Download CV (PDF)"}</span>
+          <span class="text-[10px]">↓</span>
+        </a>
+      )}
+
+      <a 
+        href={PROFILE.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono font-medium transition flex items-center justify-center gap-2 hover:text-white hover:border-slate-700"
+      >
+        <span>GitHub</span>
+        <span class="text-[10px] text-slate-500">↗</span>
+      </a>
+
+      <button 
+        id="back-to-top-btn"
+        aria-label="Back to top"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-cyan-400 border border-slate-800/80 text-xs font-mono transition flex items-center justify-center gap-1.5"
+      >
+        <span>{UI.backToTop}</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Sottile riga di chiusura con crediti e hosting CDN -->
+  <div class="border-t border-slate-900/80 py-6 text-center text-slate-600 text-[11px] font-mono px-6">
+    <p>{UI.footerText}</p>
+  </div>
+</footer>
+
+<script>
+  function setupBackToTop() {
+    const btn = document.getElementById('back-to-top-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  }
+  setupBackToTop();
+  document.addEventListener('astro:page-load', setupBackToTop);
+</script>

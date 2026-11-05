@@ -1,20 +1,22 @@
 export const PORTFOLIO_EN = {
   profile: {
     name: "Mauro Julien Brochier",
-    title: "Game Designer & Gameplay Programmer",
-    subheading: "Computer Engineer specialized in Game Design, gameplay systems, AI, and high-performance computing.",
+    title: "Technical Game Designer",
+    subheading: "Technical Game Designer & Systems Engineer. Bridging gameplay systems design, player psychology, and technical engine implementation in C# and C++.",
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
+    cvUrl: "/cv_mauro_brochier.pdf",
     graduationStatus: "Master's Degree in Computer Science (Game Design) — Graduating Oct 2026",
     languages: [
-      { name: "French", level: "Native" },
-      { name: "Italian", level: "C2 (Native / Bilingual)" },
-      { name: "English", level: "B2 (Professional Working)" },
+      { name: "French", level: "Mother Tongue / Native" },
+      { name: "Italian", level: "Mother Tongue / Native" },
+      { name: "English", level: "B2 (Professional Working Proficiency)" },
     ],
   },
   ui: {
     heroBtnGithub: "GitHub Preview",
     heroBtnContact: "Get in touch",
+    heroBtnCv: "Download CV (PDF)",
     ddaBadge: "DDA RESEARCH // IN PROGRESS",
     hudProjects: "Projects",
     hudExperience: "Experience",
@@ -50,6 +52,12 @@ export const PORTFOLIO_EN = {
     docsLabel: "Design & Technical Documentation",
     ipNoticeHeading: "Proprietary Research & IP Notice",
     empiricalStudyLabel: "Empirical Validation & Playtest",
+    gradeLabel: "Final Grade",
+    supervisorLabel: "Thesis Supervisor",
+    subjectLabel: "Subject Area",
+    footerHeading: "Let's Build Immersive Systems Together",
+    footerSubheading: "Open to Technical Game Designer, Gameplay Systems, and AI Design positions worldwide.",
+    backToTop: "Back to top ↑",
     watchDriveVideo: "Watch Gameplay on Google Drive ↗",
     headphonesBadge: "HEADPHONES RECOMMENDED // 3D AUDIO",
     playDemo: "Play Demo on itch.io",
@@ -59,7 +67,7 @@ export const PORTFOLIO_EN = {
     {
       id: "dda-thesis",
       title: "Heuristic DDA Framework in Soulslike Prototype",
-      year: "2025–2026",
+      year: "Oct 2025–Oct 2026",
       period: "2025–2026",
       category: "Master's Thesis / Individual Research Project",
       genrePlatform: "Soulslike Prototype · Research Framework · PC",
@@ -112,7 +120,7 @@ export const PORTFOLIO_EN = {
     {
       id: "pomegranade",
       title: "Pomegranade: Limbo",
-      year: "2025",
+      year: "Apr 2025 – Jul 2025",
       period: "2025",
       category: "Academic Team Project / Industry Showcase",
       genrePlatform: "Co-op Survival Game · 2–4 Players · PC",
@@ -176,7 +184,7 @@ export const PORTFOLIO_EN = {
     {
       id: "puppeteer",
       title: "A Child's Tale: Whisper of the Puppeteer",
-      year: "2026",
+      year: "Apr 2024 – Jul 2024",
       period: "2026",
       category: "Personal Project",
       genrePlatform: "First-Person Psychological Horror · PC & Meta XR VR",
@@ -238,7 +246,7 @@ export const PORTFOLIO_EN = {
     {
       id: "murder-mystery",
       title: "Murder Mystery Incorporated",
-      year: "2024",
+      year: "Oct 2023 – Feb 2024",
       period: "2024",
       category: "Academic Team Project / Industry Showcase",
       genrePlatform: "2D Strategy-Puzzle · PC & Web Browser",
@@ -298,7 +306,7 @@ export const PORTFOLIO_EN = {
     {
       id: "water-sim",
       title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
-      year: "2025",
+      year: "Feb 2025 – Apr 2025",
       period: "2025",
       category: "Individual Academic Project",
       genrePlatform: "Real-Time Fluid Simulation · GPGPU · PC",
@@ -316,6 +324,21 @@ export const PORTFOLIO_EN = {
       teamRoles: "Graphics Programmer, Systems Engineer",
       driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
       localVideoUrl: "/videos/water_sim.mp4",
+      detailedContributions: {
+        designed: [
+          "Conceived and formulated the mathematical physics framework for grid-based height-field wave propagation equations.",
+          "Designed two-way dynamic fluid-rigid body coupling rules, allowing arbitrary 3D meshes to float, drag, sink, and generate natural shape-dependent wake ripples.",
+          "Architected the modular simulation-to-render pipeline, cleanly decoupling GPU-accelerated physics computation from real-time graphics rendering."
+        ],
+        implemented: [
+          "Parallelized the core fluid simulation pipeline in C++ using NVIDIA CUDA kernels, executing wave physics calculations across thousands of concurrent GPU hardware threads.",
+          "Engineered realistic real-time water surface rendering in modern OpenGL with custom GLSL shaders incorporating Fresnel reflection, refraction, and caustic highlights.",
+          "Developed 3D boundary-condition algorithms to compute dynamic hydrostatic buoyant forces and surface displacement for arbitrary geometric shapes."
+        ],
+        authoredDocs: [
+          "Academic project report (University of Milan) documenting fluid mathematical derivations, CUDA memory hierarchy optimizations, and benchmark profiling."
+        ]
+      },
       storySteps: [
         {
           tag: "01 // GPGPU COMPUTING",
@@ -340,7 +363,7 @@ export const PORTFOLIO_EN = {
     {
       id: "mazes-soul",
       title: "Maze’s Soul",
-      year: "2021",
+      year: "Mar 2021 – Apr 2021",
       period: "2021",
       category: "Individual Internship Project",
       genrePlatform: "Spatial Memory & Traversal Game · Android Mobile",
@@ -359,6 +382,22 @@ export const PORTFOLIO_EN = {
       trailerId: "OP1fEbdZbjk",
       gameplayId: "WI-OsY6SoKs",
       thesisBadge: "COGNITIVE R&D // BACHELOR THESIS RESEARCH",
+      detailedContributions: {
+        designed: [
+          "Conceived the cognitive gameplay loop investigating how players retain 2D top-down blueprints and translate them into 3D third-person navigation.",
+          "Designed the perspective-transition mechanic smoothly shifting from a 30-second 2D maze overview into an over-the-shoulder 3D traversal view.",
+          "Formulated maze labyrinth layouts, mobile survival pacing, hidden merchant economy, and speed/memory potion consumption loops."
+        ],
+        implemented: [
+          "Independently conceived, architected, and developed the complete game in Unity and C# during a 238-hour professional internship at Nextrek S.r.l.",
+          "Programmed mobile touch navigation controls, real-time camera perspective interpolation (2D orthographic to 3D perspective), and maze grid generation.",
+          "Engineered mobile inventory data structures, merchant interaction routines, and status-modifying potion mechanics."
+        ],
+        authoredDocs: [
+          "Bachelor's Degree Thesis ('Player's memory, from 2d to 3d') at Roma Tre University analyzing spatial memory retention across visual perspectives.",
+          "Technical internship final report and game design documentation delivered to Nextrek S.r.l."
+        ]
+      },
       storySteps: [
         {
           tag: "01 // COGNITIVE MECHANICS",
@@ -386,66 +425,160 @@ export const PORTFOLIO_EN = {
       id: "edison",
       role: "Game Design & Programming Instructor",
       company: "Edison School",
-      period: "10/2025 — Present",
+      period: "Oct 2025 – Present",
       location: "Rome, Italy",
-      description: "Teaching game design and C# gameplay programming using Unity3D. Designed and delivered structured syllabi across all skill tiers (beginner to advanced), covering gameplay loops, scene architecture, and game balance.",
-      skills: ["Unity3D", "C#", "Mentoring", "Game Design Education"]
+      course: "Course: Game Developer – Unity 3D",
+      description: "Teaching game design principles and technical gameplay programming across multiple student tiers, from foundational concepts to advanced production pipelines.",
+      bullets: [
+        "Teach Game Design and Game Programming to students across different age groups and skill levels, from beginner to advanced.",
+        "Deliver practical, hands-on training in Unity, C# and Visual Scripting.",
+        "Mentor students through the end-to-end development of individual game projects, from initial concept to technical implementation.",
+        "Taught 9 different classes to date with comprehensive syllabus delivery."
+      ],
+      skills: ["Unity 3D", "C#", "Visual Scripting", "Gameplay Architecture", "Mentorship", "Pedagogy"]
     },
     {
       id: "cristaltec",
       role: "Game Designer & Programmer",
       company: "Cristaltec SpA",
-      period: "02/2022 — 08/2022",
+      period: "Feb 2022 – Aug 2022",
       location: "Rome, Italy",
-      description: "Full-cycle game development on proprietary gaming platforms. Mastered proprietary scripting languages, implemented advanced game logic, optimized resource allocation, and deployed software in regulated industrial gaming environments.",
-      skills: ["Game Programming", "Proprietary Languages", "Industrial Gaming Systems"]
+      description: "Gameplay systems development and mathematical balancing within an established industrial gaming environment.",
+      bullets: [
+        "Designed and implemented a rolling-card gameplay feature, defining the conditions, timing and state behaviour governing how cards fall.",
+        "Adapted rapidly to a proprietary programming language and internal development tools, applying them directly to gameplay feature development within a production pipeline."
+      ],
+      skills: ["Gameplay Systems", "Proprietary Scripting", "State Behaviour", "Game Logic", "Timing & Balancing"]
     },
     {
-      id: "nextrek",
+      id: "nextrek-social",
       role: "Videogame Designer & Programmer",
       company: "Nextrek S.r.l.",
-      period: "03/2021 — 08/2021",
+      period: "Jul 2021 – Aug 2021",
       location: "Rome, Italy",
-      description: "Independently engineered and developed a complete 3D multiplatform/mobile game using Unity3D with native C#. Subsequently collaborated within an organized production team using shared version-controlled repositories.",
-      skills: ["Unity3D", "C#", "Mobile Optimization", "Git Workflow"]
+      description: "AI architecture and social simulation engineering for a 3D Unity title inspired by The Sims.",
+      bullets: [
+        "Designed and implemented a complete NPC social interaction system for a 3D Unity game inspired by The Sims, combining Finite State Machines (FSM) and Behavior Trees.",
+        "Developed a diverse range of autonomous NPC interactions and behaviours: contextual conversations, flirting, dancing, emotional reactions, peer-to-peer information exchange, short-term memory buffers, and group dynamics."
+      ],
+      skills: ["Unity 3D", "C#", "Behavior Trees", "Finite State Machines (FSM)", "NPC AI Systems", "Social Simulation"]
+    },
+    {
+      id: "nextrek-internship",
+      role: "Game Designer & Programmer (University Internship)",
+      company: "Nextrek S.r.l.",
+      period: "Mar 2021 – Apr 2021",
+      location: "Rome, Italy",
+      description: "Conception, design, and technical delivery of Maze's Soul as an individual title during an accredited university internship.",
+      bullets: [
+        "Independently conceived, designed and developed Maze's Soul as an individual game project during a 238-hour professional internship.",
+        "Managed the entire product lifecycle autonomously, from initial concept pitching and cognitive gameplay design to native C# mobile implementation."
+      ],
+      skills: ["Unity 3D", "C#", "Mobile Development", "Rapid Prototyping", "Solo Game Delivery"]
     }
   ],
   education: [
     {
       id: "master",
-      degree: "Master's Degree in Computer Science — Videogame Design & Programming (LM-18)",
-      institution: "University of Milan (UNIMI)",
-      period: "2023 — 2026",
-      thesisTitle: "Design and Evaluation of Heuristic Dynamic Difficulty Adjustment Systems for Maintaining Flow in Indie Development Contexts",
-      thesisDetails: "Research and algorithmic implementation of heuristic Dynamic Difficulty Adjustment (DDA) to preserve player Flow state in indie gaming contexts. Supervisor: Prof. Laura Ripamonti.",
-      skills: ["Dynamic Difficulty Adjustment (DDA)", "Flow Theory", "Heuristic Systems", "AI for Games"]
+      degree: "MSc in Computer Science – Videogame Design and Programming (LM-18)",
+      institution: "University of Milan (Università degli Studi di Milano)",
+      period: "2023 – Oct 2026",
+      grade: "106 / 110",
+      supervisor: "Prof. Anna Laura Ripamonti",
+      thesisSubject: "Videogame Design",
+      thesisTitle: "Framework Euristico per il Dynamic Difficulty Adjustment (DDA), mediante un'Architettura 'Glass-Box' a supporto del Game Designer",
+      thesisDetails: "Conception, mathematical modeling, and empirical validation of a heuristic Dynamic Difficulty Adjustment framework. Engineered a transparent 'glass-box' telemetry architecture giving game designers complete visibility and manual parameter overrides over real-time flow modulation in punishing action titles.",
+      skills: ["Dynamic Difficulty Adjustment (DDA)", "Flow State Theory", "Player Telemetry", "Game Balance", "Glass-Box Architecture", "Player Psychology"]
     },
     {
       id: "bachelor",
-      degree: "Bachelor's Degree in Computer Engineering (L-8)",
-      institution: "Roma Tre University",
-      period: "2015 — 2021",
-      thesisTitle: "Player's memory, from 2d to 3d",
-      thesisDetails: "Study and formal analysis of player spatial cognition and memory during transitions between 2D floor plans and 3D third-person exploration. Supervisor: Prof. Giuseppe Di Battista.",
-      skills: ["Computer Engineering", "Data Structures & Algorithms", "Computer Architecture", "Networks"]
+      degree: "BSc in Computer Engineering (L-8)",
+      institution: "Roma Tre University (Università degli Studi Roma Tre)",
+      period: "2015 – 2021",
+      supervisor: "Prof. Giuseppe Di Battista",
+      thesisSubject: "Game Design & Psychology",
+      thesisTitle: "Player's memory, from 2d to 3d [Videogame – Maze's Soul]",
+      thesisDetails: "Empirical investigation into human visual-spatial memory retention during real-time perspective transitions from top-down 2D floor plans to 3D third-person navigation, formally implemented and demonstrated via the mobile game Maze's Soul.",
+      skills: ["Computer Engineering", "Data Structures & Algorithms", "Computer Architecture", "Spatial Cognition", "Operating Systems", "Networking"]
     }
   ],
   skills: [
     {
-      category: "Game Dev & Engines",
-      items: ["Unity (Advanced / C#)", "Gameplay Architecture", "FMOD Studio (Adaptive Audio)", "Level Design & Prototyping"]
+      category: "Gameplay & Technical Design",
+      level: "Advanced",
+      icon: "⚡",
+      items: [
+        "Gameplay Systems Design",
+        "Technical Implementation",
+        "Gameplay Mechanics & Controls",
+        "Rapid Gameplay Prototyping",
+        "Design Iteration & Balancing",
+        "GDD / TDD / LDD Technical Authoring",
+        "Game Balance Spreadsheets"
+      ]
     },
     {
-      category: "Graphics & High-Performance Computing",
-      items: ["OpenGL", "CUDA (Parallel GPU Computing)", "C++", "C", "Assembly", "Shaders & Physics Simulation"]
+      category: "AI, NPC & Combat Systems",
+      level: "Specialised",
+      icon: "🧠",
+      items: [
+        "Game AI & NPC Behaviour Architecture",
+        "Behavior Trees (BTs) & Custom Editor Tools",
+        "Finite State Machines (FSMs)",
+        "Combat Systems (Melee & Projectile Mechanics)",
+        "Sensory Perception Cones & Line-of-Sight",
+        "Enemy Pacing & Difficulty Balancing"
+      ]
     },
     {
-      category: "Game Design & Methodologies",
-      items: ["GDD / TDD / LDD Technical Writing", "Dynamic Difficulty Adjustment (DDA)", "Artificial Intelligence for Games", "Git & CI/CD Workflows"]
+      category: "Game Engines & Programming",
+      level: "Advanced",
+      icon: "🎮",
+      items: [
+        "Unity Engine (Advanced 3D & 2D)",
+        "C# (Native Gameplay Programming)",
+        "Object-Oriented Programming (OOP)",
+        "Component-Based Architecture",
+        "Visual Scripting",
+        "Android Mobile Optimization"
+      ]
     },
     {
-      category: "Languages & Technologies",
-      items: ["C#", "C++", "C", "Python", "Java", "SQL", "OCaml", "Eiffel"]
+      category: "Multiplayer Networking & Version Control",
+      level: "Advanced",
+      icon: "🌐",
+      items: [
+        "Mirror Networking (Co-op Multiplayer)",
+        "Client-Server Architecture",
+        "State Synchronization & Remote Procedure Calls",
+        "Git (Advanced Branching & Merge Workflows)",
+        "Collaborative Team Development Pipelines"
+      ]
+    },
+    {
+      category: "Interactive & Spatial 3D Audio",
+      level: "Advanced",
+      icon: "🎧",
+      items: [
+        "FMOD Studio (Event Architecture & Parameter Routing)",
+        "Steam Audio (HRTF & Binaural Spatialization)",
+        "Adaptive Music & Real-Time Parameter Crossfades",
+        "3D Audio Integration in Unity",
+        "Acoustic Environmental Occlusion"
+      ]
+    },
+    {
+      category: "Graphics, GPGPU & Systems",
+      level: "Engineering",
+      icon: "⚙️",
+      items: [
+        "C++ (Systems Programming)",
+        "NVIDIA CUDA (Parallel GPGPU Wave Physics)",
+        "OpenGL & GLSL Custom Shaders",
+        "Real-Time Fluid & Wave Simulation",
+        "Fresnel Optical Shaders",
+        "Python, Java, C"
+      ]
     }
   ]
 };

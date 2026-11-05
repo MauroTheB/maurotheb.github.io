@@ -77,6 +77,8 @@ export interface Experience {
   period: string;
   location: string;
   description: string;
+  course?: string; // Es. "Course: Game Developer – Unity 3D"
+  bullets?: string[]; // Responsabilità e sistemi specifici dal CV
   skills: string[];
 }
 
@@ -85,6 +87,9 @@ export interface Education {
   degree: string;
   institution: string;
   period: string;
+  grade?: string; // Es. "106/110"
+  supervisor?: string;
+  thesisSubject?: string;
   thesisTitle: string;
   thesisDetails: string;
   skills: string[];
@@ -92,6 +97,8 @@ export interface Education {
 
 export interface TechSkillCategory {
   category: string;
+  level?: string;
+  icon?: string;
   items: string[];
 }
 
@@ -101,6 +108,7 @@ export interface ProfileData {
   subheading: string;
   email: string;
   github: string;
+  cvUrl?: string;
   graduationStatus: string;
   languages: { name: string; level: string }[];
 }
