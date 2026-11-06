@@ -104,11 +104,17 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
 
   <!-- VISTA B: SCHEDA ESPANSA DEL SINGOLO PROGETTO (Expanded Cinema Mode) -->
   <div id="project-detail-view" class="hidden min-h-[70vh] space-y-8 animate-detail-appear">
-    <!-- Pulsante di ritorno stile back button -->
-    <button id="close-project-detail" class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-sm font-mono text-slate-300 hover:text-white hover:border-slate-700 transition-opacity duration-300">
-      <span class="text-base">←</span>
-      <span>{UI.backToProjects}</span>
-    </button>
+    <!-- Pulsante di ritorno: Docking calibrato a 108px con Aura Ottica 100% Centrata -->
+        <div class="sticky top-[108px] xl:top-6 z-40 w-fit pointer-events-auto mb-4 transition-all duration-300 relative">
+          <!-- Aura con caduta a curva morbida multi-stop (Zero bordi geometrici visibili) -->
+<div class="absolute -inset-6 rounded-[2.5rem] backdrop-blur-[80px] bg-slate-950/75 [mask-image:radial-gradient(ellipse_at_center,black_25%,rgba(0,0,0,0.7)_55%,rgba(0,0,0,0.2)_80%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_25%,rgba(0,0,0,0.7)_55%,rgba(0,0,0,0.2)_80%,transparent_100%)] pointer-events-none -z-10"></div>          <button 
+            id="close-project-detail" 
+            class="relative inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-slate-900/95 border border-slate-800 hover:border-slate-600 text-sm font-mono text-slate-300 hover:text-white backdrop-blur-2xl shadow-2xl transition-all duration-300 hover:scale-102 hover:shadow-violet-500/10 cursor-pointer"
+          >
+            <span class="text-base">←</span>
+            <span>{UI.backToProjects}</span>
+          </button>
+        </div>
 
     <!-- Contenitore dell'espansione del gioco (Morphing Card) -->
       <div id="detail-card-container" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 sm:p-14 md:p-16 backdrop-blur-2xl shadow-2xl relative overflow-hidden will-change-transform">

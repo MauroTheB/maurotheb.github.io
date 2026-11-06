@@ -6,7 +6,7 @@ export const PORTFOLIO_IT = {
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
     cvUrl: "/cv_mauro_brochier.pdf",
-    graduationStatus: "Laurea Magistrale in Informatica (Game Design) — Laurea Ottobre 2026",
+    graduationStatus: "Laurea Magistrale in Informatica (Game Design) — Conseguita a Ottobre 2026",
     languages: [
       { name: "Francese", level: "Madrelingua" },
       { name: "Italiano", level: "Madrelingua" },
@@ -25,7 +25,7 @@ export const PORTFOLIO_IT = {
     projectsHeading: "Showcase Videogiochi & Sistemi",
     projectsSubheading: "Clicca su un progetto per visualizzarne il processo, l'architettura e i dettagli completi.",
     exploreProject: "Esplora Documentazione & Processo",
-    backToProjects: "← Torna a tutti i progetti",
+    backToProjects: "Torna a tutti i progetti",
     viewSource: "Vedi Repository & Codice Sorgente ↗",
     overviewHeading: "Overview & Game Design",
     mediaHeading: "Media & Showcase Visivo",

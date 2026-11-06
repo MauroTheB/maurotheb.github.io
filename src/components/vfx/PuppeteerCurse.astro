@@ -286,7 +286,7 @@
         s.curX += s.vx;
         s.curY += s.vy;
 
-        // --- BARRIERE FISICHE E RIMBALZO SUI CONFINI (Hero e Scheda protette al 100%) ---
+        // --- BARRIERE FISICHE E ANTI-SANDWICH SUI CONFINI ---
         const heroHeader = document.getElementById("hero-header");
         const safeMinY = heroHeader
           ? heroHeader.offsetTop + heroHeader.offsetHeight + 35
@@ -299,47 +299,60 @@
         const detailCard = document.getElementById("detail-card-container");
         const cardRect = detailCard ? detailCard.getBoundingClientRect() : null;
         const screenW = window.innerWidth;
-        const finalGutter = Math.max(60, (screenW - 1280) / 2);
+        const finalGutter = Math.max(40, (screenW - 1280) / 2);
         const cardLeft = cardRect ? cardRect.left : finalGutter;
         const cardRight = cardRect ? cardRect.right : screenW - finalGutter;
 
-        // 1. Limite Superiore: MAI invadere la Hero (nome, DDA, ecc.)
+        // 1. Limite Superiore protetto
         if (s.curY < safeMinY + s.baseRadius) {
           s.curY = safeMinY + s.baseRadius;
-          s.vy = Math.abs(s.vy) * 0.85; // Rimbalzo verso il basso
-          s.wanderAngle = Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+          s.vy = Math.abs(s.vy) * 0.4;
+          s.vx *= 0.8;
+          s.wanderAngle = Math.PI / 2;
         }
-        // 2. Limite Inferiore: Fondo della pagina
+        // 2. Limite Inferiore protetto
         else if (s.curY > maxDocY - s.baseRadius) {
           s.curY = maxDocY - s.baseRadius;
-          s.vy = -Math.abs(s.vy) * 0.85; // Rimbalzo verso l'alto
-          s.wanderAngle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+          s.vy = -Math.abs(s.vy) * 0.4;
+          s.vx *= 0.8;
+          s.wanderAngle = -Math.PI / 2;
         }
 
-        // 3. Limiti Orizzontali: confinate nelle corsie laterali (MAI sulla scheda centrale)
+        // 3. Limiti Orizzontali Anti-Sandwich (Se lo spazio è troppo stretto, la cellula si ferma dolcemente senza glitch)
         if (s.isLeft) {
-          const minX = 18 + s.baseRadius;
-          const maxX = cardLeft - s.baseRadius - 18;
-          if (s.curX < minX) {
-            s.curX = minX;
-            s.vx = Math.abs(s.vx) * 0.85; // Rimbalzo verso destra
-            s.wanderAngle = 0 + (Math.random() - 0.5) * 0.6;
-          } else if (s.curX > maxX) {
-            s.curX = maxX;
-            s.vx = -Math.abs(s.vx) * 0.85; // Rimbalzo verso sinistra
-            s.wanderAngle = Math.PI + (Math.random() - 0.5) * 0.6;
+          const minX = 15 + s.baseRadius;
+          const maxX = cardLeft - s.baseRadius - 10;
+          
+          if (maxX <= minX) {
+            // Se la finestra è troppo piccola e la corsia si azzera, ancora la cellula al centro del margine disponibile
+            s.curX = Math.max(15, cardLeft / 2);
+          } else {
+            if (s.curX < minX) {
+              s.curX = minX;
+              s.vx = Math.abs(s.vx) * 0.5;
+              s.wanderAngle = 0;
+            } else if (s.curX > maxX) {
+              s.curX = maxX;
+              s.vx = -Math.abs(s.vx) * 0.5;
+              s.wanderAngle = Math.PI;
+            }
           }
         } else {
-          const minX = cardRight + s.baseRadius + 18;
-          const maxX = screenW - 18 - s.baseRadius;
-          if (s.curX < minX) {
-            s.curX = minX;
-            s.vx = Math.abs(s.vx) * 0.85; // Rimbalzo verso destra
-            s.wanderAngle = 0 + (Math.random() - 0.5) * 0.6;
-          } else if (s.curX > maxX) {
-            s.curX = maxX;
-            s.vx = -Math.abs(s.vx) * 0.85; // Rimbalzo verso sinistra
-            s.wanderAngle = Math.PI + (Math.random() - 0.5) * 0.6;
+          const minX = cardRight + s.baseRadius + 10;
+          const maxX = screenW - 15 - s.baseRadius;
+
+          if (maxX <= minX) {
+            s.curX = Math.min(screenW - 15, cardRight + (screenW - cardRight) / 2);
+          } else {
+            if (s.curX < minX) {
+              s.curX = minX;
+              s.vx = Math.abs(s.vx) * 0.5;
+              s.wanderAngle = 0;
+            } else if (s.curX > maxX) {
+              s.curX = maxX;
+              s.vx = -Math.abs(s.vx) * 0.5;
+              s.wanderAngle = Math.PI;
+            }
           }
         }
 
@@ -997,12 +1010,9 @@
 
     window.addEventListener("puppeteer:curse:clear", () => {
       if (clearTimer) clearTimeout(clearTimer);
+      isActive = false;
       canvas.style.opacity = "0";
-
-      clearTimer = window.setTimeout(() => {
-        isActive = false;
-        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }, 700);
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
   }
 

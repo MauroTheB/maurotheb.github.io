@@ -9,9 +9,10 @@ const { lang = 'en' } = Astro.props;
 const { ui: UI } = getPortfolio(lang);
 ---
 
-<!-- 1. Markup Barra HUD -->
-<nav class="sticky top-6 z-50 max-w-5xl mx-auto px-6 my-10">
-  <div class="bg-slate-900/90 border border-slate-800 backdrop-blur-2xl p-2 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-wrap items-center justify-between gap-2">
+<!-- 1. Markup Barra HUD con Cuscinetto di Sfocatura Radiale -->
+  <nav class="sticky top-6 z-50 max-w-5xl mx-auto px-6 my-10 relative">
+    <!-- Cuscinetto di sfocatura ottica concentrico e simmetrico a 360° -->
+    <div class="absolute -inset-6 sm:-inset-8 rounded-[3rem] backdrop-blur-[80px] bg-slate-950/75 [mask-image:radial-gradient(ellipse_at_center,black_25%,rgba(0,0,0,0.7)_55%,rgba(0,0,0,0.2)_80%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_25%,rgba(0,0,0,0.7)_55%,rgba(0,0,0,0.2)_80%,transparent_100%)] pointer-events-none -z-10"></div>    <div class="relative bg-slate-900/95 border border-slate-800 backdrop-blur-2xl p-2 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-wrap items-center justify-between gap-2">
     <button 
       data-target="projects" 
       class="hud-btn flex-1 min-w-[150px] py-3.5 px-5 rounded-xl sm:rounded-2xl text-sm sm:text-base font-mono font-bold transition flex items-center justify-center gap-2.5 bg-violet-600 text-white shadow-lg shadow-violet-600/30"

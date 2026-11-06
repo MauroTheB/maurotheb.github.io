@@ -37,13 +37,34 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
 
     <!-- Pulsanti di Contatto Rapido e Torna in Cima -->
     <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-      <a 
-        href={`mailto:${PROFILE.email}`}
-        class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-violet-600/20 hover:scale-102"
+      <!-- Contattami con box di copia nel Footer -->
+    <div class="relative inline-block text-left w-full sm:w-auto">
+      <button 
+        id="footer-contact-btn"
+        type="button"
+        class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-violet-600/20 hover:scale-102 cursor-pointer"
       >
         <span>✉</span>
         <span>{UI.heroBtnContact}</span>
-      </a>
+      </button>
+
+      <div 
+        id="footer-email-dropdown" 
+        class="hidden absolute right-0 sm:left-1/2 sm:-translate-x-1/2 mt-3 w-72 p-3 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl backdrop-blur-2xl z-50 animate-detail-appear"
+      >
+        <div class="text-[11px] font-mono text-slate-400 mb-1.5 px-1">Email Diretta:</div>
+        <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+          <span class="text-xs font-mono text-cyan-300 select-all truncate">{PROFILE.email}</span>
+          <button 
+            id="footer-copy-clipboard-btn"
+            type="button"
+            class="px-2.5 py-1 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[11px] font-mono font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
+          >
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
       {PROFILE.cvUrl && (
         <a 
@@ -97,4 +118,40 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
   }
   setupBackToTop();
   document.addEventListener('astro:page-load', setupBackToTop);
+</script>
+
+<script>
+  const fContactBtn = document.getElementById('footer-contact-btn');
+  const fEmailDropdown = document.getElementById('footer-email-dropdown');
+  const fCopyBtn = document.getElementById('footer-copy-clipboard-btn');
+
+  fContactBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fEmailDropdown?.classList.toggle('hidden');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (!fContactBtn?.contains(e.target as Node) && !fEmailDropdown?.contains(e.target as Node)) {
+      fEmailDropdown?.classList.add('hidden');
+    }
+  });
+
+  fCopyBtn?.addEventListener('click', () => {
+    const emailText = document.querySelector('#footer-email-dropdown span.select-all')?.textContent || '';
+    navigator.clipboard.writeText(emailText).then(() => {
+      const originalText = fCopyBtn.innerHTML;
+      fCopyBtn.innerHTML = '<span class="text-emerald-300">✓ Copied!</span>';
+      setTimeout(() => {
+        fCopyBtn.innerHTML = originalText;
+        fEmailDropdown?.classList.add('hidden');
+      }, 1200);
+    });
+  });
+
+  const btn = document.getElementById('back-to-top-btn');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 </script>

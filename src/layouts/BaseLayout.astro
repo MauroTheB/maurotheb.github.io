@@ -55,4 +55,26 @@ const socialImageURL = new URL(image, Astro.site || "https://maurotheb.github.io
       <slot />
     </div>
   </body>
+
+  <!-- Tracker Visite Uniche Privacy-First -->
+  <script>
+    (function () {
+      const WORKER_URL = 'https://nameless-hall-16b7.mauro-brochier97.workers.dev/'; 
+      
+      if (!WORKER_URL.includes('workers.dev')) return;
+
+      const path = window.location.pathname;
+      const locale = document.documentElement.lang || 'en';
+
+      // Chiamata fire-and-forget con keepalive (non blocca né rallenta il caricamento del sito)
+      fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path, locale }),
+        keepalive: true
+      }).catch(() => {
+        // Silenzia eventuali blocchi di adblocker per massima resilienza
+      });
+    })();
+  </script>
 </html>

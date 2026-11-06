@@ -25,7 +25,7 @@ export const PORTFOLIO_EN = {
     projectsHeading: "Video Games & Systems Showcase",
     projectsSubheading: "Click on any project to inspect technical breakdown, architecture, and gameplay design.",
     exploreProject: "Explore Documentation & Process",
-    backToProjects: "← Back to all projects",
+    backToProjects: "Back to all projects",
     viewSource: "View Repository & Source Code ↗",
     overviewHeading: "Overview & Game Design",
     mediaHeading: "Media & Visual Showcase",

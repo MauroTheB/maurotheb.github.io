@@ -60,8 +60,8 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
     {PROFILE.subheading}
   </p>
 
-  <!-- Pulsanti di azione rapida (GitHub, Contatto Diretto & Download CV Ufficiale) -->
-    <div class="relative z-10 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
+  <!-- Pulsanti di azione rapida con z-index elevato (z-40) -->
+    <div class="relative z-40 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
       {PROFILE.cvUrl && (
         <a 
           href={PROFILE.cvUrl} 
@@ -86,13 +86,34 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
         <span class="text-xs text-slate-500">↗</span>
       </a>
 
-      <a 
-        href={`mailto:${PROFILE.email}`}
-        class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2 hover:scale-102"
-      >
-        <span>{UI.heroBtnContact}</span>
-        <span class="text-xs">✉</span>
-      </a>
+      <!-- Contattami con Box Email a comparsa in primo piano assoluto (z-[99]) -->
+      <div class="relative inline-block text-left">
+        <button 
+          id="hero-contact-btn"
+          type="button"
+          class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition shadow-lg shadow-violet-600/25 flex items-center gap-2 hover:scale-102 cursor-pointer"
+        >
+          <span>{UI.heroBtnContact}</span>
+          <span class="text-xs">✉</span>
+        </button>
+
+        <div 
+          id="hero-email-dropdown" 
+          class="hidden absolute left-1/2 -translate-x-1/2 mt-3 w-72 p-3 rounded-2xl bg-slate-900/98 border border-slate-700 shadow-2xl backdrop-blur-2xl z-[99] animate-detail-appear"
+        >
+          <div class="text-[11px] font-mono text-slate-400 mb-1.5 px-1">Email Diretta:</div>
+          <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="text-xs font-mono text-cyan-300 select-all truncate">{PROFILE.email}</span>
+            <button 
+              id="hero-copy-clipboard-btn"
+              type="button"
+              class="px-2.5 py-1 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[11px] font-mono font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
+            >
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
   <!-- Lingue parlate in pillole -->
@@ -142,3 +163,32 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
     animation: beamBreathe 4.5s ease-in-out infinite;
   }
 </style>
+<script>
+  const contactBtn = document.getElementById('hero-contact-btn');
+  const emailDropdown = document.getElementById('hero-email-dropdown');
+  const copyBtn = document.getElementById('hero-copy-clipboard-btn');
+
+  contactBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    emailDropdown?.classList.toggle('hidden');
+  });
+
+  // Chiude il box se si clicca fuori
+  window.addEventListener('click', (e) => {
+    if (!contactBtn?.contains(e.target as Node) && !emailDropdown?.contains(e.target as Node)) {
+      emailDropdown?.classList.add('hidden');
+    }
+  });
+
+  copyBtn?.addEventListener('click', () => {
+    const emailText = document.querySelector('#hero-email-dropdown span.select-all')?.textContent || '';
+    navigator.clipboard.writeText(emailText).then(() => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '<span class="text-emerald-300">✓ Copied!</span>';
+      setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+        emailDropdown?.classList.add('hidden');
+      }, 1200);
+    });
+  });
+</script>
