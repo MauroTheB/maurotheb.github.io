@@ -283,25 +283,28 @@ export const PORTFOLIO_EN = {
         ]
       },
       storySteps: [
-        {
-          tag: "01 // TEMPORAL MECHANICS",
-          title: "Interactive Timeline Scheduling",
-          description: "Designed a 2D puzzle-strategy core loop where players schedule actions, place tools, and arrange agent trajectories along a multi-track tactical timeline.",
-          mediaLabel: "[ UI & Design // Timeline Scrubber & Action Scheduling Grid ]"
-        },
-        {
-          tag: "02 // AGENT AI PATTERNS",
-          title: "Predictable Routine Exploitation",
-          description: "Engineered deterministic NPC routines and detection cones. Players exploit predictable guard movements to orchestrate fatal accidents without raising suspicion meters.",
-          mediaLabel: "[ AI Systems // Routine Paths, Suspicion Cones & Trigger Traps ]"
-        },
-        {
-          tag: "03 // THE EXECUTION PHASE",
-          title: "Autonomous Playback & Evaluation",
-          description: "Once the timeline is staged, hitting play triggers an autonomous real-time sequence. The agency system grades performance based on clean execution and zero collateral evidence.",
-          mediaLabel: "[ Gameplay Demo // Playback Sequence & Mission Debriefing Screen ]"
-        }
-      ]
+          {
+            tag: "01 // TEMPORAL MECHANICS",
+            title: "Interactive Timeline Scheduling",
+            description: "Designed a 2D puzzle-strategy core loop where players schedule actions, place tools, and arrange agent trajectories along a multi-track tactical timeline.",
+            mediaLabel: "[ UI & Design // Timeline Scrubber & Action Scheduling Grid ]",
+            imageSrc: "/images/murder_immagine1.png"
+          },
+          {
+            tag: "02 // AGENT AI PATTERNS",
+            title: "Predictable Routine Exploitation",
+            description: "Engineered deterministic NPC routines and detection cones. Players exploit predictable guard movements to orchestrate fatal accidents without raising suspicion meters.",
+            mediaLabel: "[ AI Systems // Routine Paths, Suspicion Cones & Trigger Traps ]",
+            imageSrc: "/images/murder_immagine2.png"
+          },
+          {
+            tag: "03 // THE EXECUTION PHASE",
+            title: "Autonomous Playback & Evaluation",
+            description: "Once the timeline is staged, hitting play triggers an autonomous real-time sequence. The agency system grades performance based on clean execution and zero collateral evidence.",
+            mediaLabel: "[ Gameplay Demo // Playback Sequence & Mission Debriefing Screen ]",
+            imageSrc: "/images/murder_immagine3.png"
+          }
+        ]
     },
     {
       id: "water-sim",
@@ -340,25 +343,28 @@ export const PORTFOLIO_EN = {
         ]
       },
       storySteps: [
-        {
-          tag: "01 // GPGPU COMPUTING",
-          title: "Parallel CUDA Physics Kernels",
-          description: "Implemented high-performance parallel computation in C++ and CUDA. Fluid grid state and velocity fields are computed directly on the GPU across thousands of concurrent hardware threads.",
-          mediaLabel: "[ High Performance // CUDA Kernel Dispatch & Memory Hierarchy ]"
-        },
-        {
-          tag: "02 // FLUID DYNAMICS",
-          title: "Surface Wave Equations in OpenGL",
-          description: "Engineered real-time wave propagation through height-field displacement and custom OpenGL shaders, achieving smooth fluid reflections and refractive caustic lighting.",
-          mediaLabel: "[ Graphics Engine // Shaders, Caustics & Vertex Displacement ]"
-        },
-        {
-          tag: "03 // RIGID BODY COUPLING",
-          title: "Arbitrary 3D Mesh Interaction",
-          description: "Simulated two-way physical interaction between dynamic 3D rigid bodies and the fluid surface: objects generate realistic wake ripples, buoyancy, and displacement based on shape.",
-          mediaLabel: "[ Physics Simulation // Mesh Collision & Wave Ripple Generation ]"
-        }
-      ]
+          {
+            tag: "01 // GPGPU COMPUTING",
+            title: "Parallel CUDA Physics Kernels",
+            description: "Implemented high-performance parallel computation in C++ and CUDA. Fluid grid state and velocity fields are computed directly on the GPU across thousands of concurrent hardware threads.",
+            mediaLabel: "[ High Performance // CUDA Kernel Dispatch & Memory Hierarchy ]",
+            imageSrc: "/images/water_immagine1.png"
+          },
+          {
+            tag: "02 // FLUID DYNAMICS",
+            title: "Surface Wave Equations in OpenGL",
+            description: "Engineered real-time wave propagation through height-field displacement and custom OpenGL shaders, achieving smooth fluid reflections and refractive caustic lighting.",
+            mediaLabel: "[ Graphics Engine // Shaders, Caustics & Vertex Displacement ]",
+            imageSrc: "/images/water_immagine2.png"
+          },
+          {
+            tag: "03 // RIGID BODY COUPLING",
+            title: "Arbitrary 3D Mesh Interaction",
+            description: "Simulated two-way physical interaction between dynamic 3D rigid bodies and the fluid surface: objects generate realistic wake ripples, buoyancy, and displacement based on shape.",
+            mediaLabel: "[ Physics Simulation // Mesh Collision & Wave Ripple Generation ]",
+            imageSrc: "/images/water_immagine3.png"
+          }
+        ]
     },
     {
       id: "mazes-soul",

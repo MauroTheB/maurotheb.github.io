@@ -282,25 +282,28 @@ export const PORTFOLIO_IT = {
         ]
       },
       storySteps: [
-        {
-          tag: "01 // MECCANICHE TEMPORALI",
-          title: "Pianificazione Strategica su Timeline",
-          description: "Progettazione del core loop puzzle-strategico in cui il giocatore organizza azioni, posiziona oggetti e coordina le traiettorie degli agenti lungo una linea temporale tattica a tracce.",
-          mediaLabel: "[ UI & Design // Scrubber Temporale & Griglia di Pianificazione Azioni ]"
-        },
-        {
-          tag: "02 // PATTERN COMPORTAMENTALI AI",
-          title: "Sfruttamento delle Routine di Pattuglia",
-          description: "Sviluppo di routine deterministiche per gli NPC con coni visivi di allerta. Il giocatore calcola i tempi di ronda delle guardie per orchestrare incidenti fatali senza destare sospetti.",
-          mediaLabel: "[ Sistemi AI // Percorsi di Routine, Coni di Sospetto & Trappole ]"
-        },
-        {
-          tag: "03 // FASE DI ESECUZIONE",
-          title: "Riproduzione Autonoma e Valutazione",
-          description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
-          mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]"
-        }
-      ]
+          {
+            tag: "01 // MECCANICHE TEMPORALI",
+            title: "Pianificazione Strategica su Timeline",
+            description: "Progettazione del core loop puzzle-strategico in cui il giocatore organizza azioni, posiziona oggetti e coordina le traiettorie degli agenti lungo una linea temporale tattica a tracce.",
+            mediaLabel: "[ UI & Design // Scrubber Temporale & Griglia di Pianificazione Azioni ]",
+            imageSrc: "/images/murder_immagine1.png"
+          },
+          {
+            tag: "02 // PATTERN COMPORTAMENTALI AI",
+            title: "Sfruttamento delle Routine di Pattuglia",
+            description: "Sviluppo di routine deterministiche per gli NPC con coni visivi di allerta. Il giocatore calcola i tempi di ronda delle guardie per orchestrare incidenti fatali senza destare sospetti.",
+            mediaLabel: "[ Sistemi AI // Percorsi di Routine, Coni di Sospetto & Trappole ]",
+            imageSrc: "/images/murder_immagine2.png"
+          },
+          {
+            tag: "03 // FASE DI ESECUZIONE",
+            title: "Riproduzione Autonoma e Valutazione",
+            description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
+            mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]",
+            imageSrc: "/images/murder_immagine3.png"
+          }
+        ]
     },
     {
       id: "water-sim",
@@ -339,25 +342,28 @@ export const PORTFOLIO_IT = {
         ]
       },
       storySteps: [
-        {
-          tag: "01 // CALCOLO GPGPU",
-          title: "Kernel Fisici Paralleli in CUDA",
-          description: "Implementazione del calcolo parallelo ad alte prestazioni in C++ e CUDA. La griglia del fluido e i campi di velocità vengono elaborati direttamente sulla GPU tramite migliaia di thread hardware concorrenti.",
-          mediaLabel: "[ Calcolo Parallelo // Dispatch Kernel CUDA & Gestione Memoria ]"
-        },
-        {
-          tag: "02 // FLUIDODINAMICA",
-          title: "Propagazione Onde e Rendering OpenGL",
-          description: "Calcolo della propagazione ondosa in tempo reale tramite displacement di height-field e shader OpenGL dedicati, con simulazione di riflessioni realistiche ed effetti caustici.",
-          mediaLabel: "[ Motore Grafico // Shaders, Caustiche & Displacement Vertici ]"
-        },
-        {
-          tag: "03 // INTERAZIONE CON CORPI RIGIDI",
-          title: "Accoppiamento con Mesh 3D Arbitrarie",
-          description: "Simulazione fisica bidirezionale tra corpi rigidi 3D dinamici e la superficie liquida: gli oggetti galleggiano, generano onde concentriche di scia e si spostano coerentemente con il fluido.",
-          mediaLabel: "[ Simulazione Fisica // Collisioni Mesh & Generazione Onde di Scia ]"
-        }
-      ]
+          {
+            tag: "01 // CALCOLO GPGPU",
+            title: "Kernel Fisici Paralleli in CUDA",
+            description: "Implementazione del calcolo parallelo ad alte prestazioni in C++ e CUDA. La griglia del fluido e i campi di velocità vengono elaborati direttamente sulla GPU tramite migliaia di thread hardware concorrenti.",
+            mediaLabel: "[ Calcolo Parallelo // Dispatch Kernel CUDA & Gestione Memoria ]",
+            imageSrc: "/images/water_immagine1.png"
+          },
+          {
+            tag: "02 // FLUIDODINAMICA",
+            title: "Propagazione Onde e Rendering OpenGL",
+            description: "Calcolo della propagazione ondosa in tempo reale tramite displacement di height-field e shader OpenGL dedicati, con simulazione di riflessioni realistiche ed effetti caustici.",
+            mediaLabel: "[ Motore Grafico // Shaders, Caustiche & Displacement Vertici ]",
+            imageSrc: "/images/water_immagine2.png"
+          },
+          {
+            tag: "03 // INTERAZIONE CON CORPI RIGIDI",
+            title: "Accoppiamento con Mesh 3D Arbitrarie",
+            description: "Simulazione fisica bidirezionale tra corpi rigidi 3D dinamici e la superficie liquida: gli oggetti galleggiano, generano onde concentriche di scia e si spostano coerentemente con il fluido.",
+            mediaLabel: "[ Simulazione Fisica // Collisioni Mesh & Generazione Onde di Scia ]",
+            imageSrc: "/images/water_immagine3.png"
+          }
+        ]
     },
     {
       id: "mazes-soul",
