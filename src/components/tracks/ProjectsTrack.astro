@@ -454,8 +454,15 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       if (!detailCardContainer || !detailTitle || !detailBodyContent) return;
 
       const firstCardRect = card.getBoundingClientRect();
-      const clickX = mouseEvt.clientX;
-      const clickY = mouseEvt.clientY;
+    // Coordinate con fallback sicuro se il click viene simulato da deep-link
+    const clickX = mouseEvt.clientX || (firstCardRect.left + firstCardRect.width / 2);
+    const clickY = mouseEvt.clientY || (firstCardRect.top + firstCardRect.height / 2);
+
+    // Aggiorna l'URL del browser con l'hash del progetto senza ricaricare la pagina
+    const clickedProjId = card.getAttribute('data-project-card');
+    if (clickedProjId) {
+      history.pushState(null, '', `#${clickedProjId}`);
+    }
 
       // Controlla se la pellicola d'oro è arrivata a fine corsa (>= 2.75s, corrispondente a --gold-rise-duration)
       const isGoldFullyCharged = hoverStartTime > 0 && (performance.now() - hoverStartTime >= 2750);
@@ -586,6 +593,9 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     if (isAnimating || !detailCardContainer) return;
     isAnimating = true;
 
+    // Rimuove l'hash dall'URL tornando all'indirizzo pulito della pagina
+  history.pushState(null, '', window.location.pathname + window.location.search);
+
     // 1. Spegni e nascondi subito il video per non consumare GPU in chiusura
     if (detailVideoContainer) {
       detailVideoContainer.classList.remove('opacity-45');
@@ -623,6 +633,50 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
       }
     }, 850);
   });
+
+  // --- 1. NAVIGAZIONE DA TASTIERA (Tasto ESC per chiudere il dettaglio) ---
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      const isDetailOpen = projectDetail && !projectDetail.classList.contains('hidden');
+      if (isDetailOpen && !isAnimating) {
+        closeDetailBtn?.click();
+      }
+    }
+  });
+
+  // --- 2. DEEP-LINKING AUTOMATICO ALL'AVVIO VIA URL HASH (#pomegranade, #puppeteer, ecc.) ---
+  function checkUrlHash() {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+
+    const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${hash}"]`);
+    if (targetCard) {
+      // Breve pausa per attendere che il layout sia assestato, poi scorre e apre
+      setTimeout(() => {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          targetCard.click();
+        }, 300);
+      }, 350);
+    }
+  }
+
+  // Esegui il controllo al caricamento
+  checkUrlHash();
+
+  // Supporto nativo ai tasti Avanti/Indietro del browser (History Popstate)
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash.replace('#', '');
+    const isDetailOpen = projectDetail && !projectDetail.classList.contains('hidden');
+
+    if (!hash && isDetailOpen && !isAnimating) {
+      closeDetailBtn?.click();
+    } else if (hash && !isDetailOpen && !isAnimating) {
+      const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${hash}"]`);
+      targetCard?.click();
+    }
+  });
+
 </script>
 
 <!-- Stili di Disintegrazione e Comparsa Dettaglio -->

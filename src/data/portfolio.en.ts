@@ -97,25 +97,28 @@ export const PORTFOLIO_EN = {
       teamRoles: "Solo Researcher, Technical Game Designer, Systems Programmer",
       tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Player Telemetry"],
       storySteps: [
-        {
-          tag: "01 // PROBLEM STATEMENT",
-          title: "The Hardcore Friction Dilemma",
-          description: "Traditional static difficulty in punishing genres frequently leads to high player churn due to anxiety spikes or skill stagnation. The design objective was engineering an adaptive system that preserves genuine tension without ever feeling artificial or patronizing to veteran players.",
-          mediaLabel: "[ Research Architecture // Flow Channel & Telemetry Mapping ]"
-        },
-        {
-          tag: "02 // HEURISTIC ARCHITECTURE",
-          title: "Non-Intrusive Challenge Modulation",
-          description: "Engineered a modular framework in Unity and native C# evaluating real-time player error rates, engagement velocity, and recovery mechanics. The system modulates environmental and enemy combat parameters within strictly calibrated, imperceptible thresholds.",
-          mediaLabel: "[ Systems Design // Parameter Modulation & State Thresholds ]"
-        },
-        {
-          tag: "03 // EMPIRICAL VALIDATION",
-          title: "15-Player Qualitative & Quantitative Study",
-          description: "Conducted structured playtesting sessions across diverse skill tiers. In-game telemetry and post-session psychological evaluations demonstrated significant improvements in flow retention, engagement duration, and perceived fairness during high-friction encounters.",
-          mediaLabel: "[ Empirical Study // Telemetry Analytics & Flow Survey Results ]"
-        }
-      ]
+          {
+            tag: "01 // PROBLEM STATEMENT",
+            title: "The Hardcore Friction Dilemma",
+            description: "Traditional static difficulty in punishing genres frequently leads to high player churn due to anxiety spikes or skill stagnation. The design objective was engineering an adaptive system that preserves genuine tension without ever feeling artificial or patronizing to veteran players.",
+            mediaLabel: "[ Research Prototype // Boss Encounter Phase 1 ]",
+            imageSrc: "/images/dda_immagine1.png"
+          },
+          {
+            tag: "02 // HEURISTIC ARCHITECTURE",
+            title: "Non-Intrusive Challenge Modulation",
+            description: "Engineered a modular framework in Unity and native C# evaluating real-time player error rates, engagement velocity, and recovery mechanics. The system modulates environmental and enemy combat parameters within strictly calibrated, imperceptible thresholds.",
+            mediaLabel: "[ Adaptive Challenge // Boss Encounter Phase 2 Escalation ]",
+            imageSrc: "/images/dda_immagine2.png"
+          },
+          {
+            tag: "03 // EMPIRICAL VALIDATION",
+            title: "15-Player Qualitative & Quantitative Study",
+            description: "Conducted structured playtesting sessions across diverse skill tiers. In-game telemetry and post-session psychological evaluations demonstrated significant improvements in flow retention, engagement duration, and perceived fairness during high-friction encounters.",
+            mediaLabel: "[ High-Level Telemetry Data // Flow Survey Evaluation ]",
+            imageSrc: "/images/dda_immagine3.png"
+          }
+        ]
     },
     {
       id: "pomegranade",

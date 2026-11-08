@@ -96,25 +96,28 @@ export const PORTFOLIO_IT = {
       teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
       tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
       storySteps: [
-        {
-          tag: "01 // FORMULAZIONE DEL PROBLEMA",
-          title: "Il Dilemma della Frizione nei Soulslike",
-          description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
-          mediaLabel: "[ Architettura di Ricerca // Mappatura Canale di Flow & Telemetria ]"
-        },
-        {
-          tag: "02 // ARCHITETTURA EURISTICA",
-          title: "Modulazione Non Invasiva della Sfida",
-          description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
-          mediaLabel: "[ Systems Design // Modulazione Parametri & Soglie di Stato ]"
-        },
-        {
-          tag: "03 // VALIDAZIONE EMPIRICA",
-          title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
-          description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
-          mediaLabel: "[ Studio Empirico // Analisi Telemetrica & Risultati Questionari Flow ]"
-        }
-      ]
+          {
+            tag: "01 // FORMULAZIONE DEL PROBLEMA",
+            title: "Il Dilemma della Frizione nei Soulslike",
+            description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
+            mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
+            imageSrc: "/images/dda_immagine1.png"
+          },
+          {
+            tag: "02 // ARCHITETTURA EURISTICA",
+            title: "Modulazione Non Invasiva della Sfida",
+            description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
+            mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
+            imageSrc: "/images/dda_immagine2.png"
+          },
+          {
+            tag: "03 // VALIDAZIONE EMPIRICA",
+            title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
+            description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
+            mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
+            imageSrc: "/images/dda_immagine3.png"
+          }
+        ]
     },
     {
       id: "pomegranade",
