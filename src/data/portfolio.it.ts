@@ -408,19 +408,22 @@ export const PORTFOLIO_IT = {
           tag: "01 // COGNIZIONE VISIVA",
           title: "Fase di Memorizzazione in Pianta 2D",
           description: "Il giocatore osserva la mappa bidimensionale del labirinto per esattamente 30 secondi con un countdown per memorizzare bivi, vicoli ciechi e punti di interesse.",
-          mediaLabel: "[ Meccaniche di Gioco // Mappa Blueprint 2D & Timer di Countdown ]"
+          mediaLabel: "[ Meccaniche di Gioco // Mappa Blueprint 2D & Timer di Countdown ]",
+          imageSrc: "/images/maze_immagine1.png"
         },
         {
           tag: "02 // NAVIGAZIONE SPAZIALE 3D",
           title: "Esplorazione in Terza Persona",
           description: "La visuale passa all'interno del labirinto in 3D in terza persona. Il giocatore deve fare affidamento esclusivamente sulla propria memoria di lavoro visuo-spaziale per ritrovare l'uscita.",
-          mediaLabel: "[ Movimento 3D // Controlli Telecamera & Input Touch Mobile ]"
+          mediaLabel: "[ Movimento 3D // Controlli Telecamera & Input Touch Mobile ]",
+          imageSrc: "/images/maze_immagine2.png"
         },
         {
           tag: "03 // GESTIONE DELLE RISORSE",
           title: "Mercanti Nascosti ed Economia delle Pozioni",
           description: "Integrazione di dinamiche di sopravvivenza su mobile: scovare mercanti segreti, gestire l'illuminazione delle torce e utilizzare pozioni di velocità per non restare intrappolati per sempre.",
-          mediaLabel: "[ UI Mobile // Inventario, Pozioni & Interazione con i Mercanti ]"
+          mediaLabel: "[ UI Mobile // Inventario, Pozioni & Interazione con i Mercanti ]",
+          imageSrc: "/images/maze_immagine3.png"
         }
       ]
     }

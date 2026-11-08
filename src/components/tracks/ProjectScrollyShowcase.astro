@@ -10,10 +10,11 @@ interface StoryStep {
 
 interface Props {
   steps: StoryStep[];
+  isMobile?: boolean;
   lang?: 'en' | 'it';
 }
 
-const { steps, lang = 'en' } = Astro.props;
+const { steps, isMobile = false, lang = 'en' } = Astro.props;
 const scrollCue = lang === 'it' 
   ? 'CONTROLLO ANALOGICO ROTELLINA: RUOTA PER ESPLORARE' 
   : 'ANALOG SCRUBBING: SCROLL WHEEL TO EXPLORE';
@@ -32,21 +33,25 @@ const scrollCue = lang === 'it'
   <!-- Stage a 2 Colonne -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center flex-1 relative min-h-[380px]">
     
-    <!-- COLONNA SINISTRA: Stack Immagini (Libero da gabbie e bordi intermedi) -->
-    <div class="relative h-64 sm:h-80 lg:h-96 w-full flex items-center justify-center">
-      {steps.map((step, index) => (
-        <div 
-          data-scrub-media={index}
-          class="scrub-media-layer absolute inset-0 flex items-center justify-center will-change-[filter,opacity,transform]"
-        >
-          {step.imageSrc ? (
-            <img 
-              src={step.imageSrc} 
-              alt={step.title}
-              class="max-h-full max-w-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
-              draggable="false"
-            />
-          ) : (
+    <!-- COLONNA SINISTRA: Stack Immagini (Adattivo: Widescreen per PC o Chassis Verticale per Mobile) -->
+  <div class={`relative w-full flex items-center justify-center ${isMobile ? 'h-80 sm:h-96 lg:h-[440px]' : 'h-64 sm:h-80 lg:h-96'}`}>
+    {steps.map((step, index) => (
+      <div 
+        data-scrub-media={index}
+        class="scrub-media-layer absolute inset-0 flex items-center justify-center will-change-[filter,opacity,transform]"
+      >
+        {step.imageSrc ? (
+          <img 
+            src={step.imageSrc} 
+            alt={step.title}
+            class={`max-h-full max-w-full object-contain ${
+              isMobile 
+                ? 'rounded-2xl border-2 border-slate-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-white/10' 
+                : 'drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]'
+            }`}
+            draggable="false"
+          />
+        ) : (
             <div class="w-full h-full rounded-2xl bg-slate-900/60 border border-slate-800/80 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs sm:text-sm">
               <span class="text-cyan-400 font-bold mb-2">{step.tag}</span>
               <span class="text-slate-300 font-medium">{step.mediaLabel}</span>

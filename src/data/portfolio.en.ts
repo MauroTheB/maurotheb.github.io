@@ -409,19 +409,22 @@ export const PORTFOLIO_EN = {
           tag: "01 // COGNITIVE MECHANICS",
           title: "2D Memory Memorization Phase",
           description: "Players are presented with a top-down 2D blueprint of the labyrinth for exactly 30 seconds to memorize pathways, dead ends, and point-of-interest markers.",
-          mediaLabel: "[ Game Mechanics // 2D Blueprint HUD & Countdown Timer ]"
+          mediaLabel: "[ Game Mechanics // 2D Blueprint HUD & Countdown Timer ]",
+          imageSrc: "/images/maze_immagine1.png"
         },
         {
           tag: "02 // 3D SPATIAL NAVIGATION",
           title: "Third-Person Perspective Traversal",
           description: "The perspective transitions into full 3D over-the-shoulder navigation. The player must rely purely on visual-spatial working memory to find the exit through identical corridor walls.",
-          mediaLabel: "[ Gameplay Traversal // 3D Camera Controls & Mobile Touch Input ]"
+          mediaLabel: "[ Gameplay Traversal // 3D Camera Controls & Mobile Touch Input ]",
+          imageSrc: "/images/maze_immagine2.png"
         },
         {
           tag: "03 // RESOURCE MANAGEMENT",
           title: "Hidden Merchants & Potion Economy",
           description: "Integrated survival gameplay mechanics on mobile: finding hidden merchants, managing torches, and utilizing speed or memory potions to avoid being trapped forever in the maze.",
-          mediaLabel: "[ Mobile UI // Inventory, Potion Crafting & Merchant Interaction ]"
+          mediaLabel: "[ Mobile UI // Inventory, Potion Crafting & Merchant Interaction ]",
+          imageSrc: "/images/maze_immagine3.png"
         }
       ]
     }

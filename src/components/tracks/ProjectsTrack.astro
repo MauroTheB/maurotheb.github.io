@@ -376,18 +376,19 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
                 </div>
               )}
 
-                <!-- C. Interactive Scrollytelling Showcase -->
-                {proj.storySteps && (
-                  <div>
-                    <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-2">
-                      {UI.mediaHeading}
-                    </h4>
-                    <ProjectScrollyShowcase 
-                      steps={proj.storySteps} 
-                      lang={lang}
-                    />
-                  </div>
-                )}
+                <!-- C. Interactive Scrollytelling Showcase (Supporta formato mobile verticale) -->
+              {proj.storySteps && (
+                <div>
+                  <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-2">
+                    {UI.mediaHeading}
+                  </h4>
+                  <ProjectScrollyShowcase 
+                    steps={proj.storySteps} 
+                    isMobile={Boolean(proj.isMobile)}
+                    lang={lang}
+                  />
+                </div>
+              )}
 
               </div>
             ))}
