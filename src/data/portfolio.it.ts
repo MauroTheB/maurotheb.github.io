@@ -5,7 +5,7 @@ export const PORTFOLIO_IT = {
     subheading: "Technical Game Designer & Systems Engineer. Unione tra design dei sistemi di gameplay, psicologia del giocatore e implementazione tecnica nativa su motore in C# e C++.",
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
-    cvUrl: "/cv_mauro_brochier.pdf",
+    cvUrl: "/mauro_brochier_cv.pdf",
     graduationStatus: "Laurea Magistrale in Informatica (Game Design) — Conseguita a Ottobre 2026",
     languages: [
       { name: "Francese", level: "Madrelingua" },
@@ -97,21 +97,21 @@ export const PORTFOLIO_IT = {
       tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
       storySteps: [
           {
-            tag: "01 // FORMULAZIONE DEL PROBLEMA",
+            tag: "ORMULAZIONE DEL PROBLEMA",
             title: "Il Dilemma della Frizione nei Soulslike",
             description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
             mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
             imageSrc: "/images/dda_immagine1.png"
           },
           {
-            tag: "02 // ARCHITETTURA EURISTICA",
+            tag: "ARCHITETTURA EURISTICA",
             title: "Modulazione Non Invasiva della Sfida",
             description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
             mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
             imageSrc: "/images/dda_immagine2.png"
           },
           {
-            tag: "03 // VALIDAZIONE EMPIRICA",
+            tag: "VALIDAZIONE EMPIRICA",
             title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
             description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
             mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
@@ -161,14 +161,14 @@ export const PORTFOLIO_IT = {
       gameplayId: "KJZ43R5dVLI",
       storySteps: [
         {
-          tag: "01 // CORE GAMEPLAY LOOP",
+          tag: "CORE GAMEPLAY LOOP",
           title: "Combattimento Survival & Custodia del Falò",
           description: "I giocatori alternano combattimenti ad alta intensità—usando munizioni estratte da melograni magici—a fasi strategiche di riparazione. Alimentare il falò centrale è indispensabile per respingere l'alba pietrificante e proteggere i rifugi del team.",
           mediaLabel: "[ Gameplay Combat // Crafting Munizioni Melograno & Manutenzione Rifugio ]",
           imageSrc: "/images/immagine_falo_personaggio.png"
         },
         {
-          tag: "02 // MULTIPLAYER SYSTEMS",
+          tag: "MULTIPLAYER SYSTEMS",
           title: "Architettura Cooperativa (2–4 Giocatori)",
           description: "Progettazione e implementazione della logica multiplayer cooperativa in Unity e C#. I ruoli sono distribuiti dinamicamente: raccogliere risorse, respingere le ondate notturne e coordinare la difesa attorno alla forza vitale del falò.",
           mediaLabel: "[ Schema Tecnico // Sincronizzazione di Stato & Gestione Risorse Co-op ]",
@@ -223,21 +223,21 @@ export const PORTFOLIO_IT = {
       },
       storySteps: [
         {
-          tag: "01 // HORROR ATMOSFERICO",
+          tag: "HORROR ATMOSFERICO",
           title: "Esplorazione Guidata dall'Audio",
           description: "Progettazione della tensione psicologica in una villa abbandonata. Il giocatore si orienta tramite una misteriosa voce guida femminile, indizi acustici e diari per ricostruire la tragedia evitando allarmi rumorosi.",
           mediaLabel: "[ Gameplay Esplorativo // Audio Spaziale & Illuminazione Atmosferica ]",
           imageSrc: "/images/puppeteer_immagine1.png"
         },
         {
-          tag: "02 // STEALTH & COMPORTAMENTO AI",
+          tag: "STEALTH & COMPORTAMENTO AI",
           title: "Pattugliamento e Percezione del Burattinaio",
           description: "Implementazione delle meccaniche stealth e degli stati sensoriali dell'IA nemica (Pattuglia, Allerta, Caccia). La fuga richiede spezzare la linea di vista, nascondersi e gestire la stamina dello scatto.",
           mediaLabel: "[ Architettura AI // Macchina a Stati Finiti (FSM) & Gizmo Line of Sight ]",
           imageSrc: "/images/puppeteer_immagine2.png"
         },
         {
-          tag: "03 // MECCANICHE DI SALVATAGGIO",
+          tag: "MECCANICHE DI SALVATAGGIO",
           title: "Dilemmi di Rischio e Finali Multipli",
           description: "Integrazione di scenari puzzle basati su rischio/rendimento: scappare subito per salvarsi o rischiare la cattura per liberare altre vittime intrappolate come marionette viventi.",
           mediaLabel: "[ Level Design // Percorsi Multipli & Narrativa Ambientale ]",
@@ -286,21 +286,21 @@ export const PORTFOLIO_IT = {
       },
       storySteps: [
           {
-            tag: "01 // MECCANICHE TEMPORALI",
+            tag: "MECCANICHE TEMPORALI",
             title: "Pianificazione Strategica su Timeline",
             description: "Progettazione del core loop puzzle-strategico in cui il giocatore organizza azioni, posiziona oggetti e coordina le traiettorie degli agenti lungo una linea temporale tattica a tracce.",
             mediaLabel: "[ UI & Design // Scrubber Temporale & Griglia di Pianificazione Azioni ]",
             imageSrc: "/images/murder_immagine1.png"
           },
           {
-            tag: "02 // PATTERN COMPORTAMENTALI AI",
+            tag: "PATTERN COMPORTAMENTALI AI",
             title: "Sfruttamento delle Routine di Pattuglia",
             description: "Sviluppo di routine deterministiche per gli NPC con coni visivi di allerta. Il giocatore calcola i tempi di ronda delle guardie per orchestrare incidenti fatali senza destare sospetti.",
             mediaLabel: "[ Sistemi AI // Percorsi di Routine, Coni di Sospetto & Trappole ]",
             imageSrc: "/images/murder_immagine2.png"
           },
           {
-            tag: "03 // FASE DI ESECUZIONE",
+            tag: "FASE DI ESECUZIONE",
             title: "Riproduzione Autonoma e Valutazione",
             description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
             mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]",
@@ -346,21 +346,21 @@ export const PORTFOLIO_IT = {
       },
       storySteps: [
           {
-            tag: "01 // CALCOLO GPGPU",
+            tag: "CALCOLO GPGPU",
             title: "Kernel Fisici Paralleli in CUDA",
             description: "Implementazione del calcolo parallelo ad alte prestazioni in C++ e CUDA. La griglia del fluido e i campi di velocità vengono elaborati direttamente sulla GPU tramite migliaia di thread hardware concorrenti.",
             mediaLabel: "[ Calcolo Parallelo // Dispatch Kernel CUDA & Gestione Memoria ]",
             imageSrc: "/images/water_immagine1.png"
           },
           {
-            tag: "02 // FLUIDODINAMICA",
+            tag: "FLUIDODINAMICA",
             title: "Propagazione Onde e Rendering OpenGL",
             description: "Calcolo della propagazione ondosa in tempo reale tramite displacement di height-field e shader OpenGL dedicati, con simulazione di riflessioni realistiche ed effetti caustici.",
             mediaLabel: "[ Motore Grafico // Shaders, Caustiche & Displacement Vertici ]",
             imageSrc: "/images/water_immagine2.png"
           },
           {
-            tag: "03 // INTERAZIONE CON CORPI RIGIDI",
+            tag: "INTERAZIONE CON CORPI RIGIDI",
             title: "Accoppiamento con Mesh 3D Arbitrarie",
             description: "Simulazione fisica bidirezionale tra corpi rigidi 3D dinamici e la superficie liquida: gli oggetti galleggiano, generano onde concentriche di scia e si spostano coerentemente con il fluido.",
             mediaLabel: "[ Simulazione Fisica // Collisioni Mesh & Generazione Onde di Scia ]",
@@ -408,21 +408,21 @@ export const PORTFOLIO_IT = {
       },
       storySteps: [
         {
-          tag: "01 // COGNIZIONE VISIVA",
+          tag: "COGNIZIONE VISIVA",
           title: "Fase di Memorizzazione in Pianta 2D",
           description: "Il giocatore osserva la mappa bidimensionale del labirinto per esattamente 30 secondi con un countdown per memorizzare bivi, vicoli ciechi e punti di interesse.",
           mediaLabel: "[ Meccaniche di Gioco // Mappa Blueprint 2D & Timer di Countdown ]",
           imageSrc: "/images/maze_immagine1.png"
         },
         {
-          tag: "02 // NAVIGAZIONE SPAZIALE 3D",
+          tag: "NAVIGAZIONE SPAZIALE 3D",
           title: "Esplorazione in Terza Persona",
           description: "La visuale passa all'interno del labirinto in 3D in terza persona. Il giocatore deve fare affidamento esclusivamente sulla propria memoria di lavoro visuo-spaziale per ritrovare l'uscita.",
           mediaLabel: "[ Movimento 3D // Controlli Telecamera & Input Touch Mobile ]",
           imageSrc: "/images/maze_immagine2.png"
         },
         {
-          tag: "03 // GESTIONE DELLE RISORSE",
+          tag: "GESTIONE DELLE RISORSE",
           title: "Mercanti Nascosti ed Economia delle Pozioni",
           description: "Integrazione di dinamiche di sopravvivenza su mobile: scovare mercanti segreti, gestire l'illuminazione delle torce e utilizzare pozioni di velocità per non restare intrappolati per sempre.",
           mediaLabel: "[ UI Mobile // Inventario, Pozioni & Interazione con i Mercanti ]",

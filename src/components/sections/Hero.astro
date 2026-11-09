@@ -62,28 +62,17 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
 
   <!-- Pulsanti di azione rapida con z-index elevato (z-40) -->
     <div class="relative z-40 mt-10 flex flex-wrap justify-center gap-4 text-sm font-mono">
-      {PROFILE.cvUrl && (
-        <a 
-          href={PROFILE.cvUrl} 
-          download="CV_Mauro_Brochier.pdf"
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-2 shadow-lg shadow-amber-500/10 font-bold hover:scale-102"
-        >
-          <span>📄</span>
-          <span>{UI.heroBtnCv || "Download CV (PDF)"}</span>
-          <span class="text-xs text-amber-400">↓</span>
-        </a>
-      )}
-
+      <!-- Download CV (PDF) Diretto -->
       <a 
-        href={PROFILE.github} 
+        href="/Mauro_Brochier_CV.pdf" 
+        download="Mauro_Brochier_CV.pdf"
         target="_blank" 
         rel="noopener noreferrer"
-        class="px-5 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700/80 transition flex items-center gap-2 shadow-lg hover:border-slate-600"
+        class="px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/40 hover:border-amber-400 transition flex items-center gap-2 shadow-lg shadow-amber-500/10 font-bold hover:scale-102"
       >
-        <span>GitHub Preview</span>
-        <span class="text-xs text-slate-500">↗</span>
+        <span>📄</span>
+        <span>{UI.heroBtnCv || (lang === 'it' ? "Scarica CV (PDF)" : "Download CV (PDF)")}</span>
+        <span class="text-xs text-amber-400">↓</span>
       </a>
 
       <!-- Contattami con Box Email a comparsa in primo piano assoluto (z-[99]) -->

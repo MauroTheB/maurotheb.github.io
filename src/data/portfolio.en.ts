@@ -5,7 +5,7 @@ export const PORTFOLIO_EN = {
     subheading: "Technical Game Designer & Systems Engineer. Bridging gameplay systems design, player psychology, and technical engine implementation in C# and C++.",
     email: "MAURO.BROCHIER97@GMAIL.COM",
     github: "https://github.com/MauroTheB/projects-preview",
-    cvUrl: "/cv_mauro_brochier.pdf",
+    cvUrl: "/mauro_brochier_cv.pdf",
     graduationStatus: "Master's Degree in Computer Science (Game Design) — Graduated Oct 2026",
     languages: [
       { name: "French", level: "Mother Tongue / Native" },
@@ -98,21 +98,21 @@ export const PORTFOLIO_EN = {
       tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Player Telemetry"],
       storySteps: [
           {
-            tag: "01 // PROBLEM STATEMENT",
+            tag: "PROBLEM STATEMENT",
             title: "The Hardcore Friction Dilemma",
             description: "Traditional static difficulty in punishing genres frequently leads to high player churn due to anxiety spikes or skill stagnation. The design objective was engineering an adaptive system that preserves genuine tension without ever feeling artificial or patronizing to veteran players.",
             mediaLabel: "[ Research Prototype // Boss Encounter Phase 1 ]",
             imageSrc: "/images/dda_immagine1.png"
           },
           {
-            tag: "02 // HEURISTIC ARCHITECTURE",
+            tag: "HEURISTIC ARCHITECTURE",
             title: "Non-Intrusive Challenge Modulation",
             description: "Engineered a modular framework in Unity and native C# evaluating real-time player error rates, engagement velocity, and recovery mechanics. The system modulates environmental and enemy combat parameters within strictly calibrated, imperceptible thresholds.",
             mediaLabel: "[ Adaptive Challenge // Boss Encounter Phase 2 Escalation ]",
             imageSrc: "/images/dda_immagine2.png"
           },
           {
-            tag: "03 // EMPIRICAL VALIDATION",
+            tag: "EMPIRICAL VALIDATION",
             title: "15-Player Qualitative & Quantitative Study",
             description: "Conducted structured playtesting sessions across diverse skill tiers. In-game telemetry and post-session psychological evaluations demonstrated significant improvements in flow retention, engagement duration, and perceived fairness during high-friction encounters.",
             mediaLabel: "[ High-Level Telemetry Data // Flow Survey Evaluation ]",
@@ -162,21 +162,21 @@ export const PORTFOLIO_EN = {
       gameplayId: "KJZ43R5dVLI",
       storySteps: [
         {
-          tag: "01 // CORE GAMEPLAY LOOP",
+          tag: "CORE GAMEPLAY LOOP",
           title: "Survival Combat & Bonfire Stewardship",
           description: "Players alternate between high-intensity combat—using ammunition crafted from harvested magical pomegranates—and strategic base maintenance. Feeding the central bonfire is essential to keep the petrifying dawn at bay and protect team shelters.",
           mediaLabel: "[ Gameplay Combat // Pomegranate Ammo Crafting & Shelter Building ]",
           imageSrc: "/images/immagine_falo_personaggio.png"
         },
         {
-          tag: "02 // MULTIPLAYER SYSTEMS",
+          tag: "MULTIPLAYER SYSTEMS",
           title: "Co-op Architecture (2–4 Players)",
           description: "Engineered shared-state multiplayer logic in Unity and native C#. Players must dynamically divide responsibilities: scouting for fruit, fending off night terrors, and synchronizing defense around the shared campfire life-force.",
           mediaLabel: "[ Technical Breakdown // Multiplayer State Sync & Resource Distribution ]",
           imageSrc: "/images/players_vs_monsters.png"
         },
         {
-          tag: "03 // INDUSTRY SHOWCASE",
+          tag: "INDUSTRY SHOWCASE",
           title: "Hands-on Pitch to Milestone, Ubisoft & Nacon",
           description: "Selected to pitch and showcase the playable build directly to senior talent and studio leads at the New Game Designer event. Conducted live demo sessions focusing on game feel, onboarding curve, and cooperative flow state.",
           mediaLabel: "[ Industry Event // Live Gameplay Demos & Evaluation Feedback ]",
@@ -224,21 +224,21 @@ export const PORTFOLIO_EN = {
       },
       storySteps: [
         {
-          tag: "01 // ATMOSPHERIC HORROR",
+          tag: "ATMOSPHERIC HORROR",
           title: "Audio-Driven Environmental Exploration",
           description: "Engineered tension building inside an abandoned estate. The player relies on a mysterious guiding female voice, acoustic cues, and found journals to reconstruct the tragedy while avoiding sound-triggered alarms.",
           mediaLabel: "[ Gameplay Exploration // Dynamic Audio Panning & Lighting ]",
           imageSrc: "/images/puppeteer_immagine1.png"
         },
         {
-          tag: "02 // STEALTH & AI BEHAVIOR",
+          tag: "STEALTH & AI BEHAVIOR",
           title: "The Puppeteer's Patrol & Perception",
           description: "Developed stealth mechanics and sensory AI states (Patrol, Alert, Hunt) for the Puppeteer sorcerer. Evasion requires line-of-sight breaking, hiding spots, and careful sprint stamina management.",
           mediaLabel: "[ AI Architecture // Finite State Machine & Line of Sight Gizmos ]",
           imageSrc: "/images/puppeteer_immagine2.png"
         },
         {
-          tag: "03 // ESCAPE MECHANICS",
+          tag: "ESCAPE MECHANICS",
           title: "Rescue Objections & Multiple Endings",
           description: "Integrated risk-reward puzzle scenarios where players decide whether to sprint straight for escape or risk uncovering additional victims trapped as living marionettes.",
           mediaLabel: "[ Level Design // Branching Paths & Environmental Narrative ]",
@@ -287,21 +287,21 @@ export const PORTFOLIO_EN = {
       },
       storySteps: [
           {
-            tag: "01 // TEMPORAL MECHANICS",
+            tag: "TEMPORAL MECHANICS",
             title: "Interactive Timeline Scheduling",
             description: "Designed a 2D puzzle-strategy core loop where players schedule actions, place tools, and arrange agent trajectories along a multi-track tactical timeline.",
             mediaLabel: "[ UI & Design // Timeline Scrubber & Action Scheduling Grid ]",
             imageSrc: "/images/murder_immagine1.png"
           },
           {
-            tag: "02 // AGENT AI PATTERNS",
+            tag: "AGENT AI PATTERNS",
             title: "Predictable Routine Exploitation",
             description: "Engineered deterministic NPC routines and detection cones. Players exploit predictable guard movements to orchestrate fatal accidents without raising suspicion meters.",
             mediaLabel: "[ AI Systems // Routine Paths, Suspicion Cones & Trigger Traps ]",
             imageSrc: "/images/murder_immagine2.png"
           },
           {
-            tag: "03 // THE EXECUTION PHASE",
+            tag: "THE EXECUTION PHASE",
             title: "Autonomous Playback & Evaluation",
             description: "Once the timeline is staged, hitting play triggers an autonomous real-time sequence. The agency system grades performance based on clean execution and zero collateral evidence.",
             mediaLabel: "[ Gameplay Demo // Playback Sequence & Mission Debriefing Screen ]",
@@ -347,21 +347,21 @@ export const PORTFOLIO_EN = {
       },
       storySteps: [
           {
-            tag: "01 // GPGPU COMPUTING",
+            tag: "GPGPU COMPUTING",
             title: "Parallel CUDA Physics Kernels",
             description: "Implemented high-performance parallel computation in C++ and CUDA. Fluid grid state and velocity fields are computed directly on the GPU across thousands of concurrent hardware threads.",
             mediaLabel: "[ High Performance // CUDA Kernel Dispatch & Memory Hierarchy ]",
             imageSrc: "/images/water_immagine1.png"
           },
           {
-            tag: "02 // FLUID DYNAMICS",
+            tag: "FLUID DYNAMICS",
             title: "Surface Wave Equations in OpenGL",
             description: "Engineered real-time wave propagation through height-field displacement and custom OpenGL shaders, achieving smooth fluid reflections and refractive caustic lighting.",
             mediaLabel: "[ Graphics Engine // Shaders, Caustics & Vertex Displacement ]",
             imageSrc: "/images/water_immagine2.png"
           },
           {
-            tag: "03 // RIGID BODY COUPLING",
+            tag: "RIGID BODY COUPLING",
             title: "Arbitrary 3D Mesh Interaction",
             description: "Simulated two-way physical interaction between dynamic 3D rigid bodies and the fluid surface: objects generate realistic wake ripples, buoyancy, and displacement based on shape.",
             mediaLabel: "[ Physics Simulation // Mesh Collision & Wave Ripple Generation ]",
@@ -409,21 +409,21 @@ export const PORTFOLIO_EN = {
       },
       storySteps: [
         {
-          tag: "01 // COGNITIVE MECHANICS",
+          tag: "COGNITIVE MECHANICS",
           title: "2D Memory Memorization Phase",
           description: "Players are presented with a top-down 2D blueprint of the labyrinth for exactly 30 seconds to memorize pathways, dead ends, and point-of-interest markers.",
           mediaLabel: "[ Game Mechanics // 2D Blueprint HUD & Countdown Timer ]",
           imageSrc: "/images/maze_immagine1.png"
         },
         {
-          tag: "02 // 3D SPATIAL NAVIGATION",
+          tag: "3D SPATIAL NAVIGATION",
           title: "Third-Person Perspective Traversal",
           description: "The perspective transitions into full 3D over-the-shoulder navigation. The player must rely purely on visual-spatial working memory to find the exit through identical corridor walls.",
           mediaLabel: "[ Gameplay Traversal // 3D Camera Controls & Mobile Touch Input ]",
           imageSrc: "/images/maze_immagine2.png"
         },
         {
-          tag: "03 // RESOURCE MANAGEMENT",
+          tag: "RESOURCE MANAGEMENT",
           title: "Hidden Merchants & Potion Economy",
           description: "Integrated survival gameplay mechanics on mobile: finding hidden merchants, managing torches, and utilizing speed or memory potions to avoid being trapped forever in the maze.",
           mediaLabel: "[ Mobile UI // Inventory, Potion Crafting & Merchant Interaction ]",

@@ -66,28 +66,16 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
       </div>
     </div>
 
-      {PROFILE.cvUrl && (
-        <a 
-          href={PROFILE.cvUrl}
-          download="CV_Mauro_Brochier.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-2 shadow-lg hover:border-amber-400"
-        >
-          <span>📄</span>
-          <span>{UI.heroBtnCv || "Download CV (PDF)"}</span>
-          <span class="text-[10px]">↓</span>
-        </a>
-      )}
-
       <a 
-        href={PROFILE.github}
+        href="/Mauro_Brochier_CV.pdf"
+        download="Mauro_Brochier_CV.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono font-medium transition flex items-center justify-center gap-2 hover:text-white hover:border-slate-700"
+        class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-2 shadow-lg hover:border-amber-400"
       >
-        <span>GitHub</span>
-        <span class="text-[10px] text-slate-500">↗</span>
+        <span>📄</span>
+        <span>{UI.heroBtnCv || (lang === 'it' ? "Scarica CV (PDF)" : "Download CV (PDF)")}</span>
+        <span class="text-[10px]">↓</span>
       </a>
 
       <button 
