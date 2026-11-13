@@ -17,7 +17,7 @@ export const PORTFOLIO_IT = {
     heroBtnGithub: "GitHub Preview",
     heroBtnContact: "Contattami",
     heroBtnCv: "Scarica CV (PDF)",
-    ddaBadge: "DDA RESEARCH // IN PROGRESS",
+    ddaBadge: "AVAILABLE",
     hudProjects: "Progetti",
     hudExperience: "Esperienze",
     hudEducation: "Formazione",
