@@ -126,6 +126,8 @@ export const PORTFOLIO_EN = {
       year: "Apr 2025 – Jul 2025",
       period: "2025",
       category: "Academic Team Project / Industry Showcase",
+      coverImage: "/images/immagine_falo_personaggio.png", // O il nome dello screenshot 16:9 che preferisci
+    primaryFocus: "Lead Design, Combat Systems & Documentation (TDD / GDD)",
       genrePlatform: "Co-op Survival Game · 2–4 Players · PC",
       tagline: "Co-op Survival Game · 2–4 Players · PC",
       role: "Team Leader · Lead Designer · Game Programmer",
@@ -190,6 +192,8 @@ export const PORTFOLIO_EN = {
       year: "Apr 2024 – Jul 2024",
       period: "2026",
       category: "Personal Project",
+      coverImage: "/images/puppeteer_immagine1.png",
+      primaryFocus: "AI Behavior & Adaptive Audio Systems",
       genrePlatform: "First-Person Psychological Horror · PC & Meta XR VR",
       tagline: "First-Person Psychological Horror · PC & Meta XR VR",
       role: "Game Designer · Gameplay Programmer · Solo Developer",
@@ -252,6 +256,8 @@ export const PORTFOLIO_EN = {
       year: "Oct 2023 – Feb 2024",
       period: "2024",
       category: "Academic Team Project / Industry Showcase",
+      coverImage: "/images/murder_immagine1.png", // O lo screenshot di copertina che preferisci
+    primaryFocus: "NPC AI (Behavior Trees) & Custom Unity Editor Tool",
       genrePlatform: "2D Strategy-Puzzle · PC & Web Browser",
       tagline: "2D Strategy-Puzzle · PC & Web Browser",
       role: "AI Programmer · Gameplay Designer",
@@ -315,6 +321,8 @@ export const PORTFOLIO_EN = {
       year: "Feb 2025 – Apr 2025",
       period: "2025",
       category: "Individual Academic Project",
+      coverImage: "/images/water_immagine2.png", // Lo screenshot con riflessi e caustiche OpenGL (o quello che preferisci)
+      primaryFocus: "CUDA Wave Physics Parallelization & OpenGL Fresnel Shaders",
       genrePlatform: "Real-Time Fluid Simulation · GPGPU · PC",
       tagline: "Real-Time Fluid Simulation · GPGPU · PC",
       role: "Graphics & Simulation Programmer",

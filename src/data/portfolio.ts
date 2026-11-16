@@ -42,6 +42,8 @@ export interface Project {
   tagline: string; // Mantenuto per retrocompatibilità
   role: string;
   highlight?: string; // Es. "Industry Showcase · New Game Designer 2025 · 3rd Place"
+  coverImage?: string; // Banner 16:9 screenshot/artwork in cima alla card
+  primaryFocus?: string; // UNA sola macro-contribution per Manfredo (es. "AI & Audio Design")
   gameplaySummary: string; // 50-70 parole sul gameplay loop
   personalContributionSummary: string; // 20-30 parole sull'ownership personale diretta
   description: string; // Mantenuto per retrocompatibilità (può essere l'unione dei due)

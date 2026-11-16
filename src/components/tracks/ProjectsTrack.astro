@@ -2,6 +2,7 @@
 import { getPortfolio, type Locale } from '../../data/portfolio';
 import ProjectScrollyShowcase from './ProjectScrollyShowcase.astro';
 import ProjectVideoPlayer from './ProjectVideoPlayer.astro';
+import CardThematicFrame from '../vfx/CardThematicFrame.astro';
 
 interface Props {
   lang?: Locale;
@@ -9,6 +10,13 @@ interface Props {
 
 const { lang = 'en' } = Astro.props;
 const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
+// Pannello di controllo dei margini interni del testo per ciascuna cornice tematica
+const textPaddingMap: Record<string, string> = {
+  puppeteer: 'pt-2 px-10',
+  pomegranade: 'pt-2 px-10',
+  'murder-mystery': 'pt-2 px-10',
+  'water-sim': 'pt-2 px-10', // Pronto da calibrare per Water Simulation!
+};
 ---
 
 <!-- TRACCIA 1: PROGETTI -->
@@ -24,78 +32,99 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="projects-cards-container">
         {PROJECTS.map((proj) => (
           <article 
-            data-project-card={proj.id}
-            data-project-video={proj.videoUrl || ''}
-            data-project-description={proj.description}
-            class="interactive-card bg-slate-900/70 border border-slate-800 rounded-3xl p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-violet-500/15 hover:-translate-y-1 backdrop-blur-md"
-          >
-              <div>
-                <!-- 1. Categoria Progetto & Riconoscimenti / Awards -->
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-                  <span class="text-xs font-mono font-semibold uppercase tracking-wider text-cyan-400/90">
-                    {proj.category}
-                  </span>
-                  {proj.highlight && (
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-mono">
-                      <span class="text-xs">★</span>
-                      <span>{proj.highlight}</span>
+              data-project-card={proj.id}
+              data-project-video={proj.videoUrl || ''}
+              data-project-description={proj.description}
+              class="interactive-card relative bg-transparent border border-slate-800 rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-violet-500/15 hover:-translate-y-1"
+            >
+              <!-- 1. Cornice Tematica (Il livello Back z-0 sta qui, prima dello sfondo!) -->
+              <CardThematicFrame projectId={proj.id} />
+
+              <!-- 1.5 Superficie Vetro-Scuro della Card (z-0 successivo: copre il centro del Back lasciando sbordare i margini) -->
+              <div class="absolute inset-0 rounded-3xl bg-slate-900/80 backdrop-blur-md z-0 pointer-events-none"></div>
+
+              <!-- 2. Contenitore principale SENZA z-index (libera la profondità dei figli!) -->
+              <div class="flex flex-col justify-between h-full">
+                
+                <div>
+                  <!-- 1. Tag Tech in alto (z-40: SOPRA alla cornice Front + Ombra) -->
+                  <div class="card-text-layer relative z-40 flex flex-wrap justify-center gap-1.5 mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.95)]">
+                    {proj.tags?.slice(0, 4).map((tag) => (
+                      <span class="px-2.5 py-1 rounded-md bg-slate-800/95 text-cyan-300 text-[11px] font-mono border border-slate-700/60 shadow-lg">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <!-- 2. Banner Screenshot 16:9 (z-10: rimane SOTTO alla cornice Front z-30!) -->
+                  {proj.coverImage && (
+                    <div class="relative z-10 aspect-video w-full rounded-2xl overflow-hidden mb-5 bg-slate-950 border border-slate-800/80 shadow-inner group-hover:border-slate-700 transition-colors">
+                      <img 
+                        src={proj.coverImage} 
+                        alt={proj.title}
+                        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none"></div>
                     </div>
                   )}
-                </div>
 
-                <!-- 2. Titolo & Anno -->
-                <div class="flex items-baseline justify-between gap-3">
-                  <h3 class="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-violet-300 transition">
-                    {proj.title}
-                  </h3>
-                  <span class="text-sm font-mono text-slate-500 font-semibold">{proj.year || proj.period}</span>
-                </div>
+                  <!-- 3. Sotto-contenitore dei Testi (z-40: SOPRA alla cornice Front + Ombra) -->
+                  <div class={`card-text-layer relative z-40 ${textPaddingMap[proj.id] || ''}`}>
+                    
+                    <!-- Categoria & Eventuale Badge Riconoscimento -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                      <span class="text-xs font-mono font-semibold uppercase tracking-wider text-cyan-400/90">
+                        {proj.category}
+                      </span>
+                      {proj.highlight && (
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[11px] font-mono">
+                          <span>★</span>
+                          <span>{proj.highlight}</span>
+                        </div>
+                      )}
+                    </div>
 
-                <!-- 3. Genere & Piattaforma -->
-                <p class="text-sm font-mono text-cyan-400 mt-1 mb-2 font-medium">
-                  {proj.genrePlatform || proj.tagline}
-                </p>
+                    <!-- Titolo & Anno -->
+                    <div class="flex items-baseline justify-between gap-3 mb-1">
+                      <h3 class="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-violet-300 transition">
+                        {proj.title}
+                      </h3>
+                      <span class="text-xs font-mono text-slate-500 font-semibold">{proj.year || proj.period}</span>
+                    </div>
 
-                <!-- 4. Ruolo del Candidato (Immediatamente Visibile) -->
-                <div class="text-xs sm:text-sm text-violet-300/90 font-mono italic mb-6">
-                  <span class="text-slate-500 not-italic uppercase tracking-wider font-semibold text-[11px] block sm:inline">
-                    {lang === 'it' ? 'Ruolo:' : 'Role:'}
-                  </span>
-                  {' '}{proj.role}
-                </div>
-
-                <!-- 5. Gameplay Experience Summary (50-70 parole) -->
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
-                  {proj.gameplaySummary || proj.description}
-                </p>
-
-                <!-- 6. Contributo Personale Evidenziato (Ownership Chiave) -->
-                {proj.personalContributionSummary && (
-                  <div class="border-l-2 border-violet-500/40 pl-3.5 py-1.5 mb-8 bg-violet-500/[0.04] rounded-r-xl">
-                    <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-bold block mb-1">
-                      {lang === 'it' ? 'Contributo Personale:' : 'Key Contribution:'}
-                    </span>
-                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                      {proj.personalContributionSummary}
+                    <!-- Piattaforma / Genere -->
+                    <p class="text-xs font-mono text-cyan-400 mb-3 font-medium">
+                      {proj.genrePlatform || proj.tagline}
                     </p>
+
+                    <!-- Hook di Gioco Rapido -->
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
+                      {proj.gameplaySummary || proj.description}
+                    </p>
+
+                    <!-- Primary Contribution -->
+                    {proj.personalContributionSummary && (
+                      <div class="border-l-2 border-violet-500/60 pl-3 py-1 mb-6 bg-slate-950/40 rounded-r-lg shadow-lg">
+                        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block mb-0.5">
+                          {lang === 'it' ? 'Contributo Personale:' : 'Key Contribution:'}
+                        </span>
+                        <span class="text-xs font-mono font-bold text-violet-300 block">
+                          {proj.primaryFocus || proj.role}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-
-              <!-- 7. Tag Curati (4-6) & Call To Action -->
-              <div>
-                <div class="flex flex-wrap gap-2 mb-8">
-                  {proj.tags?.map((tag) => (
-                    <span class="px-3 py-1.5 rounded-lg bg-slate-800/90 text-slate-300 text-xs sm:text-sm font-mono border border-slate-700/50">
-                      {tag}
-                    </span>
-                  ))}
                 </div>
 
-                <div class="inline-flex items-center gap-2.5 text-sm sm:text-base font-mono font-bold text-violet-400 group-hover:text-violet-300 transition">
-                  <span>{UI.exploreProject}</span>
-                  <span class="group-hover:translate-x-1.5 transition-transform text-lg">→</span>
+                <!-- 4. CTA in basso (z-40: SOPRA alla cornice Front + Ombra) -->
+                <div class="card-text-layer relative z-40 pt-4 border-t border-slate-800/60 flex items-center justify-center gap-2 mt-auto drop-shadow-[0_4px_8px_rgba(0,0,0,0.95)]">
+                  <div class="inline-flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-violet-400 group-hover:text-violet-300 group-hover:scale-105 transition-all">
+                    <span>{UI.exploreProject}</span>
+                    <span class="group-hover:translate-x-1 transition-transform text-base">→</span>
+                  </div>
                 </div>
+
               </div>
             </article>
       ))}
@@ -693,5 +722,14 @@ const { projects: PROJECTS, ui: UI } = getPortfolio(lang);
 
   .animate-detail-appear {
     animation: detailAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  /* Ombra portata netta su tutti i testi delle card per farli galleggiare sopra le cornici */
+  .card-text-layer h3,
+  .card-text-layer p,
+  .card-text-layer span {
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.98),
+      0 4px 12px rgba(0, 0, 0, 0.90),
+      0 1px 2px rgba(0, 0, 0, 1);
   }
 </style>

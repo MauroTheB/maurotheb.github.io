@@ -64,67 +64,13 @@ export const PORTFOLIO_IT = {
   },
   projects: [
     {
-      id: "dda-thesis",
-      title: "Framework DDA Euristico in Prototipo Soulslike",
-      year: "Ott 2025– Ott 2026",
-      period: "2025–2026",
-      category: "Tesi Magistrale / Progetto di Ricerca Individuale",
-      genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
-      tagline: "Prototipo Soulslike · Framework di Ricerca · PC",
-      role: "Technical Game Designer · Systems Engineer",
-      highlight: "Progetto di Tesi Magistrale · Studio Empirico su 15 Giocatori",
-      gameplaySummary: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.",
-      personalContributionSummary: "Ideazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
-      description: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.\n\nIdeazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
-      confidentialityNotice: "Nota di Riservatezza e Proprietà Intellettuale: Variabili algoritmiche specifiche, formule matematiche e parametri euristici interni sono omessi a tutela della ricerca.",
-      playtestNotice: "Validato attraverso uno studio empirico qualitativo e quantitativo su 15 playtester.",
-      detailedContributions: {
-        designed: [
-          "Architettura integrale del framework DDA euristico, progettata per modulare la frizione in tempo reale preservando la sfida del genere Soulslike.",
-          "Modellazione teorica e matematica dello stato di Flow basata su psicologia del giocatore, telemetria degli errori e ritmo di recupero.",
-          "Bilanciamento dinamico dei parametri: soglie adattive di aggressività dei nemici, scaling del danno e rilascio risorse.",
-          "Meccaniche centrali di combattimento e loop di scontro del prototipo Soulslike in Unity e C# nativo."
-        ],
-        authoredDocs: [
-          "Tesi di Ricerca di Laurea Magistrale sotto la supervisione della Prof.ssa Laura Ripamonti (Università degli Studi di Milano).",
-          "Report completo di analisi telemetrica quantitativa e qualitativa sulla ritenzione del Flow nei giocatori."
-        ]
-      },
-      platform: "PC",
-      engine: "Unity · C#",
-      authors: "Mauro Brochier (Relatrice: Prof.ssa Laura Ripamonti)",
-      teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
-      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
-      storySteps: [
-          {
-            tag: "ORMULAZIONE DEL PROBLEMA",
-            title: "Il Dilemma della Frizione nei Soulslike",
-            description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
-            mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
-            imageSrc: "/images/dda_immagine1.png"
-          },
-          {
-            tag: "ARCHITETTURA EURISTICA",
-            title: "Modulazione Non Invasiva della Sfida",
-            description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
-            mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
-            imageSrc: "/images/dda_immagine2.png"
-          },
-          {
-            tag: "VALIDAZIONE EMPIRICA",
-            title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
-            description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
-            mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
-            imageSrc: "/images/dda_immagine3.png"
-          }
-        ]
-    },
-    {
       id: "pomegranade",
       title: "Pomegranade: Limbo",
       year: "Apr 2025 – Lu 2025",
       period: "2025",
       category: "Progetto Accademico di Team / Industry Showcase",
+      coverImage: "/images/immagine_falo_personaggio.png", // O il nome dello screenshot 16:9 che preferisci
+      primaryFocus: "Direzione Design, Sistemi di Combattimento & Documentazione (TDD / GDD)",
       genrePlatform: "Gioco Survival Co-op · 2–4 Giocatori · PC",
       tagline: "Gioco Survival Co-op · 2–4 Giocatori · PC",
       role: "Team Leader · Lead Designer · Game Programmer",
@@ -189,6 +135,8 @@ export const PORTFOLIO_IT = {
       year: "Apr 2024 – Lu 2024",
       period: "2026",
       category: "Progetto Personale",
+      coverImage: "/images/puppeteer_immagine1.png",
+      primaryFocus: "Sistemi AI & Audio Design Adattivo",
       genrePlatform: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
       tagline: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
       role: "Game Designer · Gameplay Programmer · Sviluppatore Unico",
@@ -250,7 +198,11 @@ export const PORTFOLIO_IT = {
       title: "Murder Mystery Incorporated",
       year: "Ott 2023 – Feb 2024",
       period: "2024",
+      coverImage: "/images/water_immagine2.png",
+      primaryFocus: "Parallelizzazione Fisica Onde in CUDA & Shader OpenGL Fresnel",
       category: "Progetto Accademico di Team / Industry Showcase",
+      coverImage: "/images/murder_immagine1.png", // O lo screenshot di copertina che preferisci
+      primaryFocus: "IA dei PNG (Behavior Trees) & Tool Custom Unity Editor",
       genrePlatform: "Strategia-Puzzle 2D · PC e Browser Web",
       tagline: "Strategia-Puzzle 2D · PC e Browser Web",
       role: "AI Programmer · Gameplay Designer",
@@ -305,6 +257,62 @@ export const PORTFOLIO_IT = {
             description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
             mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]",
             imageSrc: "/images/murder_immagine3.png"
+          }
+        ]
+    },
+    {
+      id: "dda-thesis",
+      title: "Framework DDA Euristico in Prototipo Soulslike",
+      year: "Ott 2025– Ott 2026",
+      period: "2025–2026",
+      category: "Tesi Magistrale / Progetto di Ricerca Individuale",
+      genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
+      tagline: "Prototipo Soulslike · Framework di Ricerca · PC",
+      role: "Technical Game Designer · Systems Engineer",
+      highlight: "Progetto di Tesi Magistrale · Studio Empirico su 15 Giocatori",
+      gameplaySummary: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.",
+      personalContributionSummary: "Ideazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
+      description: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.\n\nIdeazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
+      confidentialityNotice: "Nota di Riservatezza e Proprietà Intellettuale: Variabili algoritmiche specifiche, formule matematiche e parametri euristici interni sono omessi a tutela della ricerca.",
+      playtestNotice: "Validato attraverso uno studio empirico qualitativo e quantitativo su 15 playtester.",
+      detailedContributions: {
+        designed: [
+          "Architettura integrale del framework DDA euristico, progettata per modulare la frizione in tempo reale preservando la sfida del genere Soulslike.",
+          "Modellazione teorica e matematica dello stato di Flow basata su psicologia del giocatore, telemetria degli errori e ritmo di recupero.",
+          "Bilanciamento dinamico dei parametri: soglie adattive di aggressività dei nemici, scaling del danno e rilascio risorse.",
+          "Meccaniche centrali di combattimento e loop di scontro del prototipo Soulslike in Unity e C# nativo."
+        ],
+        authoredDocs: [
+          "Tesi di Ricerca di Laurea Magistrale sotto la supervisione della Prof.ssa Laura Ripamonti (Università degli Studi di Milano).",
+          "Report completo di analisi telemetrica quantitativa e qualitativa sulla ritenzione del Flow nei giocatori."
+        ]
+      },
+      platform: "PC",
+      engine: "Unity · C#",
+      authors: "Mauro Brochier (Relatrice: Prof.ssa Laura Ripamonti)",
+      teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
+      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
+      storySteps: [
+          {
+            tag: "ORMULAZIONE DEL PROBLEMA",
+            title: "Il Dilemma della Frizione nei Soulslike",
+            description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
+            mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
+            imageSrc: "/images/dda_immagine1.png"
+          },
+          {
+            tag: "ARCHITETTURA EURISTICA",
+            title: "Modulazione Non Invasiva della Sfida",
+            description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
+            mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
+            imageSrc: "/images/dda_immagine2.png"
+          },
+          {
+            tag: "VALIDAZIONE EMPIRICA",
+            title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
+            description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
+            mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
+            imageSrc: "/images/dda_immagine3.png"
           }
         ]
     },
