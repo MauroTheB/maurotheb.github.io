@@ -64,62 +64,7 @@ export const PORTFOLIO_EN = {
     
   },
   projects: [
-    {
-      id: "dda-thesis",
-      title: "Heuristic DDA Framework in Soulslike Prototype",
-      year: "Oct 2025–Oct 2026",
-      period: "2025–2026",
-      category: "Master's Thesis / Individual Research Project",
-      genrePlatform: "Soulslike Prototype · Research Framework · PC",
-      tagline: "Soulslike Prototype · Research Framework · PC",
-      role: "Technical Game Designer · Systems Engineer",
-      highlight: "Master's Thesis Project · 15-Player Empirical Study",
-      gameplaySummary: "A research-informed Soulslike action RPG prototype designed to investigate real-time adaptive challenge. The game monitors player performance telemetry to dynamically modulate friction, preserving the psychological state of Flow without compromising the punishing stakes essential to the genre.",
-      personalContributionSummary: "Independently conceived, designed, and developed the complete heuristic DDA architecture in Unity and C#, from psychological flow modeling to gameplay integration. Conducted an empirical study with 15 players to validate difficulty pacing.",
-      description: "A research-informed Soulslike action RPG prototype designed to investigate real-time adaptive challenge. The game monitors player performance telemetry to dynamically modulate friction, preserving the psychological state of Flow without compromising the punishing stakes essential to the genre.\n\nIndependently conceived, designed, and developed the complete heuristic DDA architecture in Unity and C#, from psychological flow modeling to gameplay integration. Conducted an empirical study with 15 players to validate difficulty pacing.",
-      confidentialityNotice: "Proprietary Intellectual Property Notice: Specific algorithmic variables, mathematical formulas, and internal heuristics are withheld to protect academic research.",
-      playtestNotice: "Validated through an empirical qualitative and quantitative study involving 15 playtesters.",
-      detailedContributions: {
-        designed: [
-          "Complete heuristic DDA framework architecture designed to modulate friction in real time without breaking Soulslike genre stakes.",
-          "Mathematical flow-state modeling based on player psychology, error-rate telemetry, and recovery momentum.",
-          "Dynamic parameter balance: adaptive enemy attack aggression thresholds, damage scaling, and resource drop pacing.",
-          "Core combat mechanics and encounter loops of the research Soulslike prototype in Unity and native C#."
-        ],
-        authoredDocs: [
-          "Master's Degree Research Thesis under the supervision of Prof. Laura Ripamonti (University of Milan).",
-          "Comprehensive quantitative & qualitative telemetry analysis report validating player flow retention."
-        ]
-      },
-      platform: "PC",
-      engine: "Unity · C#",
-      authors: "Mauro Brochier (Supervisor: Prof. Laura Ripamonti)",
-      teamRoles: "Solo Researcher, Technical Game Designer, Systems Programmer",
-      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Player Telemetry"],
-      storySteps: [
-          {
-            tag: "PROBLEM STATEMENT",
-            title: "The Hardcore Friction Dilemma",
-            description: "Traditional static difficulty in punishing genres frequently leads to high player churn due to anxiety spikes or skill stagnation. The design objective was engineering an adaptive system that preserves genuine tension without ever feeling artificial or patronizing to veteran players.",
-            mediaLabel: "[ Research Prototype // Boss Encounter Phase 1 ]",
-            imageSrc: "/images/dda_immagine1.png"
-          },
-          {
-            tag: "HEURISTIC ARCHITECTURE",
-            title: "Non-Intrusive Challenge Modulation",
-            description: "Engineered a modular framework in Unity and native C# evaluating real-time player error rates, engagement velocity, and recovery mechanics. The system modulates environmental and enemy combat parameters within strictly calibrated, imperceptible thresholds.",
-            mediaLabel: "[ Adaptive Challenge // Boss Encounter Phase 2 Escalation ]",
-            imageSrc: "/images/dda_immagine2.png"
-          },
-          {
-            tag: "EMPIRICAL VALIDATION",
-            title: "15-Player Qualitative & Quantitative Study",
-            description: "Conducted structured playtesting sessions across diverse skill tiers. In-game telemetry and post-session psychological evaluations demonstrated significant improvements in flow retention, engagement duration, and perceived fairness during high-friction encounters.",
-            mediaLabel: "[ High-Level Telemetry Data // Flow Survey Evaluation ]",
-            imageSrc: "/images/dda_immagine3.png"
-          }
-        ]
-    },
+    
     {
       id: "pomegranade",
       title: "Pomegranade: Limbo",
@@ -316,6 +261,64 @@ export const PORTFOLIO_EN = {
         ]
     },
     {
+      id: "dda-thesis",
+      title: "Heuristic DDA Framework in Soulslike Prototype",
+      year: "Oct 2025–Oct 2026",
+      period: "2025–2026",
+      category: "Master's Thesis / Individual Research Project",
+      coverImage: "/images/dda_immagine1.png",
+      primaryFocus: "Heuristic DDA Framework & Player Flow Telemetry",
+      genrePlatform: "Soulslike Prototype · Research Framework · PC",
+      tagline: "Soulslike Prototype · Research Framework · PC",
+      role: "Technical Game Designer · Systems Engineer",
+      highlight: "Master's Thesis Project · 15-Player Empirical Study",
+      gameplaySummary: "A research-informed Soulslike action RPG prototype designed to investigate real-time adaptive challenge. The game monitors player performance telemetry to dynamically modulate friction, preserving the psychological state of Flow without compromising the punishing stakes essential to the genre.",
+      personalContributionSummary: "Independently conceived, designed, and developed the complete heuristic DDA architecture in Unity and C#, from psychological flow modeling to gameplay integration. Conducted an empirical study with 15 players to validate difficulty pacing.",
+      description: "A research-informed Soulslike action RPG prototype designed to investigate real-time adaptive challenge. The game monitors player performance telemetry to dynamically modulate friction, preserving the psychological state of Flow without compromising the punishing stakes essential to the genre.\n\nIndependently conceived, designed, and developed the complete heuristic DDA architecture in Unity and C#, from psychological flow modeling to gameplay integration. Conducted an empirical study with 15 players to validate difficulty pacing.",
+      confidentialityNotice: "Proprietary Intellectual Property Notice: Specific algorithmic variables, mathematical formulas, and internal heuristics are withheld to protect academic research.",
+      playtestNotice: "Validated through an empirical qualitative and quantitative study involving 15 playtesters.",
+      detailedContributions: {
+        designed: [
+          "Complete heuristic DDA framework architecture designed to modulate friction in real time without breaking Soulslike genre stakes.",
+          "Mathematical flow-state modeling based on player psychology, error-rate telemetry, and recovery momentum.",
+          "Dynamic parameter balance: adaptive enemy attack aggression thresholds, damage scaling, and resource drop pacing.",
+          "Core combat mechanics and encounter loops of the research Soulslike prototype in Unity and native C#."
+        ],
+        authoredDocs: [
+          "Master's Degree Research Thesis under the supervision of Prof. Laura Ripamonti (University of Milan).",
+          "Comprehensive quantitative & qualitative telemetry analysis report validating player flow retention."
+        ]
+      },
+      platform: "PC",
+      engine: "Unity · C#",
+      authors: "Mauro Brochier (Supervisor: Prof. Laura Ripamonti)",
+      teamRoles: "Solo Researcher, Technical Game Designer, Systems Programmer",
+      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Player Telemetry"],
+      storySteps: [
+          {
+            tag: "PROBLEM STATEMENT",
+            title: "The Hardcore Friction Dilemma",
+            description: "Traditional static difficulty in punishing genres frequently leads to high player churn due to anxiety spikes or skill stagnation. The design objective was engineering an adaptive system that preserves genuine tension without ever feeling artificial or patronizing to veteran players.",
+            mediaLabel: "[ Research Prototype // Boss Encounter Phase 1 ]",
+            imageSrc: "/images/dda_immagine1.png"
+          },
+          {
+            tag: "HEURISTIC ARCHITECTURE",
+            title: "Non-Intrusive Challenge Modulation",
+            description: "Engineered a modular framework in Unity and native C# evaluating real-time player error rates, engagement velocity, and recovery mechanics. The system modulates environmental and enemy combat parameters within strictly calibrated, imperceptible thresholds.",
+            mediaLabel: "[ Adaptive Challenge // Boss Encounter Phase 2 Escalation ]",
+            imageSrc: "/images/dda_immagine2.png"
+          },
+          {
+            tag: "EMPIRICAL VALIDATION",
+            title: "15-Player Qualitative & Quantitative Study",
+            description: "Conducted structured playtesting sessions across diverse skill tiers. In-game telemetry and post-session psychological evaluations demonstrated significant improvements in flow retention, engagement duration, and perceived fairness during high-friction encounters.",
+            mediaLabel: "[ High-Level Telemetry Data // Flow Survey Evaluation ]",
+            imageSrc: "/images/dda_immagine3.png"
+          }
+        ]
+    },
+    {
       id: "water-sim",
       title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
       year: "Feb 2025 – Apr 2025",
@@ -383,6 +386,8 @@ export const PORTFOLIO_EN = {
       year: "Mar 2021 – Apr 2021",
       period: "2021",
       category: "Individual Internship Project",
+      coverImage: "/images/maze_immagine2.png",
+      primaryFocus: "2D-to-3D Perspective Transition & Mobile Mechanics",
       genrePlatform: "Spatial Memory & Traversal Game · Android Mobile",
       tagline: "Spatial Memory & Traversal Game · Android Mobile",
       role: "Game Designer · Programmer",
