@@ -4,7 +4,7 @@ import ProjectScrollyShowcase from './ProjectScrollyShowcase.astro';
 import ProjectVideoPlayer from './ProjectVideoPlayer.astro';
 import CardThematicFrame from '../vfx/CardThematicFrame.astro';
 import ProjectCard from './ProjectCard.astro';
-
+import ProjectsRoulette from './ProjectsRoulette.astro';
 
 interface Props {
   lang?: Locale;
@@ -33,16 +33,13 @@ const textPaddingMap: Record<string, string> = {
       <p class="text-slate-400 text-base sm:text-lg mt-3 font-mono">{UI.projectsSubheading}</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="projects-cards-container">
-        {PROJECTS.map((proj) => (
-          <ProjectCard 
-            proj={proj} 
-            lang={lang} 
-            UI={UI} 
-            textPadding={textPaddingMap[proj.id] || ''} 
-          />
-        ))}
-      </div>
+    <!-- Palcoscenico Roulette Circolare Orizzontale -->
+    <ProjectsRoulette 
+      projects={PROJECTS} 
+      lang={lang} 
+      UI={UI} 
+      textPaddingMap={textPaddingMap} 
+    />
   </div>
 
   <!-- VISTA B: SCHEDA ESPANSA DEL SINGOLO PROGETTO (Expanded Cinema Mode) -->
@@ -380,9 +377,14 @@ const textPaddingMap: Record<string, string> = {
       hoverStartTime = 0;
     });
 
-    card.addEventListener('click', (e: Event) => {
+      card.addEventListener('click', (e: Event) => {
       const mouseEvt = e as MouseEvent;
       if (isAnimating) return;
+
+      // Se la card cliccata è laterale, non avviare il FLIP (la roulette la porterà al centro)
+      if (card.getAttribute('data-roulette-slot') !== 'center') {
+        return;
+      }
       isAnimating = true;
 
       if (!detailCardContainer || !detailTitle || !detailBodyContent) return;
@@ -578,27 +580,27 @@ const textPaddingMap: Record<string, string> = {
     }
   });
 
-  // --- 2. DEEP-LINKING AUTOMATICO ALL'AVVIO VIA URL HASH (#pomegranade, #puppeteer, ecc.) ---
+  // --- 2. DEEP-LINKING AUTOMATICO ALL'AVVIO VIA URL HASH ---
   function checkUrlHash() {
     const hash = window.location.hash.replace('#', '');
     if (!hash) return;
 
+    // Dice alla roulette di ruotare portando subito questo progetto al centro
+    window.dispatchEvent(new CustomEvent('roulette:set-active', { detail: { projectId: hash } }));
+
     const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${hash}"]`);
     if (targetCard) {
-      // Breve pausa per attendere che il layout sia assestato, poi scorre e apre
       setTimeout(() => {
         targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(() => {
           targetCard.click();
-        }, 300);
+        }, 400);
       }, 350);
     }
   }
 
-  // Esegui il controllo al caricamento
   checkUrlHash();
 
-  // Supporto nativo ai tasti Avanti/Indietro del browser (History Popstate)
   window.addEventListener('popstate', () => {
     const hash = window.location.hash.replace('#', '');
     const isDetailOpen = projectDetail && !projectDetail.classList.contains('hidden');
@@ -606,8 +608,11 @@ const textPaddingMap: Record<string, string> = {
     if (!hash && isDetailOpen && !isAnimating) {
       closeDetailBtn?.click();
     } else if (hash && !isDetailOpen && !isAnimating) {
-      const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${hash}"]`);
-      targetCard?.click();
+      window.dispatchEvent(new CustomEvent('roulette:set-active', { detail: { projectId: hash } }));
+      setTimeout(() => {
+        const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${hash}"]`);
+        targetCard?.click();
+      }, 350);
     }
   });
 

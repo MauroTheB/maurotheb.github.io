@@ -1,0 +1,365 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { Project } from '../../data/portfolio';
+
+interface Props {
+  projects: Project[];
+  lang: 'en' | 'it';
+  UI: Record<string, string>;
+  textPaddingMap: Record<string, string>;
+}
+
+const { projects, lang, UI, textPaddingMap } = Astro.props;
+---
+
+<!-- Palcoscenico Roulette con Sidebar Ancorata al Bordo Esterno Sinistro -->
+<div class="relative w-full py-6 sm:py-10 flex items-center justify-center select-none overflow-visible" id="roulette-stage">
+  
+  <!-- ==========================================================================
+       1. SIDEBAR FISSA AL BORDO ESTREMO SINISTRO DEL BROWSER
+       ========================================================================== -->
+  
+  <!-- Pulsante Hamburger Mobile (Visibile solo su schermi < XL) -->
+  <button 
+    id="mobile-sidebar-toggle"
+    aria-label="Toggle Projects Menu"
+    class="xl:hidden fixed top-24 left-4 z-50 p-3 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-white backdrop-blur-xl shadow-2xl flex items-center justify-center cursor-pointer hover:border-cyan-400 transition-all"
+  >
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <!-- Pannello Sidebar Allargato (Banner 16:9 più grandi e leggibilità totale dei titoli) -->
+<aside 
+  id="projects-sidebar"
+  class="fixed xl:fixed top-24 left-0 z-40 w-88 sm:w-120 h-auto max-h-[84vh] overflow-y-auto p-4 rounded-r-3xl bg-slate-950/70 xl:bg-slate-950/60 border-y border-r border-white/15 backdrop-blur-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.1)] flex flex-col gap-3 transition-transform duration-500 ease-out -translate-x-full xl:translate-x-0"
+>
+  <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 px-2">
+    <span class="text-xs font-mono uppercase tracking-wider text-violet-400 font-bold">
+      {lang === 'it' ? 'Indice Progetti' : 'Project Index'}
+    </span>
+    <span class="text-[20px] font-mono text-slate-500">{"# "+projects.length}</span>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    {projects.map((proj, idx) => (
+      <button
+        data-sidebar-index={idx}
+        class="sidebar-project-btn group relative w-full p-3 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/60 transition-all duration-300 flex items-center gap-4 cursor-pointer text-left shadow-md"
+      >
+        {proj.coverImage && (
+          <div class="relative w-28 aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-700/80 shrink-0 shadow-inner">
+            <img src={proj.coverImage} alt={proj.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+          </div>
+        )}
+        <div class="flex flex-col min-w-0 flex-1">
+          <span class="text-[10px] font-mono text-cyan-400/90 font-semibold uppercase tracking-wider mb-0.5">{proj.category}</span>
+          <span class="text-xs sm:text-[20px] font-bold text-slate-200 group-hover:text-white leading-snug transition-colors">{proj.title}</span>
+        </div>
+      </button>
+    ))}
+  </div>
+</aside>
+
+  <!-- Overlay scuro per chiudere la sidebar su mobile quando è aperta -->
+  <div id="sidebar-overlay" class="xl:hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-30 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- ==========================================================================
+       2. PALCOSCENICO CENTRALE DELLA ROULETTE (Torna a occupare il 100% dello spazio)
+       ========================================================================== -->
+  <div class="relative w-full flex flex-col items-center justify-center overflow-visible">
+    
+    <!-- Frecce di Navigazione Fluttuanti (Sinistra / Destra) -->
+    <button 
+      id="roulette-prev-btn"
+      aria-label="Previous project"
+      class="absolute left-1 sm:left-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 backdrop-blur-xl shadow-2xl transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95 group cursor-pointer"
+    >
+      <svg class="w-6 h-6 -translate-x-0.5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <button 
+      id="roulette-next-btn"
+      aria-label="Next project"
+      class="absolute right-1 sm:right-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 backdrop-blur-xl shadow-2xl transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95 group cursor-pointer"
+    >
+      <svg class="w-6 h-6 translate-x-0.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <!-- Contenitore delle Card 3D -->
+    <div 
+      id="projects-cards-container"
+      class="relative w-full max-w-5xl h-[640px] sm:h-[680px] lg:h-[720px] flex items-center justify-center overflow-visible"
+    >
+      {projects.map((proj, idx) => (
+        <div 
+          data-roulette-item={proj.id}
+          data-index={idx}
+          class="roulette-slot-wrapper absolute w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
+        >
+          <ProjectCard 
+            proj={proj} 
+            lang={lang} 
+            UI={UI} 
+            textPadding={textPaddingMap[proj.id] || ''} 
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Indicatori in basso (Dots) -->
+    <div class="mt-4 flex items-center gap-2 z-20" id="roulette-dots-bar">
+      {projects.map((proj, idx) => (
+        <button 
+          data-roulette-dot={idx}
+          aria-label={`Go to ${proj.title}`}
+          class={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
+            idx === 0 ? 'w-8 bg-cyan-400' : 'w-2 bg-slate-700 hover:bg-slate-500'
+          }`}
+        ></button>
+      ))}
+    </div>
+  </div>
+
+</div>
+
+<!-- Script del Carosello e della Sidebar Mobile -->
+<script>
+  function initProjectsRoulette() {
+    const stage = document.getElementById('roulette-stage');
+    if (!stage) return;
+
+    const items = stage.querySelectorAll<HTMLElement>('[data-roulette-item]');
+    const dots = stage.querySelectorAll<HTMLElement>('[data-roulette-dot]');
+    const sidebarBtns = document.querySelectorAll<HTMLElement>('[data-sidebar-index]');
+    const prevBtn = document.getElementById('roulette-prev-btn');
+    const nextBtn = document.getElementById('roulette-next-btn');
+    
+    // Elementi menu mobile
+    const sidebar = document.getElementById('projects-sidebar');
+    const toggleBtn = document.getElementById('mobile-sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (!items.length) return;
+
+    const total = items.length;
+    let activeIndex = 0;
+    let isRotating = false;
+
+    // Gestione apertura/chiusura drawer mobile
+    function toggleMobileSidebar(open?: boolean) {
+      if (!sidebar || !overlay) return;
+      const isOpen = open !== undefined ? open : sidebar.classList.contains('-translate-x-full');
+      if (isOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    toggleBtn?.addEventListener('click', () => toggleMobileSidebar());
+    overlay?.addEventListener('click', () => toggleMobileSidebar(false));
+
+    function updateRouletteSlots() {
+      items.forEach((item, idx) => {
+        const cardArticle = item.querySelector<HTMLElement>('[data-project-card]');
+
+        item.classList.remove(
+          'slot-center', 
+          'slot-left', 
+          'slot-right', 
+          'slot-hidden-left', 
+          'slot-hidden-right',
+          'slot-hidden'
+        );
+
+        const offset = (idx - activeIndex + total) % total;
+
+        if (offset === 0) {
+          item.classList.add('slot-center');
+          item.style.zIndex = '30';
+          cardArticle?.setAttribute('data-roulette-slot', 'center');
+        } else if (offset === 1) {
+          item.classList.add('slot-right');
+          item.style.zIndex = '15';
+          cardArticle?.setAttribute('data-roulette-slot', 'right');
+        } else if (offset === total - 1) {
+          item.classList.add('slot-left');
+          item.style.zIndex = '15';
+          cardArticle?.setAttribute('data-roulette-slot', 'left');
+        } else if (offset <= total / 2) {
+          item.classList.add('slot-hidden-right');
+          item.style.zIndex = '0';
+          cardArticle?.setAttribute('data-roulette-slot', 'hidden');
+        } else {
+          item.classList.add('slot-hidden-left');
+          item.style.zIndex = '0';
+          cardArticle?.setAttribute('data-roulette-slot', 'hidden');
+        }
+      });
+
+      // Aggiorna stato visivo nella Sidebar e nei dots
+      sidebarBtns.forEach((btn, idx) => {
+        if (idx === activeIndex) {
+          btn.classList.add('border-cyan-500/80', 'bg-slate-900', 'shadow-md', 'shadow-cyan-500/10');
+          btn.classList.remove('border-slate-800', 'bg-slate-900/70');
+        } else {
+          btn.classList.remove('border-cyan-500/80', 'bg-slate-900', 'shadow-md', 'shadow-cyan-500/10');
+          btn.classList.add('border-slate-800', 'bg-slate-900/70');
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === activeIndex) {
+          dot.classList.remove('w-2', 'bg-slate-700');
+          dot.classList.add('w-8', 'bg-cyan-400');
+        } else {
+          dot.classList.remove('w-8', 'bg-cyan-400');
+          dot.classList.add('w-2', 'bg-slate-700');
+        }
+      });
+
+      const activeProjId = items[activeIndex]?.getAttribute('data-roulette-item') || '';
+      window.dispatchEvent(new CustomEvent('roulette:changed', { detail: { projectId: activeProjId, index: activeIndex } }));
+    }
+
+    function rotateTo(newIndex: number) {
+      if (isRotating) return;
+      isRotating = true;
+      activeIndex = ((newIndex % total) + total) % total;
+      updateRouletteSlots();
+
+      setTimeout(() => {
+        isRotating = false;
+      }, 550);
+    }
+
+    prevBtn?.addEventListener('click', () => rotateTo(activeIndex - 1));
+    nextBtn?.addEventListener('click', () => rotateTo(activeIndex + 1));
+
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      const isDetailOpen = document.getElementById('project-detail-view')?.classList.contains('hidden') === false;
+      if (isDetailOpen) return;
+      if (e.key === 'ArrowLeft') rotateTo(activeIndex - 1);
+      if (e.key === 'ArrowRight') rotateTo(activeIndex + 1);
+    });
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => rotateTo(idx));
+    });
+
+    sidebarBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetIdx = parseInt(btn.getAttribute('data-sidebar-index') || '0', 10);
+        rotateTo(targetIdx);
+        toggleMobileSidebar(false); // Chiude il drawer su mobile se cliccato
+      });
+    });
+
+    let touchStartX = 0;
+    stage.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    stage.addEventListener('touchend', (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const dx = touchEndX - touchStartX;
+      if (Math.abs(dx) > 45) {
+        if (dx < 0) rotateTo(activeIndex + 1);
+        else rotateTo(activeIndex - 1);
+      }
+    }, { passive: true });
+
+    items.forEach((item, idx) => {
+      item.addEventListener('click', (e) => {
+        if (idx !== activeIndex) {
+          e.stopPropagation();
+          rotateTo(idx);
+        }
+      });
+    });
+
+    updateRouletteSlots();
+
+    window.addEventListener('roulette:set-active', (e: Event) => {
+      const customEvt = e as CustomEvent<{ projectId: string }>;
+      const targetIdx = Array.from(items).findIndex(it => it.getAttribute('data-roulette-item') === customEvt.detail.projectId);
+      if (targetIdx !== -1) {
+        activeIndex = targetIdx;
+        updateRouletteSlots();
+      }
+    });
+  }
+
+  initProjectsRoulette();
+  document.addEventListener('astro:page-load', initProjectsRoulette);
+</script>
+
+<style is:global>
+  .slot-center {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .slot-left {
+    transform: translate3d(-78%, 0, 0) scale(0.84);
+    opacity: 0.38;
+    filter: blur(2px);
+    pointer-events: auto;
+    visibility: visible;
+    cursor: pointer;
+  }
+
+  .slot-right {
+    transform: translate3d(78%, 0, 0) scale(0.84);
+    opacity: 0.38;
+    filter: blur(2px);
+    pointer-events: auto;
+    visibility: visible;
+    cursor: pointer;
+  }
+
+  .slot-hidden-left {
+    transform: translate3d(-135%, 0, 0) scale(0.65);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .slot-hidden-right {
+    transform: translate3d(135%, 0, 0) scale(0.65);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .slot-hidden {
+    transform: translate3d(0, 0, 0) scale(0.65);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .slot-left,
+    .slot-right {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+  }
+
+  .roulette-slot-wrapper:not(.slot-center) article::before,
+  .roulette-slot-wrapper:not(.slot-center) article::after {
+    display: none !important;
+  }
+</style>

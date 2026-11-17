@@ -56,11 +56,14 @@ a,
    HARRY POTTER MAGIC HOVER: TEMPI SCOLLEGATI & GEOMETRIA PRECISA AL 200%
    ========================================================================== */
 
-/* 1. Schede stabili: dichiarazione dei token temporali completamente indipendenti */
-#projects-cards-container>article {
-  /* --- PARAMETRI INDIPENDENTI (MODIFICALI LIBERAMENTE SENZA INTERFERENZE) --- */
+/* ==========================================================================
+   HARRY POTTER MAGIC HOVER: ATTIVO SOLO SULLA CARD CENTRALE DELLA ROULETTE
+   ========================================================================== */
+
+/* 1. Schede: dichiarazione dei token temporali indipendenti */
+#projects-cards-container article {
   --gold-rise-duration: 2.8s;     /* 1. Velocità con cui l'oro sale dal basso */
-  --text-ignition-delay: 2.7s;    /* 2. Istante esatto in cui il testo si accende (Scollegato!) */
+  --text-ignition-delay: 2.7s;    /* 2. Istante esatto in cui il testo si accende */
 
   position: relative;
   animation: lumosArcaneGlow 8.5s ease-in-out infinite;
@@ -69,23 +72,23 @@ a,
 }
 
 /* Desincronizzazione dell'aura di base */
-#projects-cards-container>article:nth-child(2n) {
+#projects-cards-container .roulette-slot-wrapper:nth-child(2n) article {
   animation-duration: 9.8s;
   animation-delay: -3.2s;
 }
 
-#projects-cards-container>article:nth-child(3n) {
+#projects-cards-container .roulette-slot-wrapper:nth-child(3n) article {
   animation-duration: 7.2s;
   animation-delay: -5.0s;
 }
 
-#projects-cards-container>article:nth-child(4n) {
+#projects-cards-container .roulette-slot-wrapper:nth-child(4n) article {
   animation-duration: 11.0s;
   animation-delay: -1.8s;
 }
 
-/* 2. LAYER 1: LUCE DIETRO (Geometria 200% - tocca la cima a fine corsa esatta) */
-#projects-cards-container>article::before {
+/* 2. LAYER 1: LUCE DIETRO (Geometria 200%) */
+#projects-cards-container article::before {
   content: "";
   position: absolute;
   inset: -25px;
@@ -113,8 +116,8 @@ a,
   will-change: background-position, opacity;
 }
 
-/* 3. LAYER 2: CONTORNO E SUPERFICIE (Geometria 200% sincronizzata) */
-#projects-cards-container>article::after {
+/* 3. LAYER 2: CONTORNO E SUPERFICIE */
+#projects-cards-container article::after {
   content: "";
   position: absolute;
   inset: -1px;
@@ -154,12 +157,12 @@ a,
   will-change: background-position, opacity;
 }
 
-/* 4. ALL'HOVER: Salita oro guidata unicamente da --gold-rise-duration */
-#projects-cards-container>article:hover {
+/* 4. ALL'HOVER: Salita oro SOLO ed esclusivamente per la card al centro (.slot-center) */
+#projects-cards-container .slot-center article:hover {
   transform: translate3d(0, -9px, 0) scale(1.018) !important;
 }
 
-#projects-cards-container>article:hover::before {
+#projects-cards-container .slot-center article:hover::before {
   background-position: 0 100%;
   opacity: 0.65;
   transition:
@@ -167,7 +170,7 @@ a,
     opacity 1.8s ease-out;
 }
 
-#projects-cards-container>article:hover::after {
+#projects-cards-container .slot-center article:hover::after {
   background-position: 0 100%, 0 100%;
   opacity: 1;
   transition:
@@ -175,120 +178,113 @@ a,
     opacity 1.8s ease-out;
 }
 
-/* Spegnimento istantaneo della superficie d'oro quando la pellicola si frantuma al click */
-#projects-cards-container>article.shattered-instant-reset::before,
-#projects-cards-container>article.shattered-instant-reset::after {
+/* Spegnimento istantaneo al click/shatter */
+#projects-cards-container article.shattered-instant-reset::before,
+#projects-cards-container article.shattered-instant-reset::after {
   opacity: 0 !important;
   transition: none !important;
 }
 
-#projects-cards-container>article.shattered-instant-reset h3,
-#projects-cards-container>article.shattered-instant-reset p,
-#projects-cards-container>article.shattered-instant-reset .italic,
-#projects-cards-container>article.shattered-instant-reset span {
+#projects-cards-container article.shattered-instant-reset h3,
+#projects-cards-container article.shattered-instant-reset p,
+#projects-cards-container article.shattered-instant-reset .italic,
+#projects-cards-container article.shattered-instant-reset span {
   animation: none !important;
   text-shadow: none !important;
   transition: none !important;
   color: inherit !important;
 }
 
-/* ==========================================================================
-   SCATTO MAGICO DEI TESTI: GUIDATO UNICAMENTE DA --text-ignition-delay
-   ========================================================================== */
-
-#projects-cards-container>article h3,
-#projects-cards-container>article p,
-#projects-cards-container>article .italic,
-#projects-cards-container>article span,
-#projects-cards-container>article [class*="text-violet-400"] {
+/* Transizione testi di base */
+#projects-cards-container article h3,
+#projects-cards-container article p,
+#projects-cards-container article .italic,
+#projects-cards-container article span,
+#projects-cards-container article [class*="text-violet-400"] {
   transition: color 0.4s ease-out, text-shadow 0.4s ease-out, transform 0.3s ease-out !important;
 }
 
-#projects-cards-container>article:hover h3 {
-  color: #ffffff;
-}
+/* ==========================================================================
+     SCATTO MAGICO DEI TESTI: GUIDATO UNICAMENTE DA --text-ignition-delay
+     ========================================================================== */
 
-#projects-cards-container>article:hover [class*="text-violet-400"] {
-  color: #a78bfa;
-}
-
-@keyframes textMagicIgnition {
-  0% {}
-  25% {
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(254, 240, 138, 0.9), 0 0 35px rgba(251, 191, 36, 0.7);
-    transform: scale(1.008);
+  @keyframes textMagicIgnition {
+    0% {}
+    25% {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(254, 240, 138, 0.9), 0 0 35px rgba(251, 191, 36, 0.7);
+      transform: scale(1.008);
+    }
+    100% {
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 10px rgba(254, 240, 138, 0.35);
+      transform: scale(1);
+    }
   }
-  100% {
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 10px rgba(254, 240, 138, 0.35);
-    transform: scale(1);
+
+  @keyframes titleMagicIgnition {
+    0% {}
+    25% {
+      color: #ffffff;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 1), 0 0 30px rgba(254, 240, 138, 1);
+      transform: scale(1.01);
+    }
+    100% {
+      color: #fde047;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 14px rgba(250, 204, 21, 0.6);
+      transform: scale(1);
+    }
   }
-}
 
-@keyframes titleMagicIgnition {
-  0% {}
-  25% {
-    color: #ffffff;
-    text-shadow: 0 0 16px rgba(255, 255, 255, 1), 0 0 30px rgba(254, 240, 138, 1);
-    transform: scale(1.01);
+  @keyframes taglineMagicIgnition {
+    0% {}
+    25% {
+      color: #ffffff;
+      text-shadow: 0 0 14px rgba(56, 189, 248, 1);
+    }
+    100% {
+      color: #67e8f9;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 10px rgba(56, 189, 248, 0.5);
+    }
   }
-  100% {
-    color: #fde047;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 14px rgba(250, 204, 21, 0.6);
-    transform: scale(1);
+
+  @keyframes tagMagicIgnition {
+    0% {}
+    25% {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(254, 240, 138, 0.9);
+    }
+    100% {
+      color: #fef08a;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
   }
-}
 
-@keyframes taglineMagicIgnition {
-  0% {}
-  25% {
-    color: #ffffff;
-    text-shadow: 0 0 14px rgba(56, 189, 248, 1);
+  /* Attivazione con consumo ESCLUSIVO del token indipendente sulla card centrale (.slot-center) */
+  #projects-cards-container .slot-center article:hover h3 {
+    animation: titleMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
   }
-  100% {
-    color: #67e8f9;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 10px rgba(56, 189, 248, 0.5);
+
+  #projects-cards-container .slot-center article:hover p.text-slate-300 {
+    animation: textMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
   }
-}
 
-@keyframes tagMagicIgnition {
-  0% {}
-  25% {
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(254, 240, 138, 0.9);
+  #projects-cards-container .slot-center article:hover .italic,
+  #projects-cards-container .slot-center article:hover span.text-slate-500 {
+    animation: textMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
   }
-  100% {
-    color: #fef08a;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+
+  #projects-cards-container .slot-center article:hover p.text-cyan-400 {
+    animation: taglineMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
   }
-}
 
-/* Attivazione con consumo ESCLUSIVO del token indipendente: var(--text-ignition-delay) */
-#projects-cards-container>article:hover h3 {
-  animation: titleMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
+  #projects-cards-container .slot-center article:hover span.bg-slate-800 {
+    animation: tagMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
+  }
 
-#projects-cards-container>article:hover p.text-slate-300 {
-  animation: textMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
-
-#projects-cards-container>article:hover .italic,
-#projects-cards-container>article:hover span.text-slate-500 {
-  animation: textMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
-
-#projects-cards-container>article:hover p.text-cyan-400 {
-  animation: taglineMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
-
-#projects-cards-container>article:hover span.bg-slate-800 {
-  animation: tagMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
-
-#projects-cards-container>article:hover [class*="text-violet-400"] {
-  animation: tagMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
-}
+  #projects-cards-container .slot-center article:hover [class*="text-violet-400"] {
+    animation: tagMagicIgnition 0.35s cubic-bezier(0.16, 1, 0.3, 1) var(--text-ignition-delay) forwards !important;
+  }
 
 /* ==========================================================================
    SCHEDE STABILI (EXPERIENCE, EDUCATION, SKILLS): ZERO GALLEGGIAMENTO,
@@ -337,7 +333,7 @@ a,
 }
 
 /* 3. Rim Light zenitale sul bordo superiore */
-#projects-cards-container>article,
+#projects-cards-container article,
 #track-experience .bg-slate-900\/70,
 #track-education>div>div,
 #track-skills .grid>div,

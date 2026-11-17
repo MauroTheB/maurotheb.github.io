@@ -9,8 +9,18 @@ const { projectId } = Astro.props;
 {projectId === 'puppeteer' && (
   <div class="card-breakout-frame pointer-events-none select-none">
     
+    <!-- 1. LIVELLO BACK PUPPETEER (z-0: sta fisicamente DIETRO allo sfondo della card) -->
+    <div class="absolute -top-25 -left-30 -right-20 h-230 z-0 overflow-visible pointer-events-none select-none">
+      <img 
+        src="/images/rovi_inferiori.png" 
+        alt="Pomegranade Frame Back" 
+        class="w-full h-full object-fill filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] group-hover:scale-102 transition-transform duration-700 ease-out"
+        draggable="false"
+      />
+    </div>
+    
     <!-- CORNICE SUPERIORE A TUTTA LARGHEZZA (Altezza controllata h-20) -->
-    <div class="absolute -top-25 -left-30 -right-20 h-240 z-30 overflow-visible pointer-events-none">
+    <div class="absolute -top-25 -left-30 -right-20 h-230 z-30 overflow-visible pointer-events-none">
       <img 
         src="/images/rovi_superiori.png" 
         alt="Rovi Superiori" 
@@ -35,7 +45,7 @@ const { projectId } = Astro.props;
     </div>
 
     <!-- 2. LIVELLO FRONT POMEGRANADE (z-30: avvolge DAVANTI ai bordi e contenuti) -->
-    <div class="absolute -top-25 -left-45 -right-28 h-260 z-30 overflow-visible pointer-events-none select-none">
+    <div class="absolute -top-25 -left-35 -right-28 h-250 z-30 overflow-visible pointer-events-none select-none">
       <img 
         src="/images/pomegranade_front.png" 
         alt="Pomegranade Frame Front" 
@@ -59,7 +69,7 @@ const { projectId } = Astro.props;
     </div>
 
     <!-- 2. LIVELLO FRONT MURDER MYSTERY (z-30) -->
-    <div class="absolute -top-20 -left-30 -right-20 h-225 z-30 overflow-visible pointer-events-none select-none">
+    <div class="absolute -top-30 -left-30 -right-20 h-225 z-30 overflow-visible pointer-events-none select-none">
       <img 
         src="/images/murder_front.png" 
         alt="Murder Mystery Frame Front" 
@@ -121,7 +131,7 @@ const { projectId } = Astro.props;
 {projectId === 'dda-thesis' && (
   <>
     <!-- 1. LIVELLO BACK DDA (z-0) -->
-    <div class="absolute -top-20 -left-30 -right-20 h-225 z-0 overflow-visible pointer-events-none select-none">
+    <div class="absolute -top-20 -left-10-right-10 h-225 z-0 overflow-visible pointer-events-none select-none">
       <img 
         src="/images/dda_back.png" 
         alt="DDA Frame Back" 
@@ -131,7 +141,7 @@ const { projectId } = Astro.props;
     </div>
 
     <!-- 2. LIVELLO FRONT DDA (z-30) -->
-    <div class="absolute -top-20 -left-30 -right-20 h-225 z-30 overflow-visible pointer-events-none select-none">
+    <div class="absolute -top-20 -left-10 -right-10 h-235 z-30 overflow-visible pointer-events-none select-none">
       <img 
         src="/images/dda_front.png" 
         alt="DDA Frame Front" 
