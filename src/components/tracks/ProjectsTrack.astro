@@ -21,6 +21,15 @@ const textPaddingMap: Record<string, string> = {
   'mazes-soul': 'pt-2 px-10',
   'dda-thesis': 'pt-2 px-10',
 };
+
+const fallbackCoverMap: Record<string, string> = {
+  puppeteer: '/images/puppeteer_immagine1.png',
+  pomegranade: '/images/pomegranate_preview.png',
+  'murder-mystery': '/images/murder_immagine1.png',
+  'water-sim': '/images/water_immagine1.png',
+  'mazes-soul': '/images/maze_immagine1.png',
+  'dda-thesis': '/images/dda_immagine1.png',
+};
 ---
 
 <!-- TRACCIA 1: PROGETTI -->
@@ -39,6 +48,7 @@ const textPaddingMap: Record<string, string> = {
       lang={lang} 
       UI={UI} 
       textPaddingMap={textPaddingMap} 
+      fallbackCoverMap={fallbackCoverMap}
     />
   </div>
 

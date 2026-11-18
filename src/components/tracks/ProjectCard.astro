@@ -6,9 +6,10 @@ interface Props {
   lang: 'en' | 'it';
   UI: Record<string, string>;
   textPadding: string;
+  fallbackCover?: string;
 }
 
-const { proj, lang, UI, textPadding } = Astro.props;
+const { proj, lang, UI, textPadding, fallbackCover = '/images/puppeteer_immagine1.png' } = Astro.props;
 ---
 
 <article 
@@ -40,8 +41,9 @@ const { proj, lang, UI, textPadding } = Astro.props;
       {proj.coverImage && (
         <div class="relative z-10 aspect-video w-full rounded-2xl overflow-hidden mb-5 bg-slate-950 border border-slate-800/80 shadow-inner group-hover:border-slate-700 transition-colors">
           <img 
-            src={proj.coverImage} 
+           src={proj.coverImage || fallbackCover}
             alt={proj.title}
+            onerror={`this.onerror=null;this.src='${fallbackCover}';`}
             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="lazy"
           />

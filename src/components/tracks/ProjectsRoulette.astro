@@ -7,9 +7,12 @@ interface Props {
   lang: 'en' | 'it';
   UI: Record<string, string>;
   textPaddingMap: Record<string, string>;
+  fallbackCoverMap?: Record<string, string>;
 }
 
-const { projects, lang, UI, textPaddingMap } = Astro.props;
+const { projects, lang, UI, textPaddingMap, fallbackCoverMap = {} } = Astro.props;
+const DEFAULT_FALLBACK_COVER = '/images/puppeteer_immagine1.png';
+const getFallbackCover = (id: string) => fallbackCoverMap[id] || DEFAULT_FALLBACK_COVER;
 ---
 
 <!-- Palcoscenico Roulette con Sidebar Ancorata al Bordo Esterno Sinistro -->
@@ -19,45 +22,42 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
        1. SIDEBAR FISSA AL BORDO ESTREMO SINISTRO DEL BROWSER
        ========================================================================== -->
   
-  <!-- Pulsante Hamburger (Sempre disponibile per aprire/chiudere la sidebar) -->
-  <button 
-    id="mobile-sidebar-toggle"
-    aria-label="Toggle Projects Menu"
-    class="fixed top-20 left-4 z-50 p-2.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-white backdrop-blur-xl shadow-2xl flex items-center justify-center cursor-pointer hover:border-cyan-400 transition-all"
-  >
-    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  </button>
+  <!-- Pulsante Hamburger (Ancorato dinamicamente al bordo destro esterno della Sidebar) -->
+<button 
+  id="mobile-sidebar-toggle"
+  aria-label="Toggle Projects Menu"
+  class="fixed top-4 left-4 z-50 p-2.5 rounded-2xl bg-slate-900/95 border border-slate-700/80 hover:border-cyan-400 text-white backdrop-blur-xl shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-500 ease-out translate-x-0"
+>
+  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
 
   <!-- Pannello Sidebar Allargato (Banner 16:9 più grandi e leggibilità totale dei titoli) -->
 <aside 
   id="projects-sidebar"
-  class="fixed xl:fixed top-36 left-0 z-40 w-88 sm:w-120 h-auto max-h-[84vh] overflow-y-auto p-4 rounded-r-3xl bg-slate-950/70 xl:bg-slate-950/60 border-y border-r border-white/15 backdrop-blur-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.1)] flex flex-col gap-3 transition-transform duration-500 ease-out -translate-x-full"
->
-  <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 px-2">
-    <span class="text-xs font-mono uppercase tracking-wider text-violet-400 font-bold">
-      {lang === 'it' ? 'Indice Progetti' : 'Project Index'}
-    </span>
-    <span class="text-[20px] font-mono text-slate-500">{"# "+projects.length}</span>
-  </div>
+  class="fixed inset-y-0 left-0 z-40 w-80 sm:w-100 h-dvh overflow-hidden p-0 rounded-r-3xl bg-slate-950/80 border-y border-r border-white/15 backdrop-blur-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85),inset_0_1px_0_0_rgba(255,255,255,0.1)] flex flex-col transition-transform duration-500 ease-out -translate-x-full">
 
-  <div class="flex flex-col gap-3">
+  <div class="flex-1 min-h-0 flex flex-col gap-1">
     {projects.map((proj, idx) => (
       <button
-        data-sidebar-index={idx}
-        class="sidebar-project-btn group relative w-full p-3 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/60 transition-all duration-300 flex items-center gap-4 cursor-pointer text-left shadow-md"
-      >
-        {proj.coverImage && (
-          <div class="relative w-28 aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-700/80 shrink-0 shadow-inner">
-            <img src={proj.coverImage} alt={proj.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+          data-sidebar-index={idx}
+          class="sidebar-project-btn group relative flex-1 min-h-0 w-full p-0 rounded-2xl border border-slate-800 hover:border-cyan-400/80 hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer text-left shadow-lg overflow-hidden"        >
+          <div class="relative w-full h-full rounded-2xl overflow-hidden bg-slate-950 flex flex-col justify-between p-2">          <img 
+            src={proj.coverImage || getFallbackCover(proj.id)}
+            alt={proj.title}
+            onerror={`this.onerror=null;this.src='${getFallbackCover(proj.id)}';`}
+            class="absolute inset-0 w-full h-full object-cover object-top origin-top group-hover:scale-105 transition-transform duration-700 ease-out"          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/40 pointer-events-none"></div>
+
+          <!-- Tipologia Progetto: Centrata in alto al limite superiore del banner -->
+          <div class="relative z-10 w-full flex justify-center">
+            <span class="px-2 py-0.5 rounded bg-slate-950/90 border border-cyan-500/40 text-[9px] font-mono font-bold uppercase tracking-wider text-cyan-300 backdrop-blur-md shadow-sm">
+              {proj.category}
+            </span>
           </div>
-        )}
-        <div class="flex flex-col min-w-0 flex-1">
-          <span class="text-[10px] font-mono text-cyan-400/90 font-semibold uppercase tracking-wider mb-0.5">{proj.category}</span>
-          <span class="text-xs sm:text-[20px] font-bold text-slate-200 group-hover:text-white leading-snug transition-colors">{proj.title}</span>
         </div>
-      </button>
+        </button>
     ))}
   </div>
 </aside>
@@ -107,6 +107,7 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
             lang={lang} 
             UI={UI} 
             textPadding={textPaddingMap[proj.id] || ''} 
+            fallbackCover={getFallbackCover(proj.id)}
           />
         </div>
       ))}
@@ -144,7 +145,23 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
     const nextBtn = document.getElementById('roulette-next-btn');
 
     let userManuallyClosed = false; 
+    const SIDEBAR_BTN_OFFSET = ['translate-x-80', 'sm:translate-x-100'];
 
+    function setSidebarOpen(isOpen: boolean, isManual = false) {
+      if (!sidebar) return;
+
+      if (isOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay?.classList.remove('opacity-0', 'pointer-events-none');
+        toggleBtn?.classList.add(...SIDEBAR_BTN_OFFSET);
+        if (isManual) userManuallyClosed = false;
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay?.classList.add('opacity-0', 'pointer-events-none');
+        toggleBtn?.classList.remove(...SIDEBAR_BTN_OFFSET);
+        if (isManual) userManuallyClosed = true;
+      }
+    }
     // 1. OSSERVATORE PROGETTI: Apertura quando la sezione è inquadrata, chiusura se risali nella Hero
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -156,13 +173,11 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
           const isFooterOnScreen = footerRect && footerRect.top < window.innerHeight;
           
           if (!userManuallyClosed && !isFooterOnScreen) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay?.classList.remove('opacity-0', 'pointer-events-none');
+            setSidebarOpen(true);
           }
         } else if (entry.boundingClientRect.top > 80) {
           // Se siamo risaliti in alto verso la Hero
-          sidebar.classList.add('-translate-x-full');
-          overlay?.classList.add('opacity-0', 'pointer-events-none');
+          setSidebarOpen(false);
           userManuallyClosed = false;
         }
       });
@@ -179,14 +194,13 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
 
           if (entry.isIntersecting) {
             // Sei arrivato al fondo del sito: chiudi la sidebar per lasciare pulito il footer
-            sidebar.classList.add('-translate-x-full');
-            overlay?.classList.add('opacity-0', 'pointer-events-none');
+            setSidebarOpen(false);
           } else {
             // Se risali e il footer esce dallo schermo, se i progetti sono ancora visibili riapri
             const stageRect = stage.getBoundingClientRect();
             const isStageVisible = stageRect.top < window.innerHeight && stageRect.bottom > 0;
             if (isStageVisible && !userManuallyClosed) {
-              sidebar.classList.remove('-translate-x-full');
+              setSidebarOpen(true);
             }
           }
         });
@@ -195,28 +209,15 @@ const { projects, lang, UI, textPaddingMap } = Astro.props;
       footerObserver.observe(footerEl);
     }
 
-    // 2. Gestione unificata e pulita dell'apertura/chiusura tramite pulsante Hamburger
-    function toggleSidebar(forceState?: boolean) {
-      if (!sidebar) return;
-      const isHidden = sidebar.classList.contains('-translate-x-full');
-      if (isHidden) {
-        sidebar.classList.remove('-translate-x-full');
-        overlay?.classList.remove('opacity-0', 'pointer-events-none');
-        userManuallyClosed = false;
-      } else {
-        sidebar.classList.add('-translate-x-full');
-        overlay?.classList.add('opacity-0', 'pointer-events-none');
-        userManuallyClosed = true; // L'utente ha scelto di chiuderla a mano
-      }
-    }
-
+    // 3. Gestione manuale unificata (Hamburger + Overlay)
     toggleBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
-      toggleSidebar();
+      const isClosed = sidebar?.classList.contains('-translate-x-full');
+      setSidebarOpen(Boolean(isClosed), true);
     });
 
     overlay?.addEventListener('click', () => {
-      toggleSidebar(false);
+      setSidebarOpen(false, true);
     });
 
     if (!items.length) return;
