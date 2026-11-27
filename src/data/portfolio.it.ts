@@ -70,13 +70,13 @@ export const PORTFOLIO_IT = {
       period: "2025",
       category: "Progetto Accademico di Team / Industry Showcase",
       coverImage: "/images/pomegranade_banner.png", // O il nome dello screenshot 16:9 che preferisci
-      primaryFocus: "Direzione Design, Sistemi di Combattimento & Documentazione (TDD / GDD)",
+      primaryFocus: "Lead Game & Systems Design · Combat Co-op",
       genrePlatform: "Gioco Survival Co-op · 2–4 Giocatori · PC",
       tagline: "Gioco Survival Co-op · 2–4 Giocatori · PC",
-      role: "Team Leader · Lead Designer · Game Programmer",
+      role: "Team Leader · Lead Game & Systems Designer",
       highlight: "Industry Showcase · New Game Designer 2025 · 3° Posto",
-      gameplaySummary: "Un survival cooperativo ambientato in una foresta incantata sospesa nel limbo. I giocatori alternano combattimenti frenetici, usando munizioni ricavate da melograni magici raccolti, a fasi strategiche di riparazione rifugi e cura del falò prima che l'alba pietrificante resetti la minaccia.",
-      personalContributionSummary: "Ho guidato la direzione di design del gioco, redatto l'intero Technical Design Document (TDD) e circa l'80% del Game Design Document (GDD), e progettato e implementato i sistemi chiave di shooting, combattimento e gameplay multiplayer.",
+      gameplaySummary: "Un survival party-game cooperativo per 2–4 giocatori ambientato in una foresta nel limbo. Il team si divide tra raccolta fisica di risorse (legna, frutti, riparazione barriere, cura del falò) e ondate notturne frenetiche, prima che l'alba pietrifichi temporaneamente i nemici sul posto.",
+      personalContributionSummary: "Ho guidato la direzione di game & systems design come Team Leader, redatto ~70% del GDD e 100% del TDD, e progettato e co-implementato combattimento, ciclo giorno-notte, IA nemica e meccaniche co-op su Mirror.",
       detailedContributions: {
       designed: [
         "Meccaniche centrali di shooting e fisica dei proiettili basate sui semi di melograno magico come munizioni dinamiche.",
@@ -93,7 +93,7 @@ export const PORTFOLIO_IT = {
       ]
     },
       description: "Un survival cooperativo ambientato in una foresta incantata sospesa nel limbo. I giocatori alternano combattimenti frenetici, usando munizioni ricavate da melograni magici raccolti, a fasi strategiche di riparazione rifugi e cura del falò prima che l'alba pietrificante resetti la minaccia.\n\nHo guidato la direzione di design del gioco, redatto l'intero Technical Design Document (TDD) e circa l'80% del Game Design Document (GDD), e progettato e implementato i sistemi chiave di shooting, combattimento e gameplay multiplayer.",
-      tags: ["Unity", "C#", "Mirror Networking", "Co-op Multiplayer", "Combat Design", "Team Leadership"],
+      tags: ["Game Design", "System Design", "Combat Design", "Co-op Multiplayer", "Unity", "Mirror Networking"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#pomegranade",
       videoUrl: "/videos/pomegranade.mp4",
       platform: "PC",
@@ -105,6 +105,93 @@ export const PORTFOLIO_IT = {
       tddUrl: "https://docs.google.com/document/d/1gKfPVzjNPmzunMLUdYsWIt6gt6_uNcVJ67uM8Jx2o3Q/edit?usp=sharing",
       trailerId: "iTNlmDLAY84",
       gameplayId: "KJZ43R5dVLI",
+      designFeatures: [
+        {
+          id: "pomegranade-economy",
+          discipline: "System & Loop Design",
+          title: "Ciclo Giorno-Notte, Alba Pietrificante ed Economia Fisica Co-op",
+          scopeBadge: "Prototipo Giocabile",
+          media: {
+            type: "image",
+            src: "/images/immagine_falo_personaggio.png",
+            caption: "Difesa del falò e loop fisico risorse (anteprima temporanea — da sostituire con schema Giorno-Notte)"
+          },
+          whatAndWhy: "Per creare tensione cooperativa stile Overcooked senza ingombrare la UI, non esiste inventario astratto: trasportare legna o melograni occupa le mani e disequipaggia l'arma, obbligando a scegliere tra sparare, riparare o raccogliere. All'alba i nemici si pietrificano sul posto invece di sparire, mantenendo pressione spaziale in una breve finestra di respiro.",
+          processDetails: {
+            ideation: "Ispirato al caos cooperativo di Overcooked e alle ondate di CoD Zombies, ogni azione avviene senza stacchi nella stessa arena forestale.",
+            mechanicsOrTuning: [
+              "Scuotimento Cooperativo: due giocatori collaborano per scuotere gli alberi e far cadere melograni, oppure li abbattono per ottenere legna.",
+              "Trade-off Ciclo Alberi (GDD 5.5.3): gli alberi abbattuti ricrescono solo di giorno in nuove zone e non producono frutti finché non maturano—abbatterli ora significa rinunciare a munizioni future.",
+              "Fallback Falò & Pietrificazione: il falò garantisce fuoco minimo anti soft-lock, mentre all'alba i nemici congelati in grayscale restano un pericolo latente."
+            ],
+            iterationOrResult: "Validato dal vivo in sessioni a 4 giocatori a New Game Designer 2025 (3° Posto), dove il limite di trasporto fisico ha generato coordinazione spontanea."
+          }
+        },
+        {
+          id: "pomegranade-combat",
+          discipline: "Combat & Arsenal Design",
+          title: "Arsenale da Melograni & Differenziazione dei Ruoli in Squadra",
+          scopeBadge: "Prototipo (3) + GDD (3)",
+          media: {
+            type: "video",
+            src: "/videos/pomegranade.mp4",
+            caption: "Combat e feeling di shooting dal vivo nello vertical slice giocabile"
+          },
+          whatAndWhy: "Lo shooting è legato all'economia della mappa: i giocatori aprono i melograni raccolti per ricavare munizioni invece di trovare drop pronti. Nel prototipo giocabile tre armi distinte permettono di coprire ruoli complementari tra chi trasporta risorse, chi tiene i varchi e chi pulisce i gruppi.",
+          processDetails: {
+            ideation: "Evitate armi hitscan tutte uguali progettando balistiche, consumo risorse e curve rischio-ricompensa ben separate.",
+            mechanicsOrTuning: [
+              "Seedshot (Giocabile): pistola precisa a cadenza media per gestire in modo efficiente le munizioni.",
+              "Seedsrusher (Giocabile): fucile a 3 canne ad alta cadenza per fuoco di copertura continuo mentre i compagni riparano.",
+              "Pomegranade (Giocabile): granata ad arco ad alto rischio/ricompensa per rompere i cluster nemici.",
+              "Espansione GDD: XBowrter (balestra parabolica di precisione), Firepome (lanciafiamme DoT ravvicinato) e S-Axe-Seed (ascia boomerang a controllo traiettoria)."
+            ],
+            iterationOrResult: "Aggiunti hitbox dedicati, particellari di impatto e animazioni di flinch nel prototipo per mantenere leggibile il combat nel caos a 4 giocatori."
+          }
+        },
+        {
+          id: "pomegranade-ai",
+          discipline: "AI & Encounter Design",
+          title: "Logica di Targeting Manta & Triangolo Tattico delle Ondate",
+          scopeBadge: "Prototipo (Manta) + GDD",
+          media: {
+            type: "image",
+            src: "/images/players_vs_monsters.png",
+            caption: "Assalto delle Mante al perimetro (da sostituire con flowchart IA e tabella comparativa nemici)"
+          },
+          whatAndWhy: "Anche con un'IA snella da prototipo, il targeting è progettato per punire il camping passivo. Le Mante implementate danno priorità ai segmenti di barriera già danneggiati per aprire brecce e, se il varco è rotto, puntano direttamente a drenare il falò—trasformando ogni riparazione trascurata in emergenza immediata.",
+          processDetails: {
+            ideation: "Progettate tre famiglie nemiche complementari affinché le ondate miste impongano scelte di priorità al team.",
+            mechanicsOrTuning: [
+              "Manta (Giocabile): creatura fluttuante che ignora il terreno; attacca le barriere già ferite, bypassa quelle distrutte, drena il falò e pietrifica all'alba.",
+              "Simian (Espansione GDD): disturbatore veloce che scavalca i muri e sabota le risorse a terra lanciandole lontano.",
+              "Bull (Espansione GDD): tank d'assedio che sfonda più barriere in carica e abbatte gli alberi da risorse."
+            ],
+            iterationOrResult: "Mantenere la logica della Manta deterministica e leggibile ha permesso di calibrare le curve delle ondate prima di introdurre i nemici secondari."
+          }
+        },
+        {
+          id: "pomegranade-coop",
+          discipline: "Technical & Co-op UX Design",
+          title: "Sync Host-Client Mirror, Camera Casual & Ruota Emote Non-Verbale",
+          scopeBadge: "Prototipo Giocabile",
+          media: {
+            type: "image",
+            src: "/images/pomegranate_preview.png",
+            caption: "Leggibilità arena e inquadratura co-op (da sostituire con screenshot Ruota Emote & schema Mirror)"
+          },
+          whatAndWhy: "Un party-game frenetico fallisce se la telecamera disorienta o se serve per forza la chat vocale. Ho progettato una camera a 360° con pitch bloccato per ridurre il carico cognitivo, una Ruota Emote con indicatori agganciati ai bordi schermo e audio dedicati, e co-sviluppato la logica di gioco Host-Client su Mirror sugli oggetti fisici condivisi.",
+          processDetails: {
+            ideation: "Uniti i ping radiali rapidi stile League of Legends a una camera ad origine fissa per rendere l'onboarding immediato anche ai giocatori casual.",
+            mechanicsOrTuning: [
+              "Ruota Emote (Giocabile): ping contestuali ('Aiutami a scuotere l'albero', 'Ripara barriera', 'Falò si spegne') con icone ancorate ai bordi fuori schermo, SFX unici e cooldown anti-spam (6 usi → 10s).",
+              "Vincoli Camera: rotazione orizzontale 360° completa con blocco verticale per evitare inquadrature su cielo vuoto o occlusioni del terreno.",
+              "Sincronizzazione Mirror: stati condivisi di raccolta/passaggio/lancio oggetti e distruzione procedurale delle barriere sviluppati col programmatore di rete."
+            ],
+            iterationOrResult: "Testato dal vivo con lead di Milestone, Ubisoft e Nacon a New Game Designer 2025, conquistando il 3° posto."
+          }
+        }
+      ],
       storySteps: [
         {
           tag: "CORE GAMEPLAY LOOP",
@@ -133,27 +220,112 @@ export const PORTFOLIO_IT = {
       id: "puppeteer",
       title: "A Child's Tale: Whisper of the Puppeteer",
       year: "Apr 2024 – Lu 2024",
-      period: "2026",
+      period: "2024",
       category: "Progetto Personale",
       coverImage: "/images/puppeteer_banner.png",
-      primaryFocus: "Sistemi AI & Audio Design Adattivo",
+      primaryFocus: "Sensory Game Design & Audio Adattivo (FMOD / Steam Audio)",
       genrePlatform: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
       tagline: "Horror Psicologico in Prima Persona · PC & Meta XR VR",
-      role: "Game Designer · Gameplay Programmer · Sviluppatore Unico",
-      gameplaySummary: "Un'avventura horror psicologica in prima persona ambientata in una villa abbandonata. Guidato da un'enigmatica voce femminile, il giocatore esplora scenari suggestivi, raccoglie documenti per ricostruire una tragedia nascosta ed elude il Burattinaio: uno stregone che muta le sue vittime in marionette viventi.",
-      personalContributionSummary: "Ideazione autonoma del concept, gameplay design e soundscape ambientale. Progettazione e implementazione di sistemi audio adattivi stratificati con FMOD Studio, logica euristica di comparsa del boss AI, enigmi interattivi e controlli di movimento VR completi.",
+      role: "Sviluppatore Unico · Game & Technical Audio Designer",
+      gameplaySummary: "Un horror psicologico in prima persona (PC & Meta XR VR) in cui la vista è ridotta alla fessura di un monocolo e l'udito diventa il senso principale per orientarsi. Guidato da una voce eterea e da un impulso di ecolocalizzazione a luce bianca generato dal Cuore, il giocatore deve risolvere l'enigma del pianoforte evitando le stanze-trappola del Burattinaio.",
+      personalContributionSummary: "Ideazione, design e sviluppo completo in solitaria: dal gameplay a deprivazione visiva alla pipeline spaziale FMOD/Steam Audio, fino al puzzle del pianoforte iterato su playtest, ai trigger A* del nemico e alle interazioni fisiche complete in Meta XR VR.",
       description: "Un'avventura horror psicologica in prima persona ambientata in una villa abbandonata. Guidato da un'enigmatica voce femminile, il giocatore esplora scenari suggestivi, raccoglie documenti per ricostruire una tragedia nascosta ed elude il Burattinaio: uno stregone che muta le sue vittime in marionette viventi.\n\nIdeazione autonoma del concept, gameplay design e soundscape ambientale. Progettazione e implementazione di sistemi audio adattivi stratificati con FMOD Studio, logica euristica di comparsa del boss AI, enigmi interattivi e controlli di movimento VR completi.",
-      tags: ["Unity", "C#", "Meta XR", "FMOD Studio", "Sistemi AI", "Horror Exploration"],
+      tags: ["Game Design", "FMOD Studio", "Steam Audio", "Meta XR VR", "Technical Audio", "Unity"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#a-childs-tale",
       videoUrl: "/videos/puppeteer.mp4",
-      platform: "PC (Meta XR VR in lavorazione)",
+      platform: "PC & Meta XR VR",
       engine: "Unity · C# · FMOD Studio · Steam Audio",
       authors: "Mauro Brochier",
       teamRoles: "Sviluppatore Unico — Game Designer, Gameplay Programmer",
       gddUrl: "https://docs.google.com/document/d/12cTheqaPUP9HEnYansgj9i_p2kzd_NlF/edit?usp=sharing&ouid=118263974300292559359&rtpof=true&sd=true",
       trailerId: "gVvd9aPJDlY",
-      vrBadge: "META XR // VR IN SVILUPPO",
+      vrBadge: "META XR // BUILD VR COMPLETA",
       audioNotice: "Implementate tecniche audio avanzate e spazializzazione binaurale 3D — consigliato l'uso delle cuffie.",
+      designFeatures: [
+        {
+          id: "puppeteer-echolocation",
+          discipline: "Sensory & Core Loop Design",
+          title: "Cecità da Monocolo & Ecolocalizzazione a Luce Bianca del Cuore",
+          scopeBadge: "Build PC & VR Completa",
+          media: {
+            type: "video",
+            src: "/videos/puppeteer.mp4",
+            caption: "Gameplay VR ed esplorazione sensoriale (da affiancare o sostituire con clip dell'impulso di ecolocalizzazione)"
+          },
+          whatAndWhy: "Invece di usare il buio come semplice atmosfera, ho sostituito meccanicamente la vista con l'udito. All'inizio il giocatore viene accecato e vede solo attraverso la fessura circolare di un monocolo; un NPC gli dona un Cuore che, se schiacciato, emette un impulso sonoro che illumina la casa con una silhouette stilizzata a luce bianca.",
+          processDetails: {
+            ideation: "Progettato per obbligare il giocatore ad affidarsi all'acustica delle stanze e alla Voce Guida, eliminando minimappe o indicatori visivi classici.",
+            mechanicsOrTuning: [
+              "Vincolo del Monocolo: l'apertura circolare ridotta taglia la visione periferica e impone una scansione ambientale attiva.",
+              "Impulso del Cuore (Sonar): schiacciare il Cuore propaga un'onda sonora che rivela temporaneamente i volumi circostanti con sola luce bianca.",
+              "Voce Guida Dinamica: sposta la propria sorgente nella stanza corretta al completamento degli obiettivi—sbagliare direzione porta a trappole o allo spawn del Burattinaio."
+            ],
+            iterationOrResult: "Genera un'esperienza tesa e mirata (30 minuti – 2 ore a seconda della dimestichezza musicale/spaziale) in cui l'orientamento acustico è sopravvivenza."
+          }
+        },
+        {
+          id: "puppeteer-fmod",
+          discipline: "Audio Systems · FMOD & Steam Audio",
+          title: "Calibrazione 5 Profili HRTF, Filtro Finestre & Auralization 3ª Riflessione",
+          scopeBadge: "FMOD Studio + Steam Audio",
+          media: {
+            type: "image",
+            src: "/images/puppeteer_immagine1.png",
+            caption: "Esplorazione spaziale (da sostituire con screenshot parametri FMOD Studio & geometrie Steam Audio)"
+          },
+          whatAndWhy: "Se per sopravvivere devi capire da quale stanza arriva una voce, un panning stereo standard non basta. Ho costruito una pipeline in FMOD Studio e Steam Audio—aperta da un test iniziale su 5 profili HRTF—affinché pioggia esterna, passi e minacce reagiscano fisicamente a muri, porte e materiali.",
+          processDetails: {
+            ideation: "Poiché ogni persona percepisce la spazialità in modo diverso, il test preliminare con 5 profili HRTF permette al giocatore di scegliere il profilo più preciso per il proprio udito.",
+            mechanicsOrTuning: [
+              "Ovattamento Finestre (FMOD): il rumore esterno è attenuato da un filtro procedurale calcolato sulla distanza dalla finestra più vicina mediata con tutte le altre—massimo ovattamento esattamente al centro della casa.",
+              "Passi Procedurali (FMOD): variazione automatica su 5 superfici (sabbia, ghiaia, terriccio, erba, legno).",
+              "Steam Audio Auralization: materiali lignei assorbenti, occlusione di muri e porte su passi del Burattinaio e Voce, più riverbero di stanza fino alla 3ª riflessione."
+            ],
+            iterationOrResult: "Rende leggibili a orecchio porte aperte/chiuse e provenienza delle minacce senza bisogno di indicatori a schermo."
+          }
+        },
+        {
+          id: "puppeteer-piano",
+          discipline: "Puzzle & Playtest Iteration",
+          title: "Pianoforte Fisico Suonabile & Iterazione di Accessibilità da Playtest",
+          scopeBadge: "Iterato su Playtest",
+          media: {
+            type: "image",
+            src: "/images/puppeteer_immagine3.png",
+            caption: "Stanza del pianoforte e indizi (da sostituire con clip/screenshot del pianoforte in azione)"
+          },
+          whatAndWhy: "L'enigma centrale per avanzare nella casa ruota attorno a un pianoforte interamente suonabile: il giocatore deve decifrare gli indizi sparsi nella stanza per riprodurre la melodia corretta. I primi playtest avevano evidenziato un blocco netto—ci riuscivano solo musicisti con orecchio assoluto—portandomi a iterare il design.",
+          processDetails: {
+            ideation: "Volevo un puzzle radicato nel tema acustico e tattile del gioco anziché un classico enigma a chiavi o lucchetti.",
+            mechanicsOrTuning: [
+              "Strumento Suonabile in Tempo Reale: ogni tasto genera la propria nota ed è suonabile direttamente sia su PC che toccando i tasti in VR.",
+              "Indizi Diegetici: gli aiuti per individuare la sequenza sono integrati nell'ambiente della stanza senza tutorial invasivi."
+            ],
+            iterationOrResult: "Svolta dai Playtest: ho progressivamente semplificato la melodia e reso più leggibili gli indizi finché anche i tester non musicisti sono riusciti a completare l'enigma (portando la durata tra i 30 min e le ~2h)."
+          }
+        },
+        {
+          id: "puppeteer-vr-ai",
+          discipline: "VR UX & Threat Design",
+          title: "Gesti Fisici Meta XR, Radar Aptico & Inseguimento A* del Burattinaio",
+          scopeBadge: "Build VR Completa",
+          media: {
+            type: "image",
+            src: "/images/puppeteer_immagine2.png",
+            caption: "Incontro col Burattinaio e controlli VR (da sostituire con clip interazioni VR / pathfinding A*)"
+          },
+          whatAndWhy: "Per la build VR completa su Meta XR ho ripensato le interazioni attorno a gesti naturali e sostituito l'HUD con un feedback aptico proporzionale alla distanza dagli obiettivi—mantenendo il Burattinaio come punizione deterministica se si perde l'orientamento acustico.",
+          processDetails: {
+            ideation: "I prompt testuali o le frecce HUD distruggono l'immersione in VR; gestualità fisica e vibrazione aptica mantengono coerente il pilastro sensoriale.",
+            mechanicsOrTuning: [
+              "Gesti Naturali Meta XR: spinta fisica per aprire le porte, movimento di presa verso il basso coi trigger per raccogliere oggetti, pressione diretta sui tasti del piano.",
+              "Radar Aptico: impulso di vibrazione sui controller che cresce all'avvicinarsi a un obiettivo.",
+              "IA del Burattinaio: spawna in punti specifici se il giocatore non segue correttamente la Voce Guida ed evita gli ostacoli tramite Unity NavMesh (pathfinding A*) fino alla cattura (trasformazione in marionetta)."
+            ],
+            iterationOrResult: "Porting VR completato dall'inizio alla fine e mostrato nel gameplay trailer dell'ultima release."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Concept horror originale, premessa narrativa e curva di tensione che bilancia l'esplorazione ambientale con l'ansia psicologica.",
@@ -194,21 +366,162 @@ export const PORTFOLIO_IT = {
       ]
     },
     {
+      id: "dda-thesis",
+      title: "Framework DDA Plug-and-Play & Testbed Soulslike",
+      year: "Ott 2025– Ott 2026",
+      period: "2025–2026",
+      category: "Tesi Magistrale / Progetto di Ricerca Individuale",
+      coverImage: "/images/dda_banner.png",
+      primaryFocus: "Sistema DDA Disaccoppiato & Telemetria (15 Giocatori)",
+      genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
+      tagline: "Prototipo Soulslike · Framework di Ricerca · PC",
+      role: "Technical Game Designer · Systems Engineer",
+      highlight: "Sistema Pronto all'Uso · Studio Empirico su 15 Giocatori",
+      gameplaySummary: "Un framework di Dynamic Difficulty Adjustment (DDA) plug-and-play e indipendente dal genere, sviluppato in Unity e validato su un prototipo Soulslike costruito ad hoc. Progettato come modulo disaccoppiato che legge la telemetria in tempo reale per modulare il ritmo della sfida preservando intatta la tensione punitiva.",
+      personalContributionSummary: "Architettura completa del software DDA disaccoppiato pronto all'integrazione su più generi, costruzione di un testbed Soulslike accurato (con rottura dinamica armatura e sangue via MRT) per garantire dati telemetrici puliti, e validazione empirica su 15 giocatori.",
+      description: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.\n\nIdeazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
+      confidentialityNotice: "Nota di Riservatezza e Proprietà Intellettuale: Variabili algoritmiche specifiche, formule matematiche e parametri euristici interni sono omessi a tutela della ricerca.",
+      playtestNotice: "Validato attraverso uno studio empirico qualitativo e quantitativo su 15 playtester.",
+      detailedContributions: {
+        designed: [
+          "Architettura integrale del framework DDA euristico, progettata per modulare la frizione in tempo reale preservando la sfida del genere Soulslike.",
+          "Modellazione teorica e matematica dello stato di Flow basata su psicologia del giocatore, telemetria degli errori e ritmo di recupero.",
+          "Bilanciamento dinamico dei parametri: soglie adattive di aggressività dei nemici, scaling del danno e rilascio risorse.",
+          "Meccaniche centrali di combattimento e loop di scontro del prototipo Soulslike in Unity e C# nativo."
+        ],
+        authoredDocs: [
+          "Tesi di Ricerca di Laurea Magistrale sotto la supervisione della Prof.ssa Laura Ripamonti (Università degli Studi di Milano).",
+          "Report completo di analisi telemetrica quantitativa e qualitativa sulla ritenzione del Flow nei giocatori."
+        ]
+      },
+      platform: "PC",
+      engine: "Unity · C#",
+      authors: "Mauro Brochier (Relatrice: Prof.ssa Laura Ripamonti)",
+      teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
+      tags: ["Dynamic Difficulty Adjustment", "System Design", "Telemetria Giocatore", "Combat Design", "Technical Art (MRT)", "Unity"],
+      designFeatures: [
+        {
+          id: "dda-architecture",
+          discipline: "System Architecture · Plug & Play",
+          title: "Framework DDA Disaccoppiato & Genre-Agnostic (Pronto all'Uso)",
+          scopeBadge: "Modulo Production-Ready",
+          media: {
+            type: "image",
+            src: "/images/dda_immagine2.png",
+            caption: "Testbed scontro boss (da sostituire con schema Black-Box Input/Output & agganci Inspector)"
+          },
+          whatAndWhy: "Un sistema di difficoltà fallisce in produzione se è cablato dentro gli script dei nemici. Ho ingegnerizzato il software DDA come modulo Unity indipendente e non vincolato al Soulslike di test: riceve telemetria normalizzata e pilota leve esposte al designer, risultando integrabile su generi diversi.",
+          processDetails: {
+            ideation: "Trattare il Soulslike solo come client di stress-test garantisce portabilità immediata e netta separazione delle responsabilità.",
+            mechanicsOrTuning: [
+              "Architettura Black-Box: sensori di telemetria e hook dei parametri di gioco sono separati dal nucleo adattivo protetto.",
+              "Limiti di Sicurezza per il Designer: range min/max configurabili assicurano che l'adattamento non rompa mai l'identità punitiva del gioco.",
+              "Tutela IP: variabili interne, pesi e formule euristiche restano interamente incapsulate."
+            ],
+            iterationOrResult: "Consegnato come pacchetto modulare pronto all'integrazione, verificato sotto carico reale di combattimento."
+          }
+        },
+        {
+          id: "dda-telemetry",
+          discipline: "Validazione Empirica · Dati",
+          title: "Studio su 15 Giocatori: Ritenzione del Flow & Equità Percepita",
+          scopeBadge: "Studio su 15 Playtester",
+          media: {
+            type: "image",
+            src: "/images/dda_immagine3.png",
+            caption: "Validazione empirica (da sostituire con grafici aggregati di telemetria e punteggi Flow)"
+          },
+          whatAndWhy: "Un sistema adattivo vale quanto i suoi dati reali. Ho condotto uno studio qualitativo e quantitativo su 15 giocatori di abilità diverse per verificare se la modulazione in tempo reale migliorasse lo stato di Flow e la tenuta della sessione senza far percepire ai veterani alcun aiuto artificiale.",
+          processDetails: {
+            ideation: "Incrocio tra telemetria oggettiva in-game (curve di errore, ritmo di ingaggio) e questionari psicologici post-sessione sul Flow.",
+            mechanicsOrTuning: [
+              "Campione eterogeneo dai giocatori action occasionali ai veterani dei Soulslike.",
+              "Analisi su equità percepita, sostenibilità della tensione e durata dell'ingaggio negli scontri boss."
+            ],
+            iterationOrResult: "Evidenziati miglioramenti misurabili in ritenzione del Flow e percezione di equità (ricerca di Tesi Magistrale con la Prof.ssa Laura Ripamonti, UniMi)."
+          }
+        },
+        {
+          id: "dda-combat-testbed",
+          discipline: "Combat Design (Testbed)",
+          title: "Combat System Soulslike AAA-Like per Evitare Dati Telemetrici Sporchi",
+          scopeBadge: "Testbed Giocabile",
+          media: {
+            type: "image",
+            src: "/images/dda_immagine1.png",
+            caption: "Combattimento nel testbed Soulslike (da sostituire con breve GIF/clip del combat)"
+          },
+          whatAndWhy: "Un cattivo game design genera dati sporchi: se i giocatori muoiono per controlli imprecisi o hitbox confuse, la telemetria non misura la vera difficoltà. Ho progettato un combat system Soulslike pesante e leggibile, curato con standard AAA-like affinché ogni errore riflettesse solo la reale abilità del giocatore.",
+          processDetails: {
+            ideation: "Costruire un testbed solido era prerequisito scientifico per isolare la vera frizione di gameplay da frustrazioni tecniche.",
+            mechanicsOrTuning: [
+              "Attacchi pesanti con animazioni impegnative, gestione rigorosa della stamina e finestre punitive.",
+              "Telegraphing chiaro dei pattern boss e rilevazione precisa dei colpi per garantire telemetria affidabile."
+            ],
+            iterationOrResult: "Eliminato il rumore dovuto ai controlli durante lo studio sui 15 tester, rendendo pulito il dataset empirico."
+          }
+        },
+        {
+          id: "dda-mrt-gore",
+          discipline: "Technical Art & Feedback Diegetico",
+          title: "Rottura Dinamica Armatura & Rendering Sangue su Player via MRT",
+          scopeBadge: "Technical Craft",
+          media: {
+            type: "image",
+            src: "/images/dda_front.png",
+            caption: "Usura armatura e feedback visivo (da sostituire con prima/dopo rottura armatura & sangue MRT)"
+          },
+          whatAndWhy: "Per restituire la brutalità degli scontri senza sovraccaricare l'HUD, ho implementato un sistema gore con rottura dinamica dell'armatura e modifica reale delle texture, risolvendo lo slittamento delle decal sulle animazioni tramite disegno diretto del sangue con Multiple Render Targets (MRT).",
+          processDetails: {
+            ideation: "I classici Decal Projector di Unity (scatole di proiezione) slittano visibilmente sulle SkinnedMeshRenderer durante le animazioni rapide.",
+            mechanicsOrTuning: [
+              "Spezzamento Dinamico Armatura: i colpi subiti fratturano progressivamente l'armatura aggiornandone le texture in tempo reale.",
+              "Pipeline Sangue MRT: il sangue viene disegnato direttamente nello spazio render target del personaggio restando ancorato a corazza e arti in movimento."
+            ],
+            iterationOrResult: "Feedback visivo reattivo e realistico che ha sostenuto l'immersione ad alta tensione durante tutta la sperimentazione."
+          }
+        }
+      ],
+      storySteps: [
+          {
+            tag: "ORMULAZIONE DEL PROBLEMA",
+            title: "Il Dilemma della Frizione nei Soulslike",
+            description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
+            mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
+            imageSrc: "/images/dda_immagine1.png"
+          },
+          {
+            tag: "ARCHITETTURA EURISTICA",
+            title: "Modulazione Non Invasiva della Sfida",
+            description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
+            mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
+            imageSrc: "/images/dda_immagine2.png"
+          },
+          {
+            tag: "VALIDAZIONE EMPIRICA",
+            title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
+            description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
+            mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
+            imageSrc: "/images/dda_immagine3.png"
+          }
+        ]
+    },
+    {
       id: "murder-mystery",
       title: "Murder Mystery Incorporated",
       year: "Ott 2023 – Feb 2024",
       period: "2024",
       category: "Progetto Accademico di Team / Industry Showcase",
       coverImage: "/images/murder_banner.png", // O lo screenshot di copertina che preferisci
-      primaryFocus: "IA dei PNG (Behavior Trees) & Tool Custom Unity Editor",
+      primaryFocus: "IA Deterministica (Behavior Trees) & Tool Custom Unity Editor",
       genrePlatform: "Strategia-Puzzle 2D · PC e Browser Web",
       tagline: "Strategia-Puzzle 2D · PC e Browser Web",
-      role: "AI Programmer · Gameplay Designer",
+      role: "AI Systems Designer · Tools & Gameplay Programmer",
       highlight: "New Game Designer 2025 · 3° Posto · Game Design & Programming",
-      gameplaySummary: "Un puzzle game strategico in 2D in cui il giocatore impersona un operativo incaricato di orchestrare 'omicidi perfetti'. Manipolando le routine deterministiche dei PNG, sfruttando i coni visivi e disponendo oggetti su una linea temporale tattica, i bersagli vengono eliminati senza destare sospetti.",
-      personalContributionSummary: "Implementazione autonoma dell'architettura AI dei PNG tramite Behavior Trees e sviluppo di un tool visuale personalizzato per l'Editor di Unity per ispezionare i BT. Co-progettazione delle routine dei PNG e integrazione dell'IA in uno dei cinque scenari di gioco.",
+      gameplaySummary: "Un puzzle-strategico 2D a fasi Planning & Execution in cui orchestrare 'omicidi perfetti' su mappe a grafo di stanze. Il giocatore sfrutta le routine deterministiche dei PNG, piazza esche e armi e sincronizza le azioni su una timeline senza superare la soglia di sospetto.",
+      personalContributionSummary: "Progettazione e implementazione dell'IA deterministica dei Guest tramite Behavior Tree base + tratti a Decoratori, sviluppo di un Editor visuale a nodi per Behavior Trees dentro Unity e integrazione completa dello Scenario 1.",
       description: "Un puzzle game strategico in 2D in cui il giocatore impersona un operativo incaricato di orchestrare 'omicidi perfetti'. Manipolando le routine deterministiche dei PNG, sfruttando i coni visivi e disponendo oggetti su una linea temporale tattica, i bersagli vengono eliminati senza destare sospetti.\n\nImplementazione autonoma dell'architettura AI dei PNG tramite Behavior Trees e sviluppo di un tool visuale personalizzato per l'Editor di Unity per ispezionare i BT. Co-progettazione delle routine dei PNG e integrazione dell'IA in uno dei cinque scenari di gioco.",
-      tags: ["Unity", "C#", "Behavior Trees", "Sistemi AI", "Editor Tooling", "Puzzle Design"],
+      tags: ["Behavior Trees", "Editor Tooling", "AI Design", "Systems Design", "Unity", "C#"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#murder-mystery",
       platform: "PC & Browser Web",
       engine: "Unity (2D) / WebGL",
@@ -218,6 +531,69 @@ export const PORTFOLIO_IT = {
       demoUrl: "https://polimi-game-collective.itch.io/murder-mystery-incorporated",
       trailerId: "ZpdFg5MHrdI",
       gameplayId: "wDj0Gx3CgIQ",
+      designFeatures: [
+        {
+          id: "murder-bt-editor",
+          discipline: "Technical Design · Custom Tooling",
+          title: "Editor Visuale a Nodi per Behavior Trees Integrato in Unity",
+          scopeBadge: "Tool Custom Unity Editor",
+          media: {
+            type: "image",
+            src: "/images/murder_immagine2.png",
+            caption: "Anteprima sistemi AI (da sostituire con screenshot reale del tuo Editor visuale a nodi in Unity!)"
+          },
+          whatAndWhy: "Scrivere alberi decisionali direttamente dentro script C# rallenta le iterazioni di design e nasconde la logica. Ho costruito un Editor grafico a nodi e archi direttamente dentro Unity—con Selector, Condition e Task—per creare, leggere e debuggare i Behavior Tree in modo visivo.",
+          processDetails: {
+            ideation: "Progettato per velocizzare l'iterazione su un team di 5 persone separando il flusso visuale dell'IA dal codice dei singoli verbi di gioco.",
+            mechanicsOrTuning: [
+              "Authoring a Nodi & Archi: creazione e collegamento grafico di Selector, nodi Condition e Action Task.",
+              "Leggibilità Immediata: ispezione visiva della struttura decisionale al posto di catene di if/switch annidate."
+            ],
+            iterationOrResult: "Ha permesso di iterare rapidamente su tutti gli archetipi di Guest fino alla release giocabile su Itch.io."
+          }
+        },
+        {
+          id: "murder-deterministic-ai",
+          discipline: "AI & Systems Design",
+          title: "IA Deterministica dei Guest & Tratti Comportamentali a Decoratori",
+          scopeBadge: "Architettura AI Core",
+          media: {
+            type: "image",
+            src: "/images/murder_immagine1.png",
+            caption: "Fase di pianificazione su timeline (da sostituire con schema BT + Decoratori Suspicious / Greedy / Alcoholic)"
+          },
+          whatAndWhy: "In un puzzle su timeline l'IA casuale distrugge la strategia: un buon piano non deve dipendere dalla fortuna. Ho progettato un Behavior Tree base 100% deterministico condiviso da tutti i Guest, applicando i tratti caratteriali (Suspicious, Greedy, Alcoholic) come Decoratori modulari così le reazioni risultano leggibili come un orologio.",
+          processDetails: {
+            ideation: "Scelto al posto di pattuglie casuali affinché ogni fallimento insegni con precisione al giocatore dove il piano ha generato sospetto.",
+            mechanicsOrTuning: [
+              "Gerarchia Selector Deterministica: Esca nella stanza → Esca in stanza adiacente → Evento in Timeline → Esplorazione pesata (punteggio d'interesse stanza).",
+              "Modificatori a Decoratori: Greedy insegue Cash come esca; Alcoholic beve il Vino solo se non visto; Suspicious aggiunge +2 punti sospetto alle anomalie.",
+              "Economia Sospetto (soglia 0–10): Cadavere (+4), Sangue (+2), Agente Armato (+2) valutati per nodo stanza."
+            ],
+            iterationOrResult: "Cuore del loop trial-and-error premiato con il 3° Posto a New Game Designer 2025."
+          }
+        },
+        {
+          id: "murder-scenario-flow",
+          discipline: "Systems Integration & Level Flow",
+          title: "Interazioni su Room-Graph, Descrittori Oggetti & Scenario 1",
+          scopeBadge: "Giocabile su Itch.io",
+          media: {
+            type: "image",
+            src: "/images/murder_immagine3.png",
+            caption: "Esecuzione autonoma & debriefing (da sostituire con GIF di esecuzione con icone '!', '?' e barra sospetto)"
+          },
+          whatAndWhy: "Per mantenere leggibile la pianificazione senza griglie dispersive, le entità interagiscono a livello di nodo-stanza mentre i descrittori degli oggetti modificano durata e propagazione del rumore. Ho integrato l'IA, i trigger di sospetto e il flusso puzzle nello Scenario 1 lasciando piena libertà di soluzione.",
+          processDetails: {
+            ideation: "L'astrazione a nodi di stanza garantisce che se un Guest entra dove c'è un cadavere la reazione sia immediata e chiara.",
+            mechanicsOrTuning: [
+              "Accoppiamento Verbi/Oggetti: le armi Slow aggiungono +1 slot alla durata di Kill; gli oggetti Loud allertano le stanze adiacenti (+2 sospetto per Guest allertato).",
+              "Integrazione Scenario 1: collegati trigger, trappole e soglie di sospetto nella build WebGL giocabile."
+            ],
+            iterationOrResult: "Pubblicato e giocabile direttamente da browser su Itch.io e presentato dal vivo a New Game Designer 2025."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Co-progettazione dei sistemi di comportamento dei PNG, coni di percezione sensoriale e reazioni ambientali insieme al team di design.",
@@ -255,126 +631,6 @@ export const PORTFOLIO_IT = {
             description: "Una volta impostata la timeline, avviando il play la scena si svolge autonomamente in tempo reale. Il sistema valuta l'efficacia del piano premiando l'assenza di prove compromettenti.",
             mediaLabel: "[ Gameplay Demo // Sequenza di Esecuzione & Schermata di Debriefing ]",
             imageSrc: "/images/murder_immagine3.png"
-          }
-        ]
-    },
-    {
-      id: "dda-thesis",
-      title: "Framework DDA Euristico in Prototipo Soulslike",
-      year: "Ott 2025– Ott 2026",
-      period: "2025–2026",
-      category: "Tesi Magistrale / Progetto di Ricerca Individuale",
-      coverImage: "/images/dda_banner.png",
-      primaryFocus: "Framework DDA Euristico & Telemetria del Flow",
-      genrePlatform: "Prototipo Soulslike · Framework di Ricerca · PC",
-      tagline: "Prototipo Soulslike · Framework di Ricerca · PC",
-      role: "Technical Game Designer · Systems Engineer",
-      highlight: "Progetto di Tesi Magistrale · Studio Empirico su 15 Giocatori",
-      gameplaySummary: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.",
-      personalContributionSummary: "Ideazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
-      description: "Un prototipo action RPG Soulslike progettato per sperimentare l'adattamento dinamico della sfida in tempo reale. Il sistema monitora la telemetria delle performance del giocatore per modulare la frizione di gioco, preservando lo stato psicologico di Flow senza intaccare l'alto livello di sfida punitivo tipico del genere.\n\nIdeazione, progettazione e sviluppo integrale autonomo dell'architettura DDA euristica in Unity e C#, dalla modellazione teorica del Flow all'integrazione nel gameplay. Conduzione di uno studio empirico con 15 giocatori per validare il bilanciamento della difficoltà.",
-      confidentialityNotice: "Nota di Riservatezza e Proprietà Intellettuale: Variabili algoritmiche specifiche, formule matematiche e parametri euristici interni sono omessi a tutela della ricerca.",
-      playtestNotice: "Validato attraverso uno studio empirico qualitativo e quantitativo su 15 playtester.",
-      detailedContributions: {
-        designed: [
-          "Architettura integrale del framework DDA euristico, progettata per modulare la frizione in tempo reale preservando la sfida del genere Soulslike.",
-          "Modellazione teorica e matematica dello stato di Flow basata su psicologia del giocatore, telemetria degli errori e ritmo di recupero.",
-          "Bilanciamento dinamico dei parametri: soglie adattive di aggressività dei nemici, scaling del danno e rilascio risorse.",
-          "Meccaniche centrali di combattimento e loop di scontro del prototipo Soulslike in Unity e C# nativo."
-        ],
-        authoredDocs: [
-          "Tesi di Ricerca di Laurea Magistrale sotto la supervisione della Prof.ssa Laura Ripamonti (Università degli Studi di Milano).",
-          "Report completo di analisi telemetrica quantitativa e qualitativa sulla ritenzione del Flow nei giocatori."
-        ]
-      },
-      platform: "PC",
-      engine: "Unity · C#",
-      authors: "Mauro Brochier (Relatrice: Prof.ssa Laura Ripamonti)",
-      teamRoles: "Ricercatore Unico, Technical Game Designer, Systems Programmer",
-      tags: ["Unity", "C#", "Dynamic Difficulty Adjustment", "Systems Design", "Telemetria Giocatore"],
-      storySteps: [
-          {
-            tag: "ORMULAZIONE DEL PROBLEMA",
-            title: "Il Dilemma della Frizione nei Soulslike",
-            description: "La difficoltà statica convenzionale nei generi punitivi causa spesso abbandono a causa di picchi d'ansia o frustrazione prolungata. L'obiettivo di design è stato ingegnerizzare un sistema adattivo capace di preservare la tensione autentica senza mai sembrare artificiale o paternalistico agli occhi dei veterani.",
-            mediaLabel: "[ Prototipo di Ricerca // Scontro Boss in Fase 1 ]",
-            imageSrc: "/images/dda_immagine1.png"
-          },
-          {
-            tag: "ARCHITETTURA EURISTICA",
-            title: "Modulazione Non Invasiva della Sfida",
-            description: "Sviluppo di un framework modulare in Unity e C# nativo che valuta in tempo reale frequenza d'errore, ritmo d'ingaggio e meccaniche di recupero. Il sistema modula parametri ambientali e di aggressività nemica entro soglie impercettibili rigorosamente calibrate.",
-            mediaLabel: "[ Sfida Adattiva // Escalation Boss in Fase 2 ]",
-            imageSrc: "/images/dda_immagine2.png"
-          },
-          {
-            tag: "VALIDAZIONE EMPIRICA",
-            title: "Studio Qualitativo e Quantitativo su 15 Giocatori",
-            description: "Conduzione di sessioni di playtest strutturate su diversi livelli di abilità. La telemetria in-game e le valutazioni psicologiche post-sessione hanno evidenziato miglioramenti significativi nel mantenimento del Flow, durata della sessione e percezione di equità durante gli scontri più ostici.",
-            mediaLabel: "[ Dati di Telemetria Sintetici // Risultati Questionari Flow ]",
-            imageSrc: "/images/dda_immagine3.png"
-          }
-        ]
-    },
-    {
-      id: "water-sim",
-      title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
-      year: "Feb 2025 – Apr 2025",
-      period: "2025",
-      category: "Progetto Accademico Individuale",
-      coverImage: "/images/water_banner.png",
-      primaryFocus: "Parallelizzazione Fisica Onde in CUDA & Shader OpenGL Fresnel",
-      genrePlatform: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
-      tagline: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
-      role: "Graphics & Simulation Programmer",
-      gameplaySummary: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.",
-      personalContributionSummary: "Ideazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
-      description: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.\n\nIdeazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
-      tags: ["C++", "NVIDIA CUDA", "OpenGL", "GPGPU", "Simulazione Fisica", "Matematica 3D"],
-      githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
-      platform: "PC (Windows / Linux)",
-      engine: "Motore Custom C++ + OpenGL",
-      networking: "Architettura NVIDIA CUDA",
-      authors: "Mauro Brochier",
-      teamRoles: "Graphics Programmer, Systems Engineer",
-      driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
-      localVideoUrl: "/videos/water_sim.mp4",
-      detailedContributions: {
-        designed: [
-          "Ideazione e formulazione del framework matematico per le equazioni di propagazione delle onde di superficie basate su griglia (height-field wave physics).",
-          "Progettazione delle regole di accoppiamento dinamico bidirezionale tra fluido e corpi rigidi 3D arbitrari, consentendo galleggiamento, attrito e generazione di onde di scia realistiche.",
-          "Architettura modulare della pipeline, disaccoppiando in modo pulito il calcolo fisico parallelo su GPU dal rendering grafico in tempo reale."
-        ],
-        implemented: [
-          "Parallelizzazione della pipeline di simulazione fisica in C++ tramite kernel NVIDIA CUDA dedicati, eseguendo il calcolo delle onde su migliaia di thread GPU concorrenti.",
-          "Ingegnerizzazione del rendering realistico della superficie dell'acqua in OpenGL moderno con shader GLSL basati su riflessione di Fresnel, rifrazione e caustiche.",
-          "Sviluppo di algoritmi per condizioni al contorno 3D per calcolare la spinta idrostatica di galleggiamento e lo spostamento volumetrico per corpi rigidi di forma arbitraria."
-        ],
-        authoredDocs: [
-          "Relazione tecnica accademica (Università degli Studi di Milano) con formalizzazione matematica del fluido, ottimizzazione della memoria CUDA e profilazione dei benchmark."
-        ]
-      },
-      storySteps: [
-          {
-            tag: "CALCOLO GPGPU",
-            title: "Kernel Fisici Paralleli in CUDA",
-            description: "Implementazione del calcolo parallelo ad alte prestazioni in C++ e CUDA. La griglia del fluido e i campi di velocità vengono elaborati direttamente sulla GPU tramite migliaia di thread hardware concorrenti.",
-            mediaLabel: "[ Calcolo Parallelo // Dispatch Kernel CUDA & Gestione Memoria ]",
-            imageSrc: "/images/water_immagine1.png"
-          },
-          {
-            tag: "FLUIDODINAMICA",
-            title: "Propagazione Onde e Rendering OpenGL",
-            description: "Calcolo della propagazione ondosa in tempo reale tramite displacement di height-field e shader OpenGL dedicati, con simulazione di riflessioni realistiche ed effetti caustici.",
-            mediaLabel: "[ Motore Grafico // Shaders, Caustiche & Displacement Vertici ]",
-            imageSrc: "/images/water_immagine2.png"
-          },
-          {
-            tag: "INTERAZIONE CON CORPI RIGIDI",
-            title: "Accoppiamento con Mesh 3D Arbitrarie",
-            description: "Simulazione fisica bidirezionale tra corpi rigidi 3D dinamici e la superficie liquida: gli oggetti galleggiano, generano onde concentriche di scia e si spostano coerentemente con il fluido.",
-            mediaLabel: "[ Simulazione Fisica // Collisioni Mesh & Generazione Onde di Scia ]",
-            imageSrc: "/images/water_immagine3.png"
           }
         ]
     },
@@ -441,6 +697,68 @@ export const PORTFOLIO_IT = {
           imageSrc: "/images/maze_immagine3.png"
         }
       ]
+    },
+    {
+      id: "water-sim",
+      title: "Real-Time Water Simulation in OpenGL with CUDA Acceleration",
+      year: "Feb 2025 – Apr 2025",
+      period: "2025",
+      category: "Progetto Accademico Individuale",
+      coverImage: "/images/water_banner.png",
+      primaryFocus: "Parallelizzazione Fisica Onde in CUDA & Shader OpenGL Fresnel",
+      genrePlatform: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
+      tagline: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
+      role: "Graphics & Simulation Programmer",
+      gameplaySummary: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.",
+      personalContributionSummary: "Ideazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
+      description: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.\n\nIdeazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
+      tags: ["C++", "NVIDIA CUDA", "OpenGL", "GPGPU", "Simulazione Fisica", "Matematica 3D"],
+      githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
+      platform: "PC (Windows / Linux)",
+      engine: "Motore Custom C++ + OpenGL",
+      networking: "Architettura NVIDIA CUDA",
+      authors: "Mauro Brochier",
+      teamRoles: "Graphics Programmer, Systems Engineer",
+      driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
+      localVideoUrl: "/videos/water_sim.mp4",
+      detailedContributions: {
+        designed: [
+          "Ideazione e formulazione del framework matematico per le equazioni di propagazione delle onde di superficie basate su griglia (height-field wave physics).",
+          "Progettazione delle regole di accoppiamento dinamico bidirezionale tra fluido e corpi rigidi 3D arbitrari, consentendo galleggiamento, attrito e generazione di onde di scia realistiche.",
+          "Architettura modulare della pipeline, disaccoppiando in modo pulito il calcolo fisico parallelo su GPU dal rendering grafico in tempo reale."
+        ],
+        implemented: [
+          "Parallelizzazione della pipeline di simulazione fisica in C++ tramite kernel NVIDIA CUDA dedicati, eseguendo il calcolo delle onde su migliaia di thread GPU concorrenti.",
+          "Ingegnerizzazione del rendering realistico della superficie dell'acqua in OpenGL moderno con shader GLSL basati su riflessione di Fresnel, rifrazione e caustiche.",
+          "Sviluppo di algoritmi per condizioni al contorno 3D per calcolare la spinta idrostatica di galleggiamento e lo spostamento volumetrico per corpi rigidi di forma arbitraria."
+        ],
+        authoredDocs: [
+          "Relazione tecnica accademica (Università degli Studi di Milano) con formalizzazione matematica del fluido, ottimizzazione della memoria CUDA e profilazione dei benchmark."
+        ]
+      },
+      storySteps: [
+          {
+            tag: "CALCOLO GPGPU",
+            title: "Kernel Fisici Paralleli in CUDA",
+            description: "Implementazione del calcolo parallelo ad alte prestazioni in C++ e CUDA. La griglia del fluido e i campi di velocità vengono elaborati direttamente sulla GPU tramite migliaia di thread hardware concorrenti.",
+            mediaLabel: "[ Calcolo Parallelo // Dispatch Kernel CUDA & Gestione Memoria ]",
+            imageSrc: "/images/water_immagine1.png"
+          },
+          {
+            tag: "FLUIDODINAMICA",
+            title: "Propagazione Onde e Rendering OpenGL",
+            description: "Calcolo della propagazione ondosa in tempo reale tramite displacement di height-field e shader OpenGL dedicati, con simulazione di riflessioni realistiche ed effetti caustici.",
+            mediaLabel: "[ Motore Grafico // Shaders, Caustiche & Displacement Vertici ]",
+            imageSrc: "/images/water_immagine2.png"
+          },
+          {
+            tag: "INTERAZIONE CON CORPI RIGIDI",
+            title: "Accoppiamento con Mesh 3D Arbitrarie",
+            description: "Simulazione fisica bidirezionale tra corpi rigidi 3D dinamici e la superficie liquida: gli oggetti galleggiano, generano onde concentriche di scia e si spostano coerentemente con il fluido.",
+            mediaLabel: "[ Simulazione Fisica // Collisioni Mesh & Generazione Onde di Scia ]",
+            imageSrc: "/images/water_immagine3.png"
+          }
+        ]
     }
   ],
   experiences: [

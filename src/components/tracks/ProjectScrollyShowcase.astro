@@ -47,7 +47,9 @@ const mobileCue = lang === 'it'
           <img 
             src={step.imageSrc} 
             alt={step.title}
-            class={`max-h-full max-w-full object-contain ${
+            data-zoomable
+            data-caption={step.mediaLabel || ''}
+            class={`max-h-full max-w-full object-contain cursor-zoom-in ${
               isMobile 
                 ? 'rounded-2xl border-2 border-slate-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-white/10' 
                 : 'drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]'

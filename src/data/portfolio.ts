@@ -32,6 +32,25 @@ export interface DetailedContributions {
   authoredDocs?: string[];
 }
 
+export interface DesignFeatureSection {
+  id?: string;
+  discipline: string;
+  title: string;
+  scopeBadge?: string; // Es. "Playable Prototype" | "Prototype + GDD Expansion"
+  media: {
+    type: 'image' | 'video';
+    src: string;
+    caption?: string;
+    alt?: string;
+  };
+  whatAndWhy: string; // Livello 1m: obiettivo di design e scelta fatta
+  processDetails?: {  // Livello 10m: processo, tuning e iterazioni
+    ideation?: string;
+    mechanicsOrTuning?: string[];
+    iterationOrResult?: string;
+  };
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -70,6 +89,7 @@ export interface Project {
   audioNotice?: string;
   thesisBadge?: string;
   storySteps?: StoryStep[];
+  designFeatures?: DesignFeatureSection[];
 }
 
 export interface Experience {

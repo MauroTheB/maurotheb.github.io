@@ -1,0 +1,172 @@
+---
+import type { DesignFeatureSection } from '../../data/portfolio';
+
+interface Props {
+  features: DesignFeatureSection[];
+  lang?: 'en' | 'it';
+}
+
+const { features, lang = 'en' } = Astro.props;
+const labels = {
+  heading: lang === 'it' ? 'Breakdown di Design & Sistemi' : 'Design & Systems Breakdown',
+  whatWhy: lang === 'it' ? 'Cosa & Perché' : 'What & Why',
+  processToggle: lang === 'it' ? 'Approfondisci processo, regole & iterazioni (10 min)' : 'Deep-dive: process, tuning & iterations (10 min)',
+  ideation: lang === 'it' ? 'Ideazione & Trade-off' : 'Ideation & Trade-offs',
+  tuning: lang === 'it' ? 'Meccaniche & Parametri' : 'Mechanics & Tuning',
+  iteration: lang === 'it' ? 'Playtest & Risultati' : 'Playtest & Results',
+};
+---
+
+<div class="design-breakdown space-y-6 pt-2">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-400 tracking-wider font-bold">
+      {labels.heading}
+    </h4>
+
+    <!-- Mini-indice rapido per scansione 20s -->
+    <div class="flex flex-wrap gap-1.5">
+      {features.map((feat, idx) => (
+        <a
+          href={`#${feat.id || `feature-${idx}`}`}
+          class="px-2.5 py-1 rounded-lg bg-slate-950/80 border border-slate-800 hover:border-cyan-400/60 text-[11px] font-mono text-slate-300 hover:text-cyan-300 transition-colors"
+        >
+          0{idx + 1} · {feat.discipline}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    {features.map((feat, idx) => (
+      <article
+        id={feat.id || `feature-${idx}`}
+        class="breakdown-card rounded-3xl bg-slate-950/85 border border-slate-800/90 hover:border-cyan-500/40 p-5 sm:p-7 backdrop-blur-xl shadow-2xl transition-all duration-500 ease-out"
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- MEDIA (20s): sempre visibile -->
+          <div class="lg:col-span-5 space-y-2">
+            <div class="group/img relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-800/90">              {feat.media.type === 'video' ? (
+                <video
+                  src={feat.media.src}
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  class="w-full h-full object-cover"
+                />
+              ) : (
+                <>
+                  <img
+                    src={feat.media.src}
+                    alt={feat.media.alt || feat.title}
+                    data-zoomable
+                    data-caption={feat.media.caption || ''}
+                    loading="lazy"
+                    class="w-full h-full object-cover cursor-zoom-in transition-transform duration-300 group-hover/img:scale-[1.02]"
+                  />
+                  <span class="pointer-events-none absolute bottom-2.5 right-2.5 px-2 py-1 rounded-lg bg-slate-950/80 border border-white/15 text-[10px] font-mono text-slate-200 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 backdrop-blur-md">
+                    ⤢ Zoom
+                  </span>
+                </>
+              )}
+            </div>
+            {feat.media.caption && (
+              <p class="text-[11px] font-mono text-slate-400 px-1">{feat.media.caption}</p>
+            )}
+          </div>
+
+          <!-- TESTI (20s Header -> 1m Cosa/Perché -> 10m Processo) -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                0{idx + 1} · {feat.discipline}
+              </span>
+              {feat.scopeBadge && (
+                <span class="px-2.5 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-[11px] font-mono">
+                  {feat.scopeBadge}
+                </span>
+              )}
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              {feat.title}
+            </h3>
+
+            <!-- Livello 1m -->
+            <div class="space-y-1">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold block">
+                {labels.whatWhy}
+              </span>
+              <p class="text-sm sm:text-base text-slate-200 leading-relaxed">
+                {feat.whatAndWhy}
+              </p>
+            </div>
+
+            <!-- Livello 10m -->
+            {feat.processDetails && (
+              <details class="group/det rounded-2xl bg-slate-900/60 border border-slate-800/80 px-4 py-3">
+                <summary class="cursor-pointer list-none flex items-center justify-between text-xs font-mono font-bold text-violet-300 hover:text-violet-200 select-none">
+                  <span>{labels.processToggle}</span>
+                  <span class="transition-transform duration-300 group-open/det:rotate-180">▾</span>
+                </summary>
+
+                <div class="pt-3 mt-3 border-t border-slate-800/70 space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  {feat.processDetails.ideation && (
+                    <div>
+                      <strong class="text-cyan-400 font-mono text-[11px] uppercase block mb-0.5">{labels.ideation}</strong>
+                      <p>{feat.processDetails.ideation}</p>
+                    </div>
+                  )}
+                  {feat.processDetails.mechanicsOrTuning?.length && (
+                    <div>
+                      <strong class="text-cyan-400 font-mono text-[11px] uppercase block mb-1">{labels.tuning}</strong>
+                      <ul class="space-y-1 font-mono text-xs">
+                        {feat.processDetails.mechanicsOrTuning.map((item) => (
+                          <li class="flex items-start gap-2">
+                            <span class="text-cyan-500">›</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {feat.processDetails.iterationOrResult && (
+                    <div>
+                      <strong class="text-amber-300 font-mono text-[11px] uppercase block mb-0.5">{labels.iteration}</strong>
+                      <p>{feat.processDetails.iterationOrResult}</p>
+                    </div>
+                  )}
+                </div>
+              </details>
+            )}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<script>
+  function setupBreakdownFocus() {
+    const cards = document.querySelectorAll<HTMLElement>('.breakdown-card');
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target as HTMLElement;
+        if (entry.isIntersecting) {
+          el.classList.remove('opacity-70', 'blur-[1px]', 'scale-[0.99]');
+          el.classList.add('opacity-100', 'blur-0', 'scale-100');
+        } else {
+          el.classList.add('opacity-70', 'blur-[1px]', 'scale-[0.99]');
+          el.classList.remove('opacity-100', 'blur-0', 'scale-100');
+        }
+      });
+    }, { threshold: 0.25 });
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  setupBreakdownFocus();
+  document.addEventListener('astro:page-load', setupBreakdownFocus);
+</script>

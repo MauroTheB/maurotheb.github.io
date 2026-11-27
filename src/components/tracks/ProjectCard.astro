@@ -16,6 +16,9 @@ const { proj, lang, UI, textPadding, fallbackCover = '/images/puppeteer_immagine
   data-project-card={proj.id}
   data-project-video={proj.videoUrl || ''}
   data-project-description={proj.description}
+  data-project-tagline={proj.genrePlatform || proj.tagline}
+  data-project-role={proj.role}
+  data-project-tags={proj.tags?.join('||') || ''}
   class="interactive-card relative bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-violet-500/15 hover:-translate-y-1 backdrop-blur-md"
 >
   <!-- Cornice Tematica (Rovi/Simulazione/ecc) -->

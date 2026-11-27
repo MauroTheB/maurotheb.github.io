@@ -5,6 +5,8 @@ import ProjectVideoPlayer from './ProjectVideoPlayer.astro';
 import CardThematicFrame from '../vfx/CardThematicFrame.astro';
 import ProjectCard from './ProjectCard.astro';
 import ProjectsRoulette from './ProjectsRoulette.astro';
+import ProjectDesignBreakdown from './ProjectDesignBreakdown.astro';
+import ImageLightbox from './ImageLightbox.astro';
 
 interface Props {
   lang?: Locale;
@@ -96,15 +98,43 @@ const fallbackCoverMap: Record<string, string> = {
       </div>
 
       <!-- Spazio scrollabile con immagini grandi e breakdown tecnico -->
-      <div id="detail-body-content" class="relative z-10 space-y-12 border-t border-slate-800/80 pt-10 transition-all duration-700 ease-out">        <div>
-         <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">{UI.overviewHeading}</h4>
-         <p id="detail-description" class="text-slate-200 text-lg sm:text-xl leading-relaxed max-w-4xl"></p>
-       </div>
+      <div id="detail-body-content" class="relative z-10 space-y-12 border-t border-slate-800/80 pt-10 transition-all duration-700 ease-out">
 
       <!-- Sezione Dettaglio Ricca e Modulare per ogni Progetto -->
       {PROJECTS.map((proj) => (
         <div data-project-media-block={proj.id} class="project-media-container hidden space-y-10 pt-2">
           
+          {(proj.trailerId || proj.gameplayId || proj.localVideoUrl) && (
+                <div>
+                  <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">
+                    Cinema Player & Simulation Showcase
+                  </h4>
+                  <ProjectVideoPlayer 
+                    trailerId={proj.trailerId}
+                    gameplayId={proj.gameplayId}
+                    localVideoUrl={proj.localVideoUrl}
+                    isMobile={Boolean(proj.isMobile)}
+                    trailerLabel={UI.watchTrailer}
+                    gameplayLabel={UI.watchGameplay}
+                  />
+                </div>
+          )}
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <div class="lg:col-span-2 space-y-2">
+              <h4 class="text-xs font-mono uppercase text-slate-500 tracking-wider">{UI.overviewHeading}</h4>
+              <p class="text-slate-200 text-base sm:text-lg leading-relaxed">
+                {proj.gameplaySummary || proj.description}
+              </p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-950/70 border border-violet-500/30 space-y-1.5">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-violet-400 font-bold block">
+                {lang === 'it' ? 'Il Mio Ruolo' : 'My Ownership'}
+              </span>
+              <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                {proj.personalContributionSummary || proj.role}
+              </p>
+            </div>
+          </div>
           <!-- A. Barra di Azione Documenti Tecnici (GDD & TDD) e Specifiche di Produzione -->
           {(proj.gddUrl || proj.tddUrl || proj.platform) && (
             <div class="p-6 sm:p-8 rounded-3xl bg-slate-950/70 border border-slate-800/80 backdrop-blur-md space-y-6">
@@ -207,6 +237,33 @@ const fallbackCoverMap: Record<string, string> = {
               )}
             </div>
           )}
+            <!-- Banner di Tutela Proprietà Intellettuale & Studio Empirico (Specifico per Ricerca DDA) -->
+                {(proj.confidentialityNotice || proj.playtestNotice) && (
+                  <div class="p-6 rounded-3xl bg-amber-500/[0.04] border border-amber-500/25 backdrop-blur-md space-y-3">
+                    <div class="flex items-center gap-2 text-amber-300 font-mono text-xs font-bold uppercase tracking-wider">
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                      <span>{UI.ipNoticeHeading || "Proprietary Research & IP Notice"}</span>
+                    </div>
+
+                    {proj.confidentialityNotice && (
+                      <p class="text-xs sm:text-sm text-slate-300 font-mono leading-relaxed">
+                        {proj.confidentialityNotice}
+                      </p>
+                    )}
+
+                    {proj.playtestNotice && (
+                      <div class="pt-2 border-t border-amber-500/15 flex items-center gap-2 text-xs font-mono text-amber-400/90 font-semibold">
+                        <span>📊</span>
+                        <span>{proj.playtestNotice}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {proj.designFeatures?.length ? (
+            <ProjectDesignBreakdown features={proj.designFeatures} lang={lang} />
+          ) : (
+            <>
                 <!-- Sezione Contributi Personali & Ownership Tecnica (Case Study Breakdown) -->
                 {proj.detailedContributions && (
                   <div class="p-6 sm:p-8 rounded-3xl bg-slate-950/70 border border-slate-800/80 backdrop-blur-md space-y-6">
@@ -287,44 +344,7 @@ const fallbackCoverMap: Record<string, string> = {
                     </div>
                   </div>
                 )}
-                <!-- Banner di Tutela Proprietà Intellettuale & Studio Empirico (Specifico per Ricerca DDA) -->
-                {(proj.confidentialityNotice || proj.playtestNotice) && (
-                  <div class="p-6 rounded-3xl bg-amber-500/[0.04] border border-amber-500/25 backdrop-blur-md space-y-3">
-                    <div class="flex items-center gap-2 text-amber-300 font-mono text-xs font-bold uppercase tracking-wider">
-                      <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                      <span>{UI.ipNoticeHeading || "Proprietary Research & IP Notice"}</span>
-                    </div>
-
-                    {proj.confidentialityNotice && (
-                      <p class="text-xs sm:text-sm text-slate-300 font-mono leading-relaxed">
-                        {proj.confidentialityNotice}
-                      </p>
-                    )}
-
-                    {proj.playtestNotice && (
-                      <div class="pt-2 border-t border-amber-500/15 flex items-center gap-2 text-xs font-mono text-amber-400/90 font-semibold">
-                        <span>📊</span>
-                        <span>{proj.playtestNotice}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                <!-- B. Cinema Video Station (Supporta YouTube oppure MP4 Locale) -->
-              {(proj.trailerId || proj.gameplayId || proj.localVideoUrl) && (
-                <div>
-                  <h4 class="text-xs sm:text-sm font-mono uppercase text-slate-500 tracking-wider mb-3">
-                    Cinema Player & Simulation Showcase
-                  </h4>
-                  <ProjectVideoPlayer 
-                    trailerId={proj.trailerId}
-                    gameplayId={proj.gameplayId}
-                    localVideoUrl={proj.localVideoUrl}
-                    isMobile={Boolean(proj.isMobile)}
-                    trailerLabel={UI.watchTrailer}
-                    gameplayLabel={UI.watchGameplay}
-                  />
-                </div>
-              )}
+                          
 
                 <!-- C. Interactive Scrollytelling Showcase (Supporta formato mobile verticale) -->
               {proj.storySteps && (
@@ -339,7 +359,8 @@ const fallbackCoverMap: Record<string, string> = {
                   />
                 </div>
               )}
-
+              </>
+          )}
               </div>
             ))}
 
@@ -349,7 +370,7 @@ const fallbackCoverMap: Record<string, string> = {
       </div>
     </div>
   </div>
-
+  <ImageLightbox />
 </section>
 
 <!-- Logica FLIP Morphing Incapsulata -->
@@ -362,7 +383,6 @@ const fallbackCoverMap: Record<string, string> = {
   const detailTitle = document.getElementById('detail-title');
   const detailTagline = document.getElementById('detail-tagline');
   const detailRole = document.getElementById('detail-role');
-  const detailDescription = document.getElementById('detail-description');
   const detailTags = document.getElementById('detail-tags');
   const detailBodyContent = document.getElementById('detail-body-content');
   const detailVideoContainer = document.getElementById('detail-video-container');
@@ -436,13 +456,11 @@ const fallbackCoverMap: Record<string, string> = {
 
         // 2. Popolamento dati
         detailTitle.textContent = card.querySelector('h3')?.textContent || '';
-        if (detailTagline) detailTagline.textContent = card.querySelector('.text-cyan-400')?.textContent || '';
-        if (detailRole) detailRole.textContent = card.querySelector('.italic')?.textContent || '';
-      if (detailDescription) {
-        detailDescription.textContent = card.getAttribute('data-project-description') || card.querySelector('p.text-slate-300')?.textContent || '';
-      }
-      if (detailTags) {
-          const tags = Array.from(card.querySelectorAll('.bg-slate-800')).map((t) => t.textContent);
+        if (detailTagline) detailTagline.textContent = card.getAttribute('data-project-tagline') || '';
+        if (detailRole) detailRole.textContent = card.getAttribute('data-project-role') || '';
+        if (detailTags) {
+          const rawTags = card.getAttribute('data-project-tags') || '';
+          const tags = rawTags ? rawTags.split('||').filter(Boolean) : [];
           detailTags.innerHTML = tags.map((t) => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
         }
 
@@ -583,6 +601,7 @@ const fallbackCoverMap: Record<string, string> = {
   // --- 1. NAVIGAZIONE DA TASTIERA (Tasto ESC per chiudere il dettaglio) ---
   window.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape' || e.key === 'Esc') {
+      if (document.getElementById('image-lightbox')?.dataset.open === 'true') return;
       const isDetailOpen = projectDetail && !projectDetail.classList.contains('hidden');
       if (isDetailOpen && !isAnimating) {
         closeDetailBtn?.click();

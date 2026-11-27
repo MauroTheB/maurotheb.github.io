@@ -1,0 +1,136 @@
+<!-- Lightbox globale per visualizzazione immagini HD -->
+<div
+  id="image-lightbox"
+  data-open="false"
+  role="dialog"
+  aria-modal="true"
+  class="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-3 p-4 sm:p-8 bg-slate-950/90 backdrop-blur-xl opacity-0 pointer-events-none invisible transition-all duration-300 ease-out cursor-zoom-out"
+>
+  <!-- Bottone chiudi in alto a destra -->
+  <button
+    id="lightbox-close-btn"
+    type="button"
+    aria-label="Close image preview"
+    class="fixed top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 rounded-full bg-slate-900/90 border border-white/15 hover:border-cyan-400 text-slate-300 hover:text-white flex items-center justify-center text-lg shadow-2xl transition-all duration-200 cursor-pointer"
+  >
+    ✕
+  </button>
+
+  <!-- Cornice immagine centrata (scala fluida fino alla dimensione originale / limite schermo) -->
+  <div
+    id="lightbox-frame"
+    class="relative max-w-[94vw] max-h-[84vh] flex items-center justify-center scale-95 transition-transform duration-300 ease-out pointer-events-none"
+  >
+    <img
+      id="lightbox-img"
+      data-lightbox-content
+      src=""
+      alt=""
+      class="pointer-events-auto max-w-[94vw] max-h-[84vh] w-auto h-auto object-contain rounded-2xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.9)] bg-slate-950 cursor-default select-none"
+    />
+  </div>
+
+  <!-- Didascalia opzionale -->
+  <p
+    id="lightbox-caption"
+    data-lightbox-content
+    class="hidden pointer-events-auto max-w-2xl text-center text-xs sm:text-sm font-mono text-slate-300 bg-slate-900/80 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md"
+  ></p>
+</div>
+
+<script>
+  function initImageLightbox() {
+    const lightbox = document.getElementById('image-lightbox');
+    const frame = document.getElementById('lightbox-frame');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const captionEl = document.getElementById('lightbox-caption');
+    const closeBtn = document.getElementById('lightbox-close-btn');
+
+    if (!lightbox || !frame || !lightboxImg) return;
+
+    // Sposta su document.body per evitare che transform/backdrop-filter degli antenati blocchino fixed
+    if (lightbox.parentElement !== document.body) {
+      document.body.appendChild(lightbox);
+    }
+
+    function openLightbox(sourceImg: HTMLImageElement) {
+      if (!lightbox || !frame || !lightboxImg) return;
+
+      lightboxImg.src = sourceImg.currentSrc || sourceImg.src;
+      lightboxImg.alt = sourceImg.alt || '';
+
+      const caption = sourceImg.getAttribute('data-caption') || sourceImg.alt || '';
+      if (captionEl) {
+        if (caption) {
+          captionEl.textContent = caption;
+          captionEl.classList.remove('hidden');
+        } else {
+          captionEl.classList.add('hidden');
+        }
+      }
+
+      lightbox.dataset.open = 'true';
+      lightbox.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+      lightbox.classList.add('opacity-100', 'pointer-events-auto', 'visible');
+      frame.classList.remove('scale-95');
+      frame.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!lightbox || !frame || !lightboxImg) return;
+
+      lightbox.dataset.open = 'false';
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+      lightbox.classList.remove('opacity-100', 'pointer-events-auto');
+      frame.classList.add('scale-95');
+      frame.classList.remove('scale-100');
+      document.body.style.overflow = '';
+
+      setTimeout(() => {
+        if (lightbox.dataset.open !== 'true') {
+          lightboxImg.src = '';
+        }
+      }, 250);
+    }
+
+    if (lightbox.dataset.bound !== 'true') {
+      lightbox.dataset.bound = 'true';
+
+      lightbox.addEventListener('click', (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('[data-lightbox-content]')) {
+          closeLightbox();
+        }
+      });
+
+      closeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+    }
+
+    if (document.documentElement.dataset.lightboxDelegated !== 'true') {
+      document.documentElement.dataset.lightboxDelegated = 'true';
+
+      document.addEventListener('click', (e: MouseEvent) => {
+        const img = (e.target as HTMLElement)?.closest<HTMLImageElement>('img[data-zoomable]');
+        if (img) {
+          e.stopPropagation();
+          openLightbox(img);
+        }
+      });
+
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        const activeLightbox = document.getElementById('image-lightbox');
+        if ((e.key === 'Escape' || e.key === 'Esc') && activeLightbox?.dataset.open === 'true') {
+          // Chiude solo la lightbox
+          activeLightbox.click();
+        }
+      });
+    }
+  }
+
+  initImageLightbox();
+  document.addEventListener('astro:page-load', initImageLightbox);
+</script>
