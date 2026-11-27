@@ -38,8 +38,8 @@ export interface DesignFeatureSection {
   title: string;
   scopeBadge?: string; // Es. "Playable Prototype" | "Prototype + GDD Expansion"
   media: {
-    type: 'image' | 'video';
-    src: string;
+    type: 'image' | 'video' | 'placeholder';
+    src?: string;
     caption?: string;
     alt?: string;
   };

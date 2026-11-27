@@ -261,7 +261,7 @@ const fallbackCoverMap: Record<string, string> = {
                 )}
 
                 {proj.designFeatures?.length ? (
-            <ProjectDesignBreakdown features={proj.designFeatures} lang={lang} />
+            <ProjectDesignBreakdown features={proj.designFeatures} isMobile={Boolean(proj.isMobile)} lang={lang} />
           ) : (
             <>
                 <!-- Sezione Contributi Personali & Ownership Tecnica (Case Study Breakdown) -->

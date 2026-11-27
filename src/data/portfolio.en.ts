@@ -116,7 +116,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/immagine_falo_personaggio.png",
-            caption: "Bonfire defense & physical resource loop (temporary preview — replace with Day-Night & tree loop diagram)"
+            caption: "Bonfire defense & physical resource-carrying loop in the forest arena"
           },
           whatAndWhy: "To create Overcooked-style cooperative tension without UI clutter, there is no abstract inventory: carrying wood or enchanted pomegranates occupies your hands and unequipped weapons, forcing players to constantly trade off firefighting, repairs, and harvesting. At dawn, surviving creatures petrify in place instead of vanishing, preserving spatial pressure while opening a tight recovery window.",
           processDetails: {
@@ -159,7 +159,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/players_vs_monsters.png",
-            caption: "Manta wave assault around the shelter perimeter (replace with AI state flowchart & enemy matrix)"
+            caption: "Manta wave assault pressure around the shelter perimeter"
           },
           whatAndWhy: "Even with a lean prototype AI, enemy targeting was designed to punish passive camping. Implemented Manta enemies scan for already-damaged barrier segments to exploit weak spots, and automatically bypass broken tiles to siphon the bonfire—turning neglected repairs into immediate danger.",
           processDetails: {
@@ -178,9 +178,10 @@ export const PORTFOLIO_EN = {
           title: "Server-Authoritative Co-op Sync, Casual Camera & Emote Wheel",
           scopeBadge: "Playable Prototype",
           media: {
-            type: "image",
-            src: "/images/pomegranate_preview.png",
-            caption: "Co-op arena readability & camera framing (replace with Emote Wheel UI & Mirror sync diagram)"
+            type: "placeholder",
+            src: "",
+            alt: "Radial Emote Ping Wheel & Mirror Host-Client Sync",
+            caption: "In-engine UI & networking capture currently being prepared for archive update"
           },
           whatAndWhy: "A chaotic party game fails if players fight the camera or can't coordinate without voice chat. I designed a pitch-clamped 360° camera for low cognitive load, an edge-clamped Emote Ping Wheel with audio cues, and co-developed Mirror Host-Client gameplay logic with server authority on shared physical items.",
           processDetails: {
@@ -252,7 +253,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "video",
             src: "/videos/puppeteer.mp4",
-            caption: "VR gameplay & sensory exploration loop (replace or pair with echolocation pulse clip)"
+            caption: "VR gameplay & sensory exploration inside the manor"
           },
           whatAndWhy: "Rather than treating darkness as passive atmosphere, I mechanically replaced sight with sound. Early in the game the player is blinded and restricted to a tiny circular monocle slit; an NPC grants a Heart that, when squeezed, emits an acoustic pulse rendered as stylized white-light echolocation across the house.",
           processDetails: {
@@ -272,9 +273,8 @@ export const PORTFOLIO_EN = {
           scopeBadge: "FMOD Studio + Steam Audio",
           media: {
             type: "image",
-            src: "/images/puppeteer_immagine1.png",
-            caption: "Atmospheric spatial exploration (replace with FMOD parameter graph & Steam Audio geometry screenshot)"
-          },
+            src: "/images/puppeteer_immagine3.png",
+            caption: "Manor environment driven by FMOD procedural filtering & Steam Audio occlusion"          },
           whatAndWhy: "When navigation depends on hearing which room a sound comes from, basic stereo panning fails. I engineered a physically grounded audio pipeline in FMOD Studio and Steam Audio—starting with an interactive 5-profile HRTF calibration test—so exterior rain, footsteps, and threats behave realistically across walls, doors, and materials.",
           processDetails: {
             ideation: "Because ear geometry varies per person, offering 5 selectable HRTF profiles via a quick test lets each player maximize directional accuracy before entering the manor.",
@@ -293,9 +293,8 @@ export const PORTFOLIO_EN = {
           scopeBadge: "Playtested & Iterated",
           media: {
             type: "image",
-            src: "/images/puppeteer_immagine3.png",
-            caption: "Piano room & environmental clues (replace with piano interaction screenshot/clip)"
-          },
+            src: "/images/puppeteer_immagine1.png",
+            caption: "Atmospheric exploration leading toward the manor's puzzle room"          },
           whatAndWhy: "The manor's central progression blocker is a fully playable piano: players must gather environmental clues in the room to deduce and perform the right melody. Early playtests revealed an accessibility wall—only musicians with absolute pitch could solve it—leading to structured design iterations.",
           processDetails: {
             ideation: "Built the main puzzle around active listening and musical interaction rather than standard key-and-lock backtracking.",
@@ -314,7 +313,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/puppeteer_immagine2.png",
-            caption: "Puppeteer encounter & VR controls (replace with VR door/grab clip & A* pathing shot)"
+            caption: "Puppeteer pursuit encounter & Meta XR VR interaction build"
           },
           whatAndWhy: "For the complete Meta XR VR version, I redesigned interactions around natural physical gestures and replaced visual HUD markers with distance-scaled controller haptics—while keeping the Puppeteer as a clean, deterministic punishment threat for losing the Guiding Voice.",
           processDetails: {
@@ -410,7 +409,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/dda_immagine2.png",
-            caption: "Adaptive boss encounter testbed (replace with high-level Black-Box I/O diagram & Inspector hooks)"
+            caption: "Boss encounter testbed driven by the decoupled DDA module"
           },
           whatAndWhy: "Difficulty systems fail in production when hardcoded into enemy scripts. I engineered the DDA software as an independent, decoupled Unity module—completely separate from the Soulslike testbed—so it can ingest normalized telemetry and drive designer-exposed difficulty levers in virtually any action or survival game.",
           processDetails: {
@@ -431,7 +430,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/dda_immagine3.png",
-            caption: "Empirical validation session (replace with aggregated telemetry charts & Flow survey graphs)"
+            caption: "High-friction Soulslike encounter evaluated during the 15-player Flow study"
           },
           whatAndWhy: "An adaptive system is only as good as real player data. I conducted a structured qualitative and quantitative study across 15 players of varying skill levels to verify whether real-time modulation improved Flow retention and session engagement without veterans noticing artificial help.",
           processDetails: {
@@ -451,7 +450,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/dda_immagine1.png",
-            caption: "Soulslike boss encounter testbed (replace with short combat feel GIF/clip)"
+            caption: "Punishing Soulslike combat loop built for uncorrupted telemetry"
           },
           whatAndWhy: "Poor combat feel produces noisy data: if players die to clunky controls or unfair hitboxes, telemetry cannot measure true difficulty friction. I designed and built a weighty, punishing Soulslike combat loop with readable boss tells so every mistake reflected authentic gameplay challenge.",
           processDetails: {
@@ -469,9 +468,10 @@ export const PORTFOLIO_EN = {
           title: "Dynamic Armor Breakage & MRT Animated Blood Rendering",
           scopeBadge: "Technical Craft",
           media: {
-            type: "image",
-            src: "/images/dda_front.png",
-            caption: "Visual combat wear & armor prototype (replace with before/after armor break & MRT blood shot)"
+            type: "placeholder",
+            src: "",
+            alt: "Dynamic Armor Breakage & MRT Animated Blood Pipeline",
+            caption: "Before/after armor fracture & MRT render target capture queued for archive update"
           },
           whatAndWhy: "To communicate combat lethality viscerally without cluttering the screen, I implemented dynamic armor breakage with real-time texture damage and a custom blood-rendering pipeline using Multiple Render Targets (MRT), preventing blood decals from sliding during player animations.",
           processDetails: {
@@ -542,7 +542,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/murder_immagine2.png",
-            caption: "AI systems & execution preview (replace with screenshot of your custom Unity BT Node Graph Editor!)"
+            caption: "Deterministic guest AI driven by the custom Unity Behavior Tree Editor"
           },
           whatAndWhy: "Hardcoding NPC decision trees in C# slows down design iteration and hides AI intent. I engineered a graphical node-and-edge Behavior Tree Editor directly inside the Unity Editor—supporting Selectors, Conditions, and Tasks—so behavior logic could be authored, read, and debugged visually.",
           processDetails: {
@@ -562,7 +562,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/murder_immagine1.png",
-            caption: "Timeline planning phase (replace with BT + Decorator hierarchy diagram: Suspicious / Greedy / Alcoholic)"
+            caption: "Tactical timeline planning phase across interconnected room nodes"
           },
           whatAndWhy: "In a timeline puzzle game, random AI ruins strategy—a good plan shouldn't fail due to luck. I designed a 100% deterministic base Behavior Tree shared by all guests and layered personality traits (Suspicious, Greedy, Alcoholic) as modular Decorators, turning NPC reactions into readable puzzles.",
           processDetails: {
@@ -583,7 +583,7 @@ export const PORTFOLIO_EN = {
           media: {
             type: "image",
             src: "/images/murder_immagine3.png",
-            caption: "Autonomous execution & mission debriefing (replace with animated execution GIF showing status icons & suspicion bar)"
+            caption: "Autonomous execution playback & mission suspicion evaluation"
           },
           whatAndWhy: "To keep planning readable without grid clutter, entities interact strictly at the room-node level while item descriptors modify timeline costs and noise propagation. I integrated the AI, suspicion triggers, and distraction flow into Scenario 1 with open-ended puzzle solutions.",
           processDetails: {
@@ -643,16 +643,16 @@ export const PORTFOLIO_EN = {
       period: "2021",
       category: "Individual Internship Project",
       coverImage: "/images/maze_banner.png",
-      primaryFocus: "2D-to-3D Perspective Transition & Mobile Mechanics",
+      primaryFocus: "2D→3D Cognitive Loop & Mobile Runner Mechanics",
       genrePlatform: "Spatial Memory & Traversal Game · Android Mobile",
       tagline: "Spatial Memory & Traversal Game · Android Mobile",
-      role: "Game Designer · Programmer",
-      gameplaySummary: "A mobile third-person spatial memory challenge based on cognitive research. Players are given 30 seconds to study a 2D top-down maze blueprint before smoothly transitioning into a 3D over-the-shoulder perspective, navigating through identical corridors from memory while managing potions.",
-      personalContributionSummary: "Independently conceived, designed, and developed the entire title during a 238-hour professional internship at Nextrek S.r.l. Designed the core perspective-transition mechanic, mobile touch controls, and memory-driven pacing.",
+      role: "Solo Developer · Game Designer & Programmer",
+      gameplaySummary: "A mobile third-person spatial memory runner inspired by cognitive research. Players study a 2D top-down labyrinth blueprint for up to 30 seconds before a smooth Cinemachine transition drops them into corridor-level 3D traversal, navigating by memory with swipe turns and merchant potions.",
+      personalContributionSummary: "First complete solo project (238-hour internship at Nextrek S.r.l., Roma Tre Bachelor's thesis). Conceived the 2D-to-3D memory hook, designed 3 complete labyrinths, merchant economy, and health-linked swipe responsiveness, and built the full Unity mobile app.",
       description: "A mobile third-person spatial memory challenge based on cognitive research. Players are given 30 seconds to study a 2D top-down maze blueprint before smoothly transitioning into a 3D over-the-shoulder perspective, navigating through identical corridors from memory while managing potions.\n\nIndependently conceived, designed, and developed the entire title during a 238-hour professional internship at Nextrek S.r.l. Designed the core perspective-transition mechanic, mobile touch controls, and memory-driven pacing.",
-      tags: ["Unity", "C#", "Android Development", "Spatial Cognition", "Mobile Controls"],
+      tags: ["Mobile Game Design", "Spatial Cognition", "Cinemachine", "Android", "Unity", "C#"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
-      platform: "Mobile (iOS & Android)",
+      platform: "Android Mobile",
       isMobile: true,
       engine: "Unity · C#",
       authors: "Mauro Brochier (Nextrek S.r.l. Internship)",
@@ -660,6 +660,68 @@ export const PORTFOLIO_EN = {
       trailerId: "OP1fEbdZbjk",
       gameplayId: "WI-OsY6SoKs",
       thesisBadge: "COGNITIVE R&D // BACHELOR THESIS RESEARCH",
+      designFeatures: [
+        {
+          id: "maze-cognitive-loop",
+          discipline: "Cognitive & Camera Design",
+          title: "2D Blueprint Memory Window & Smooth Cinemachine 3D Blend",
+          scopeBadge: "Bachelor's Thesis R&D",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine1.png",
+            caption: "2D top-down memorization phase with start and exit markers"
+          },
+          whatAndWhy: "To test how players translate allocentric map memory into egocentric navigation, each stage opens with a timed top-down 2D view (scaling up to 30 seconds on the hardest labyrinth) highlighting start and exit—before smoothly blending via Cinemachine into a tight over-the-shoulder 3D corridor view.",
+          processDetails: {
+            ideation: "Removing the minimap once traversal begins turns spatial recall itself into the core gameplay tension.",
+            mechanicsOrTuning: [
+              "Timed Study Phase: shorter memorization windows on early mazes, up to 30s on the 3rd and hardest labyrinth.",
+              "Cinemachine Blend: seamless camera drop from overhead overview straight onto the starting corridor so spatial orientation stays grounded."
+            ],
+            iterationOrResult: "Playtests confirmed the 2D-to-3D memorization hook genuinely engaged players' spatial memory across all 3 completed levels."
+          }
+        },
+        {
+          id: "maze-economy-health",
+          discipline: "Systems & Survival Design",
+          title: "Hidden Merchants, Exit-Hint Potions & HP-Linked Responsiveness",
+          scopeBadge: "3 Playable Labyrinths",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine3.png",
+            caption: "Mobile merchant & potion survival UI"
+          },
+          whatAndWhy: "Pure memorization needed risk-reward detours. Hidden merchants scattered off the main path sell potions (speed boost, temporary exit-path guidance, healing)—while player health directly governs swipe responsiveness, making low-HP turns noticeably sluggish.",
+          processDetails: {
+            ideation: "Tying health to control responsiveness rather than an instant game-over bar turns survival pressure into tactile friction.",
+            mechanicsOrTuning: [
+              "Implemented Potions: Speed boost for fast traversal, temporary Exit Compass revealing the right path for a few seconds, and Healing to restore crisp swipe turning.",
+              "Scope Transparency: merchant inventories also showcase planned weapons designed for future chaser enemies intended to jostle players off-route."
+            ],
+            iterationOrResult: "Created a clear dilemma between rushing the memorized shortest path vs. risking detours for navigation potions."
+          }
+        },
+        {
+          id: "maze-controls-postmortem",
+          discipline: "Mobile Controls & Post-Mortem",
+          title: "Swipe Runner Locomotion & Early Career Architecture Reflection",
+          scopeBadge: "2021 First Solo Build",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine2.png",
+            caption: "3D corridor traversal & mobile touch controls"
+          },
+          whatAndWhy: "Built for mobile with continuous forward runner pacing, left/right directional swipes, and manual halt buttons to pause and rethink turns. Looking back at this 2021 internship project, it also served as my foundational lesson in control ergonomics and movement architecture.",
+          processDetails: {
+            ideation: "Aimed for one-handed Maze Runner immediacy adapted to grid-like corridor turns.",
+            mechanicsOrTuning: [
+              "Rapid-Prototype Locomotion: implemented forward motion using a NavMeshAgent chasing a dynamic 'carrot' target positioned just ahead of the player.",
+              "Manual Brake Input: dedicated stop buttons let players halt momentum at tricky intersections."
+            ],
+            iterationOrResult: "Honest Post-Mortem: testing exposed clunky touch ergonomics and limits of the 'carrot-target' NavMeshAgent hack. While the memory hook worked strongly, refactoring into a dedicated CharacterController and tighter swipe buffering would be my top priority today—a lesson directly applied in later titles."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Conceived the cognitive gameplay loop investigating how players retain 2D top-down blueprints and translate them into 3D third-person navigation.",
@@ -707,12 +769,12 @@ export const PORTFOLIO_EN = {
       period: "2025",
       category: "Individual Academic Project",
       coverImage: "/images/water_banner.png", // Lo screenshot con riflessi e caustiche OpenGL (o quello che preferisci)
-      primaryFocus: "CUDA Wave Physics Parallelization & OpenGL Fresnel Shaders",
+      primaryFocus: "CUDA GPU Wave Acceleration (4× Grid @ 90+ FPS)",
       genrePlatform: "Real-Time Fluid Simulation · GPGPU · PC",
       tagline: "Real-Time Fluid Simulation · GPGPU · PC",
       role: "Graphics & Simulation Programmer",
-      gameplaySummary: "A real-time grid-based fluid simulation and physics sandbox. The system computes surface wave equations and resolves complex two-way dynamic physical coupling with arbitrary 3D rigid bodies, allowing objects to float, drag, and generate natural shape-dependent wake ripples.",
-      personalContributionSummary: "Independently proposed, architected, and developed the entire simulation in C++ and OpenGL as an academic project. Parallelized computationally intensive wave physics across GPU hardware threads using NVIDIA CUDA, incorporating Fresnel surface shaders.",
+      gameplaySummary: "A real-time grid-based fluid simulation built from scratch in C++ and OpenGL, later upgraded with NVIDIA CUDA GPGPU acceleration. Arbitrary 3D rigid bodies interact dynamically with the surface, generating geometry-driven wave propagation while maintaining 90+ FPS at 4× grid density.",
+      personalContributionSummary: "Built solo from the ground up: designed the OpenGL height-field wave propagation and arbitrary-shape geometry coupling, then offloaded heavy vertex-wave physics onto CUDA GPU kernels for a 4× resolution jump above 90 FPS.",
       description: "A real-time grid-based fluid simulation and physics sandbox. The system computes surface wave equations and resolves complex two-way dynamic physical coupling with arbitrary 3D rigid bodies, allowing objects to float, drag, and generate natural shape-dependent wake ripples.\n\nIndependently proposed, architected, and developed the entire simulation in C++ and OpenGL as an academic project. Parallelized computationally intensive wave physics across GPU hardware threads using NVIDIA CUDA, incorporating Fresnel surface shaders.",
       tags: ["C++", "NVIDIA CUDA", "OpenGL", "GPGPU", "Physics Simulation", "3D Mathematics"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
@@ -723,6 +785,68 @@ export const PORTFOLIO_EN = {
       teamRoles: "Graphics Programmer, Systems Engineer",
       driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
       localVideoUrl: "/videos/water_sim.mp4",
+      designFeatures: [
+        {
+          id: "water-cuda-gpgpu",
+          discipline: "GPGPU Optimization · CUDA",
+          title: "Offloading Wave Physics to GPU: 4× Grid Density at 90+ FPS",
+          scopeBadge: "90+ FPS Benchmark",
+          media: {
+            type: "image",
+            src: "/images/water_immagine1.png",
+            caption: "High-density CUDA-accelerated fluid grid running smoothly in real time"
+          },
+          whatAndWhy: "The initial pure-OpenGL CPU prototype hit performance bottlenecks when scaling water grid density. By moving the heaviest wave-vertex propagation calculations onto NVIDIA CUDA kernels, the simulation gained 4× grid resolution while staying steadily above 90 FPS even in chaotic scenes.",
+          processDetails: {
+            ideation: "Focused optimization strictly on the true bottleneck—per-vertex wave propagation across dense grids—rather than prematurely rewriting the entire render path.",
+            mechanicsOrTuning: [
+              "CPU vs. GPGPU Upgrade: transitioned from single-threaded/CPU wave updates to parallel CUDA kernel execution across GPU threads.",
+              "Measured Gain: 4× higher mesh grid resolution compared to the pre-CUDA OpenGL build, holding 90+ FPS under heavy multi-object ripples."
+            ],
+            iterationOrResult: "Proved practical real-time profiling instincts—delivering higher visual fidelity without sacrificing frame budget."
+          }
+        },
+        {
+          id: "water-mesh-coupling",
+          discipline: "Physics & Geometry Interaction",
+          title: "Arbitrary 3D Geometry Coupling & Shape-Driven Ripples",
+          scopeBadge: "C++ Custom Engine",
+          media: {
+            type: "image",
+            src: "/images/water_immagine3.png",
+            caption: "Real-time wake ripples driven by arbitrary immersed 3D geometry"
+          },
+          whatAndWhy: "Instead of faking ripples with flat radial circles, the water height-field responds directly to the actual geometry of any immersed 3D object—allowing arbitrary shapes and sizes to displace fluid and trigger coherent wake waves.",
+          processDetails: {
+            ideation: "Designed the wave propagation rules to react cleanly to diverse collider silhouettes without manual per-asset scripting.",
+            mechanicsOrTuning: [
+              "Geometry-Aware Displacement: surface height updates account for the immersed profile of arbitrary 3D objects.",
+              "Real-Time Wave Propagation: iterative height-field solver distributes ripples smoothly across neighbouring grid vertices."
+            ],
+            iterationOrResult: "Works out-of-the-box with varied object shapes dropped into the sandbox."
+          }
+        },
+        {
+          id: "water-opengl-render",
+          discipline: "Graphics Pipeline · OpenGL",
+          title: "Decoupled Simulation-to-Render Pipeline & Surface Shading",
+          scopeBadge: "OpenGL & GLSL",
+          media: {
+            type: "image",
+            src: "/images/water_immagine2.png",
+            caption: "OpenGL water surface shading with real-time reflections and vertex displacement"
+          },
+          whatAndWhy: "Built a clean separation between physics simulation state and OpenGL surface rendering, allowing CUDA simulation updates to feed real-time vertex displacement and water surface shading smoothly.",
+          processDetails: {
+            ideation: "Decoupling compute and rendering made it straightforward to swap the initial CPU solver for CUDA without rewriting the graphics layer.",
+            mechanicsOrTuning: [
+              "Custom C++ / OpenGL pipeline feeding dynamic vertex displacement from the height-field grid.",
+              "GLSL surface shading with Fresnel-style reflections and crisp wave highlights."
+            ],
+            iterationOrResult: "Cleanly modular architecture documented for the University of Milan coursework."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Conceived and formulated the mathematical physics framework for grid-based height-field wave propagation equations.",

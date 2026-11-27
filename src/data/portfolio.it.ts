@@ -114,7 +114,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/immagine_falo_personaggio.png",
-            caption: "Difesa del falò e loop fisico risorse (anteprima temporanea — da sostituire con schema Giorno-Notte)"
+            caption: "Difesa del falò e loop fisico di trasporto risorse nell'arena"
           },
           whatAndWhy: "Per creare tensione cooperativa stile Overcooked senza ingombrare la UI, non esiste inventario astratto: trasportare legna o melograni occupa le mani e disequipaggia l'arma, obbligando a scegliere tra sparare, riparare o raccogliere. All'alba i nemici si pietrificano sul posto invece di sparire, mantenendo pressione spaziale in una breve finestra di respiro.",
           processDetails: {
@@ -157,7 +157,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/players_vs_monsters.png",
-            caption: "Assalto delle Mante al perimetro (da sostituire con flowchart IA e tabella comparativa nemici)"
+            caption: "Assalto delle Mante attorno al perimetro del rifugio"
           },
           whatAndWhy: "Anche con un'IA snella da prototipo, il targeting è progettato per punire il camping passivo. Le Mante implementate danno priorità ai segmenti di barriera già danneggiati per aprire brecce e, se il varco è rotto, puntano direttamente a drenare il falò—trasformando ogni riparazione trascurata in emergenza immediata.",
           processDetails: {
@@ -176,9 +176,10 @@ export const PORTFOLIO_IT = {
           title: "Sync Host-Client Mirror, Camera Casual & Ruota Emote Non-Verbale",
           scopeBadge: "Prototipo Giocabile",
           media: {
-            type: "image",
-            src: "/images/pomegranate_preview.png",
-            caption: "Leggibilità arena e inquadratura co-op (da sostituire con screenshot Ruota Emote & schema Mirror)"
+            type: "placeholder",
+            src: "",
+            alt: "Ruota Emote Radiale & Sincronizzazione Mirror Host-Client",
+            caption: "Acquisizione UI e schema di sincronizzazione in fase di aggiornamento"
           },
           whatAndWhy: "Un party-game frenetico fallisce se la telecamera disorienta o se serve per forza la chat vocale. Ho progettato una camera a 360° con pitch bloccato per ridurre il carico cognitivo, una Ruota Emote con indicatori agganciati ai bordi schermo e audio dedicati, e co-sviluppato la logica di gioco Host-Client su Mirror sugli oggetti fisici condivisi.",
           processDetails: {
@@ -250,7 +251,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "video",
             src: "/videos/puppeteer.mp4",
-            caption: "Gameplay VR ed esplorazione sensoriale (da affiancare o sostituire con clip dell'impulso di ecolocalizzazione)"
+            caption: "Gameplay VR ed esplorazione sensoriale all'interno della villa"
           },
           whatAndWhy: "Invece di usare il buio come semplice atmosfera, ho sostituito meccanicamente la vista con l'udito. All'inizio il giocatore viene accecato e vede solo attraverso la fessura circolare di un monocolo; un NPC gli dona un Cuore che, se schiacciato, emette un impulso sonoro che illumina la casa con una silhouette stilizzata a luce bianca.",
           processDetails: {
@@ -270,9 +271,8 @@ export const PORTFOLIO_IT = {
           scopeBadge: "FMOD Studio + Steam Audio",
           media: {
             type: "image",
-            src: "/images/puppeteer_immagine1.png",
-            caption: "Esplorazione spaziale (da sostituire con screenshot parametri FMOD Studio & geometrie Steam Audio)"
-          },
+            src: "/images/puppeteer_immagine3.png",
+            caption: "Ambiente della villa con filtro procedurale FMOD e occlusione Steam Audio"          },
           whatAndWhy: "Se per sopravvivere devi capire da quale stanza arriva una voce, un panning stereo standard non basta. Ho costruito una pipeline in FMOD Studio e Steam Audio—aperta da un test iniziale su 5 profili HRTF—affinché pioggia esterna, passi e minacce reagiscano fisicamente a muri, porte e materiali.",
           processDetails: {
             ideation: "Poiché ogni persona percepisce la spazialità in modo diverso, il test preliminare con 5 profili HRTF permette al giocatore di scegliere il profilo più preciso per il proprio udito.",
@@ -291,9 +291,8 @@ export const PORTFOLIO_IT = {
           scopeBadge: "Iterato su Playtest",
           media: {
             type: "image",
-            src: "/images/puppeteer_immagine3.png",
-            caption: "Stanza del pianoforte e indizi (da sostituire con clip/screenshot del pianoforte in azione)"
-          },
+            src: "/images/puppeteer_immagine1.png",
+            caption: "Esplorazione atmosferica verso la stanza dell'enigma nella villa"          },
           whatAndWhy: "L'enigma centrale per avanzare nella casa ruota attorno a un pianoforte interamente suonabile: il giocatore deve decifrare gli indizi sparsi nella stanza per riprodurre la melodia corretta. I primi playtest avevano evidenziato un blocco netto—ci riuscivano solo musicisti con orecchio assoluto—portandomi a iterare il design.",
           processDetails: {
             ideation: "Volevo un puzzle radicato nel tema acustico e tattile del gioco anziché un classico enigma a chiavi o lucchetti.",
@@ -312,7 +311,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/puppeteer_immagine2.png",
-            caption: "Incontro col Burattinaio e controlli VR (da sostituire con clip interazioni VR / pathfinding A*)"
+            caption: "Inseguimento del Burattinaio e build interattiva Meta XR VR"
           },
           whatAndWhy: "Per la build VR completa su Meta XR ho ripensato le interazioni attorno a gesti naturali e sostituito l'HUD con un feedback aptico proporzionale alla distanza dagli obiettivi—mantenendo il Burattinaio come punizione deterministica se si perde l'orientamento acustico.",
           processDetails: {
@@ -408,7 +407,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/dda_immagine2.png",
-            caption: "Testbed scontro boss (da sostituire con schema Black-Box Input/Output & agganci Inspector)"
+            caption: "Scontro boss del testbed collegato al modulo DDA disaccoppiato"
           },
           whatAndWhy: "Un sistema di difficoltà fallisce in produzione se è cablato dentro gli script dei nemici. Ho ingegnerizzato il software DDA come modulo Unity indipendente e non vincolato al Soulslike di test: riceve telemetria normalizzata e pilota leve esposte al designer, risultando integrabile su generi diversi.",
           processDetails: {
@@ -429,7 +428,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/dda_immagine3.png",
-            caption: "Validazione empirica (da sostituire con grafici aggregati di telemetria e punteggi Flow)"
+            caption: "Scontro Soulslike ad alta frizione valutato nello studio su 15 giocatori"
           },
           whatAndWhy: "Un sistema adattivo vale quanto i suoi dati reali. Ho condotto uno studio qualitativo e quantitativo su 15 giocatori di abilità diverse per verificare se la modulazione in tempo reale migliorasse lo stato di Flow e la tenuta della sessione senza far percepire ai veterani alcun aiuto artificiale.",
           processDetails: {
@@ -449,7 +448,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/dda_immagine1.png",
-            caption: "Combattimento nel testbed Soulslike (da sostituire con breve GIF/clip del combat)"
+            caption: "Loop di combattimento Soulslike costruito per garantire telemetria pulita"
           },
           whatAndWhy: "Un cattivo game design genera dati sporchi: se i giocatori muoiono per controlli imprecisi o hitbox confuse, la telemetria non misura la vera difficoltà. Ho progettato un combat system Soulslike pesante e leggibile, curato con standard AAA-like affinché ogni errore riflettesse solo la reale abilità del giocatore.",
           processDetails: {
@@ -467,9 +466,10 @@ export const PORTFOLIO_IT = {
           title: "Rottura Dinamica Armatura & Rendering Sangue su Player via MRT",
           scopeBadge: "Technical Craft",
           media: {
-            type: "image",
-            src: "/images/dda_front.png",
-            caption: "Usura armatura e feedback visivo (da sostituire con prima/dopo rottura armatura & sangue MRT)"
+            type: "placeholder",
+            src: "",
+            alt: "Rottura Dinamica Armatura & Pipeline Sangue MRT su Mesh Animate",
+            caption: "Confronto prima/dopo rottura armatura e passaggi MRT in aggiornamento"
           },
           whatAndWhy: "Per restituire la brutalità degli scontri senza sovraccaricare l'HUD, ho implementato un sistema gore con rottura dinamica dell'armatura e modifica reale delle texture, risolvendo lo slittamento delle decal sulle animazioni tramite disegno diretto del sangue con Multiple Render Targets (MRT).",
           processDetails: {
@@ -540,7 +540,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/murder_immagine2.png",
-            caption: "Anteprima sistemi AI (da sostituire con screenshot reale del tuo Editor visuale a nodi in Unity!)"
+            caption: "IA deterministica dei Guest guidata dall'Editor Behavior Tree custom in Unity"
           },
           whatAndWhy: "Scrivere alberi decisionali direttamente dentro script C# rallenta le iterazioni di design e nasconde la logica. Ho costruito un Editor grafico a nodi e archi direttamente dentro Unity—con Selector, Condition e Task—per creare, leggere e debuggare i Behavior Tree in modo visivo.",
           processDetails: {
@@ -560,7 +560,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/murder_immagine1.png",
-            caption: "Fase di pianificazione su timeline (da sostituire con schema BT + Decoratori Suspicious / Greedy / Alcoholic)"
+            caption: "Fase di pianificazione su timeline tattica tra i nodi delle stanze"
           },
           whatAndWhy: "In un puzzle su timeline l'IA casuale distrugge la strategia: un buon piano non deve dipendere dalla fortuna. Ho progettato un Behavior Tree base 100% deterministico condiviso da tutti i Guest, applicando i tratti caratteriali (Suspicious, Greedy, Alcoholic) come Decoratori modulari così le reazioni risultano leggibili come un orologio.",
           processDetails: {
@@ -581,7 +581,7 @@ export const PORTFOLIO_IT = {
           media: {
             type: "image",
             src: "/images/murder_immagine3.png",
-            caption: "Esecuzione autonoma & debriefing (da sostituire con GIF di esecuzione con icone '!', '?' e barra sospetto)"
+            caption: "Riproduzione autonoma dell'esecuzione e valutazione del sospetto"
           },
           whatAndWhy: "Per mantenere leggibile la pianificazione senza griglie dispersive, le entità interagiscono a livello di nodo-stanza mentre i descrittori degli oggetti modificano durata e propagazione del rumore. Ho integrato l'IA, i trigger di sospetto e il flusso puzzle nello Scenario 1 lasciando piena libertà di soluzione.",
           processDetails: {
@@ -641,16 +641,16 @@ export const PORTFOLIO_IT = {
       period: "2021",
       category: "Progetto di Tirocinio Individuale",
       coverImage: "/images/maze_banner.png",
-      primaryFocus: "Transizione Prospettica 2D→3D & Meccaniche Mobile",
+      primaryFocus: "Loop Cognitivo 2D→3D & Meccaniche Runner Mobile",
       genrePlatform: "Gioco di Navigazione e Memoria Spaziale · Android Mobile",
       tagline: "Gioco di Navigazione e Memoria Spaziale · Android Mobile",
-      role: "Game Designer · Programmer",
-      gameplaySummary: "Una sfida mobile in terza persona basata sulla ricerca sulla memoria visuo-spaziale. I giocatori hanno 30 secondi per studiare la mappa 2D del labirinto prima di passare fluidamente a una visuale 3D alle spalle, navigando a memoria attraverso corridoi identici e gestendo risorse e pozioni.",
-      personalContributionSummary: "Ideazione, design e sviluppo integrale autonomo del titolo durante un tirocinio professionale di 238 ore presso Nextrek S.r.l. Progettazione della meccanica centrale di transizione prospettica, controlli touch per dispositivi mobili e bilanciamento della memoria.",
+      role: "Sviluppatore Unico · Game Designer & Programmer",
+      gameplaySummary: "Un runner mobile di memoria spaziale in terza persona nato per tesi triennale. Il giocatore ha fino a 30 secondi per studiare la mappa 2D dall'alto prima che una transizione fluida con Cinemachine porti la visuale alle spalle del personaggio nei corridoi 3D, guidato da swipe direzionali, frenate e pozioni.",
+      personalContributionSummary: "Primo progetto completo in solitaria (tirocinio di 238 ore presso Nextrek S.r.l., tesi triennale Roma Tre). Ideazione del loop mnemonico 2D→3D, design di 3 labirinti completi, mercanti con pozioni e reattività legata agli HP, e sviluppo integrale in Unity.",
       description: "Una sfida mobile in terza persona basata sulla ricerca sulla memoria visuo-spaziale. I giocatori hanno 30 secondi per studiare la mappa 2D del labirinto prima di passare fluidamente a una visuale 3D alle spalle, navigando a memoria attraverso corridoi identici e gestendo risorse e pozioni.\n\nIdeazione, design e sviluppo integrale autonomo del titolo durante un tirocinio professionale di 238 ore presso Nextrek S.r.l. Progettazione della meccanica centrale di transizione prospettica, controlli touch per dispositivi mobili e bilanciamento della memoria.",
-      tags: ["Unity", "C#", "Sviluppo Android", "Cognizione Spaziale", "Controlli Mobile"],
+      tags: ["Mobile Game Design", "Cognizione Spaziale", "Cinemachine", "Android", "Unity", "C#"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#mazes-soul",
-      platform: "Mobile (iOS & Android)",
+      platform: "Android Mobile",
       isMobile: true,
       engine: "Unity · C#",
       authors: "Mauro Brochier (Tirocinio Nextrek S.r.l.)",
@@ -658,6 +658,68 @@ export const PORTFOLIO_IT = {
       trailerId: "OP1fEbdZbjk",
       gameplayId: "WI-OsY6SoKs",
       thesisBadge: "R&D COGNITIVO // RICERCA TESI TRIENNALE",
+      designFeatures: [
+        {
+          id: "maze-cognitive-loop",
+          discipline: "Cognitive & Camera Design",
+          title: "Finestra Mnemonica 2D & Transizione Fluida Cinemachine in 3D",
+          scopeBadge: "Ricerca Tesi Triennale",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine1.png",
+            caption: "Fase di memorizzazione in pianta 2D con partenza e uscita evidenziate"
+          },
+          whatAndWhy: "Per studiare come il giocatore traduce una mappa mentale 2D in navigazione 3D, ogni livello si apre con una vista dall'alto a tempo (fino a 30 secondi nel labirinto più difficile) con partenza e uscita evidenziate, prima di scendere fluidamente tramite Cinemachine nei corridoi in terza persona.",
+          processDetails: {
+            ideation: "Togliere la minimappa durante la corsa trasforma la memoria di lavoro visuo-spaziale nella tensione centrale del gameplay.",
+            mechanicsOrTuning: [
+              "Timer Adattivo: finestre più brevi nei labirinti iniziali, fino a 30s nel 3° labirinto più complesso.",
+              "Blend Cinemachine: interpolazione continua dalla pianta 2D alle spalle del personaggio al punto di partenza per preservare l'orientamento iniziale."
+            ],
+            iterationOrResult: "I test hanno confermato che il concetto di memorizzazione 2D→3D coinvolgeva efficacemente i giocatori su tutti e 3 i livelli completati."
+          }
+        },
+        {
+          id: "maze-economy-health",
+          discipline: "Systems & Survival Design",
+          title: "Mercanti Nascosti, Pozioni Guida & Reattività Legata alla Vita",
+          scopeBadge: "3 Labirinti Giocabili",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine3.png",
+            caption: "UI mobile di mercanti, pozioni e sopravvivenza"
+          },
+          whatAndWhy: "La sola memoria aveva bisogno di deviazioni rischio-ricompensa. Mercanti nascosti vendono pozioni (velocità, indicazione temporanea della via d'uscita, cura), mentre gli HP del giocatore influenzano direttamente la reattività agli swipe: meno vita hai, più le svolte rispondono lentamente.",
+          processDetails: {
+            ideation: "Legare la vita alla prontezza dei controlli invece che a un semplice Game Over trasforma il danno in frizione tattile immediata.",
+            mechanicsOrTuning: [
+              "Pozioni Implementate: boost velocità, bussola temporanea che mostra per qualche secondo la strada giusta per l'uscita, e cura per ripristinare reattività agli slide.",
+              "Trasparenza sullo Scope: i mercanti espongono anche armi pensate a livello di design per respingere futuri nemici inseguitori (previsti come espansione)."
+            ],
+            iterationOrResult: "Genera un dilemma tra correre sul percorso breve memorizzato o rischiare deviazioni per recuperare pozioni."
+          }
+        },
+        {
+          id: "maze-controls-postmortem",
+          discipline: "Mobile Controls & Post-Mortem",
+          title: "Controlli Runner a Swipe & Retrospettiva Architetturale (2021)",
+          scopeBadge: "Primo Progetto Completo",
+          media: {
+            type: "image",
+            src: "/images/maze_immagine2.png",
+            caption: "Corsa nei corridoi 3D e controlli touch mobile"
+          },
+          whatAndWhy: "Pensato esclusivamente per mobile con avanzamento stile Maze Runner, slide a destra/sinistra per svoltare e tasti per arrestare la corsa. Riguardando questo primo tirocinio del 2021, è stato il progetto formativo che mi ha insegnato l'importanza cruciale di controlli reattivi e architetture pulite.",
+          processDetails: {
+            ideation: "Obiettivo di accessibilità immediata su smartphone con gesti intuitivi ai bivi.",
+            mechanicsOrTuning: [
+              "Locomozione Prototipale: movimento continuo realizzato con NavMeshAgent agganciato a un bersaglio mobile ('carota') posizionato poco davanti al giocatore.",
+              "Frenata Manuale: pulsanti dedicati per fermare la corsa nei punti decisionali."
+            ],
+            iterationOrResult: "Post-Mortem Onesto: i test mostrarono limiti nella fluidità d'uso e nei comandi dovuti all'inesperienza iniziale e all'approccio 'a carota' su NavMeshAgent. Oggi lo rifarei con CharacterController dedicato e input buffering sugli swipe—lezione applicata direttamente nei progetti successivi."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Ideazione del core loop cognitivo incentrato sullo studio di come la memoria umana memorizza mappe 2D e le applica alla navigazione spaziale 3D.",
@@ -705,12 +767,12 @@ export const PORTFOLIO_IT = {
       period: "2025",
       category: "Progetto Accademico Individuale",
       coverImage: "/images/water_banner.png",
-      primaryFocus: "Parallelizzazione Fisica Onde in CUDA & Shader OpenGL Fresnel",
+      primaryFocus: "Accelerazione GPU CUDA (Griglia 4× a 90+ FPS)",
       genrePlatform: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
       tagline: "Simulazione Fluidodinamica in Tempo Reale · GPGPU · PC",
       role: "Graphics & Simulation Programmer",
-      gameplaySummary: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.",
-      personalContributionSummary: "Ideazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
+      gameplaySummary: "Simulazione fluidodinamica su griglia in tempo reale costruita da zero in C++ e OpenGL, poi potenziata con accelerazione GPGPU NVIDIA CUDA. Corpi 3D di forma arbitraria interagiscono dinamicamente con l'acqua generando onde coerenti con la geometria, mantenendo oltre 90 FPS con risoluzione 4×.",
+      personalContributionSummary: "Sviluppo autonomo completo: dal design matematico della propagazione onde in OpenGL e interazione con geometrie arbitrarie, fino allo spostamento della fisica pesante su kernel GPU CUDA per quadruplicare la risoluzione restando sopra i 90 FPS.",
       description: "Una simulazione fluidodinamica basata su griglia e sandbox fisico in tempo reale. Il sistema calcola le equazioni di propagazione delle onde superficiali e risolve la complessa interazione fisica bidirezionale con corpi rigidi 3D arbitrari, consentendo agli oggetti di galleggiare, creare attrito e generare onde di scia realistiche.\n\nIdeazione, progettazione e sviluppo autonomo dell'intera simulazione in C++ e OpenGL come progetto d'esame accademico. Parallelizzazione dei calcoli fisici intensivi delle onde su thread GPU tramite NVIDIA CUDA, con shader superficiali basati su ottica di Fresnel.",
       tags: ["C++", "NVIDIA CUDA", "OpenGL", "GPGPU", "Simulazione Fisica", "Matematica 3D"],
       githubUrl: "https://github.com/MauroTheB/projects-preview#real-time-water",
@@ -721,6 +783,68 @@ export const PORTFOLIO_IT = {
       teamRoles: "Graphics Programmer, Systems Engineer",
       driveVideoUrl: "https://drive.google.com/file/d/1SSt9NNn0LSsy904b9N3yUaVozUVa0Y7O/view?usp=sharing",
       localVideoUrl: "/videos/water_sim.mp4",
+      designFeatures: [
+        {
+          id: "water-cuda-gpgpu",
+          discipline: "Ottimizzazione GPGPU · CUDA",
+          title: "Fisica delle Onde su GPU: Risoluzione 4× sopra i 90 FPS",
+          scopeBadge: "Benchmark 90+ FPS",
+          media: {
+            type: "image",
+            src: "/images/water_immagine1.png",
+            caption: "Griglia fluida ad alta densità accelerata via CUDA in tempo reale"
+          },
+          whatAndWhy: "La prima versione puramente CPU in OpenGL mostrava colli di bottiglia all'aumentare della densità della griglia. Spostando i calcoli più pesanti di propagazione dei vertici sui kernel NVIDIA CUDA, la simulazione ha raggiunto una risoluzione 4 volte superiore restando stabilmente sopra i 90 FPS anche nei momenti più caotici.",
+          processDetails: {
+            ideation: "Ottimizzazione mirata esclusivamente al vero collo di bottiglia (propagazione per-vertice su griglie dense) senza dover riscrivere l'intera pipeline grafica.",
+            mechanicsOrTuning: [
+              "Upgrade CPU → GPGPU: parallelizzazione dei kernel di propagazione ondosa su migliaia di thread hardware GPU con CUDA.",
+              "Risultato Misurato: risoluzione della griglia dell'acqua 4× rispetto alla build pre-CUDA, sempre oltre 90 FPS con molteplici oggetti attivi."
+            ],
+            iterationOrResult: "Dimostra sensibilità pratica al frame budget e alla scalabilità delle prestazioni in tempo reale."
+          }
+        },
+        {
+          id: "water-mesh-coupling",
+          discipline: "Fisica & Interazione Geometrie",
+          title: "Accoppiamento con Oggetti 3D Arbitrari & Onde Coerenti",
+          scopeBadge: "Motore Custom C++",
+          media: {
+            type: "image",
+            src: "/images/water_immagine3.png",
+            caption: "Onde di scia in tempo reale generate da geometrie 3D immerse"
+          },
+          whatAndWhy: "Anziché simulare increspature finte con semplici cerchi concentrici, la superficie dell'acqua reagisce alla geometria reale di qualsiasi oggetto immerso, generando spostamento d'acqua e onde di scia coerenti con forma e dimensioni del corpo.",
+          processDetails: {
+            ideation: "Regole di propagazione progettate per reagire a sagome 3D arbitrarie senza configurazioni manuali per singolo asset.",
+            mechanicsOrTuning: [
+              "Displacement Guidato dalla Geometria: l'height-field legge l'ingombro reale degli oggetti immersi.",
+              "Propagazione Continua: il solver distribuisce dinamicamente le onde lungo i vertici adiacenti della griglia."
+            ],
+            iterationOrResult: "Interazione fluida immediata con oggetti di forme e dimensioni diverse nella sandbox."
+          }
+        },
+        {
+          id: "water-opengl-render",
+          discipline: "Pipeline Grafica · OpenGL",
+          title: "Disaccoppiamento Simulazione-Rendering & Shader Superficiali",
+          scopeBadge: "OpenGL & GLSL",
+          media: {
+            type: "image",
+            src: "/images/water_immagine2.png",
+            caption: "Superficie fluida renderizzata in OpenGL con riflessi e displacement vertici"
+          },
+          whatAndWhy: "Architettura progettata separando nettamente lo stato della simulazione fisica dal rendering OpenGL, così da poter aggiornare i vertici dinamicamente e sostituire il solver CPU con CUDA senza toccare gli shader grafici.",
+          processDetails: {
+            ideation: "Disaccoppiare calcolo e rendering ha reso indolore il passaggio dall'implementazione iniziale OpenGL pura all'accelerazione CUDA.",
+            mechanicsOrTuning: [
+              "Pipeline C++ / OpenGL dedicata con displacement dei vertici guidato dalla griglia fluida.",
+              "Shader GLSL superficiali con riflessioni realistiche e lettura visiva immediata delle onde."
+            ],
+            iterationOrResult: "Struttura modulare documentata nella relazione tecnica universitaria (UniMi)."
+          }
+        }
+      ],
       detailedContributions: {
         designed: [
           "Ideazione e formulazione del framework matematico per le equazioni di propagazione delle onde di superficie basate su griglia (height-field wave physics).",
