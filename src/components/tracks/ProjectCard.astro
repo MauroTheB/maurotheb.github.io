@@ -3,7 +3,7 @@ import CardThematicFrame from '../vfx/CardThematicFrame.astro';
 
 interface Props {
   proj: any; // Usiamo any per ora per retrocompatibilità, poi tipizzeremo
-  lang: 'en' | 'it';
+  lang: 'en' | 'it'| 'fr';
   UI: Record<string, string>;
   textPadding: string;
   fallbackCover?: string;
@@ -80,7 +80,9 @@ const { proj, lang, UI, textPadding, fallbackCover = '/images/puppeteer_immagine
 
       {proj.personalContributionSummary && (
         <div class="border-l-2 border-violet-500/60 pl-3 py-1 mb-6 bg-slate-950/40 rounded-r-lg shadow-lg">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block mb-0.5">{lang === 'it' ? 'Contributo Personale:' : 'Key Contribution:'}</span>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold block mb-0.5">{lang === 'it' ? 'Contributo Personale:' : lang === 'fr' ? 'Contribution Clé :' : 'Key Contribution:'}
+            
+          </span>
           <span class="text-xs font-mono font-bold text-violet-300 block">{proj.primaryFocus || proj.role}</span>
         </div>
       )}

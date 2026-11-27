@@ -4,7 +4,7 @@ import type { Project } from '../../data/portfolio';
 
 interface Props {
   projects: Project[];
-  lang: 'en' | 'it';
+  lang: 'en' | 'it' | 'fr';
   UI: Record<string, string>;
   textPaddingMap: Record<string, string>;
   fallbackCoverMap?: Record<string, string>;
@@ -131,6 +131,9 @@ const getFallbackCover = (id: string) => fallbackCoverMap[id] || DEFAULT_FALLBAC
 
 <!-- Script del Carosello e della Sidebar Mobile -->
 <script>
+
+  import { peekLangTransitionState } from '../../utils/langTransition';
+
   function initProjectsRoulette() {
     const stage = document.getElementById('roulette-stage');
     if (!stage) return;
@@ -225,6 +228,20 @@ const getFallbackCover = (id: string) => fallbackCoverMap[id] || DEFAULT_FALLBAC
     const total = items.length;
     let activeIndex = 0;
     let isRotating = false;
+
+    const langTransition = peekLangTransitionState();
+    if (langTransition) {
+      const targetId = langTransition.openProjectId || langTransition.activeRouletteId;
+      if (targetId) {
+        const restoredIdx = Array.from(items).findIndex(
+          (it) => it.getAttribute('data-roulette-item') === targetId
+        );
+        if (restoredIdx !== -1) activeIndex = restoredIdx;
+      }
+      if (langTransition.sidebarOpen && !langTransition.openProjectId) {
+        setSidebarOpen(true);
+      }
+    }
 
     function updateRouletteSlots() {
       items.forEach((item, idx) => {

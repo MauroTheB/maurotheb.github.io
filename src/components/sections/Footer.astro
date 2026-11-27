@@ -19,7 +19,7 @@ const { profile: PROFILE, ui: UI } = getPortfolio(lang);
     <div class="space-y-3 text-center md:text-left max-w-xl">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>Open to Opportunities · Worldwide</span>
+        <span>{lang === 'it' ? 'Aperto a Opportunità · Worldwide' : lang === 'fr' ? 'À l’écoute d’opportunités · International' : 'Open to Opportunities · Worldwide'}</span>
       </div>
 
       <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">

@@ -4,19 +4,19 @@ import type { DesignFeatureSection } from '../../data/portfolio';
 interface Props {
   features: DesignFeatureSection[];
   isMobile?: boolean;
-  lang?: 'en' | 'it';
+  lang?: 'en' | 'it'| 'fr';
 }
 
 const { features, isMobile = false, lang = 'en' } = Astro.props;
 const labels = {
-  heading: lang === 'it' ? 'Breakdown di Design & Sistemi' : 'Design & Systems Breakdown',
-  jumpHint: lang === 'it' ? 'Vai alla sezione:' : 'Jump to section:',
-  whatWhy: lang === 'it' ? 'Cosa & Perché' : 'What & Why',
-  processToggle: lang === 'it' ? 'Processo, regole & iterazioni di design' : 'Design process, tuning & iterations',
-  ideation: lang === 'it' ? 'Ideazione & Trade-off' : 'Ideation & Trade-offs',
-  tuning: lang === 'it' ? 'Meccaniche & Parametri' : 'Mechanics & Tuning',
-  iteration: lang === 'it' ? 'Playtest & Risultati' : 'Playtest & Results',
-  mediaQueued: lang === 'it' ? 'Acquisizione Media // In Aggiornamento' : 'Visual Capture // Archive Updating',
+  heading: lang === 'it' ? 'Breakdown di Design & Sistemi' : lang === 'fr' ? 'Breakdown Design & Systèmes' : 'Design & Systems Breakdown',
+  jumpHint: lang === 'it' ? 'Vai alla sezione:' : lang === 'fr' ? 'Accès rapide :' : 'Jump to section:',
+  whatWhy: lang === 'it' ? 'Cosa & Perché' : lang === 'fr' ? 'Quoi & Pourquoi' : 'What & Why',
+  processToggle: lang === 'it' ? 'Processo, regole & iterazioni di design' : lang === 'fr' ? 'Processus, règles & itérations de design' : 'Design process, tuning & iterations',
+  ideation: lang === 'it' ? 'Ideazione & Trade-off' : lang === 'fr' ? 'Idéation & Compromis' : 'Ideation & Trade-offs',
+  tuning: lang === 'it' ? 'Meccaniche & Parametri' : lang === 'fr' ? 'Mécaniques & Équilibrage' : 'Mechanics & Tuning',
+  iteration: lang === 'it' ? 'Playtest & Risultati' : lang === 'fr' ? 'Playtests & Résultats' : 'Playtest & Results',
+  mediaQueued: lang === 'it' ? 'Acquisizione Media // In Aggiornamento' : lang === 'fr' ? 'Capture Visuelle // Mise à jour en cours' : 'Visual Capture // Archive Updating',
 };
 ---
 

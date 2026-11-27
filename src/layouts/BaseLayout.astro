@@ -4,7 +4,7 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
-  lang?: 'en' | 'it';
+  lang?: 'en' | 'it' | 'fr';
   image?: string;
 }
 
@@ -48,6 +48,52 @@ const socialImageURL = new URL(image, Astro.site || "https://maurotheb.github.io
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
+
+    {lang === 'en' && (
+      <script is:inline>
+        (function () {
+          try {
+            var path = window.location.pathname;
+            if (path !== '/' && path !== '/index.html') return;
+            if (sessionStorage.getItem('portfolio:lang-transition')) return;
+            if (localStorage.getItem('portfolio:preferred-lang')) return;
+
+            var langs = navigator.languages && navigator.languages.length
+              ? Array.prototype.slice.call(navigator.languages)
+              : [navigator.language || ''];
+
+            var target = '';
+            for (var i = 0; i < langs.length; i++) {
+              var code = String(langs[i] || '').toLowerCase().split('-')[0];
+              if (code === 'it') { target = '/it/'; break; }
+              if (code === 'fr') { target = '/fr/'; break; }
+              if (code === 'en') { break; }
+            }
+
+            if (target) {
+              document.documentElement.style.visibility = 'hidden';
+              window.location.replace(target + window.location.search + window.location.hash);
+            }
+          } catch (e) {}
+        })();
+      </script>
+    )}
+
+    <script is:inline>
+      try {
+        var raw = sessionStorage.getItem('portfolio:lang-transition');
+        if (raw) {
+          var data = JSON.parse(raw);
+          if (data && Date.now() - data.ts < 5000) {
+            document.documentElement.style.visibility = 'hidden';
+            setTimeout(function () {
+              document.documentElement.style.visibility = '';
+            }, 600);
+          }
+        }
+      } catch (e) {}
+    </script>
+
   </head>
   <body class="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-violet-500/25 selection:text-violet-300">
     <div class="relative min-h-screen flex flex-col justify-between">

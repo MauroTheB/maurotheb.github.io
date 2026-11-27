@@ -128,7 +128,7 @@ const fallbackCoverMap: Record<string, string> = {
             </div>
             <div class="p-4 rounded-2xl bg-slate-950/70 border border-violet-500/30 space-y-1.5">
               <span class="text-[10px] font-mono uppercase tracking-wider text-violet-400 font-bold block">
-                {lang === 'it' ? 'Il Mio Ruolo' : 'My Ownership'}
+                {lang === 'it' ? 'Il Mio Ruolo' : lang === 'fr' ? 'Mon Périmètre' : 'My Ownership'}
               </span>
               <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
                 {proj.personalContributionSummary || proj.role}
@@ -375,6 +375,9 @@ const fallbackCoverMap: Record<string, string> = {
 
 <!-- Logica FLIP Morphing Incapsulata -->
 <script>
+
+  import { peekLangTransitionState, consumeLangTransitionState } from '../../utils/langTransition';
+
   const projectsGrid = document.getElementById('projects-grid-view');
   const projectDetail = document.getElementById('project-detail-view');
   const closeDetailBtn = document.getElementById('close-project-detail');
@@ -396,7 +399,66 @@ const fallbackCoverMap: Record<string, string> = {
 
   // Query tipizzata esplicitamente come HTMLElement (risolve TS2769)
   const projectCards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+  
+  function populateDetailView(card: HTMLElement) {
+    if (!detailTitle) return;
 
+    detailTitle.textContent = card.querySelector('h3')?.textContent || '';
+    if (detailTagline) detailTagline.textContent = card.getAttribute('data-project-tagline') || '';
+    if (detailRole) detailRole.textContent = card.getAttribute('data-project-role') || '';
+    if (detailTags) {
+      const rawTags = card.getAttribute('data-project-tags') || '';
+      const tags = rawTags ? rawTags.split('||').filter(Boolean) : [];
+      detailTags.innerHTML = tags
+        .map((t) => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`)
+        .join('');
+    }
+
+    const clickedProjId = card.getAttribute('data-project-card');
+    document.querySelectorAll('[data-project-media-block]').forEach((block) => {
+      block.classList.toggle('hidden', block.getAttribute('data-project-media-block') !== clickedProjId);
+    });
+
+    window.dispatchEvent(new CustomEvent('pomegranate:clear'));
+    window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
+    window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
+    window.dispatchEvent(new CustomEvent('water:sim:clear'));
+
+    if (clickedProjId === 'pomegranade') window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
+    else if (clickedProjId === 'puppeteer') window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
+    else if (clickedProjId === 'murder-mystery') window.dispatchEvent(new CustomEvent('murder:mystery:start'));
+    else if (clickedProjId === 'water-sim') window.dispatchEvent(new CustomEvent('water:sim:start'));
+  }
+
+  function openProjectInstantly(projectId: string) {
+    const targetCard = document.querySelector<HTMLElement>(`[data-project-card="${projectId}"]`);
+    if (!targetCard || !detailCardContainer || !detailBodyContent) return;
+
+    populateDetailView(targetCard);
+    savedDeltaX = 0;
+    savedDeltaY = 0;
+    savedScaleX = 1;
+    savedScaleY = 1;
+
+    if (projectsGrid) projectsGrid.classList.add('hidden');
+    if (projectDetail) projectDetail.classList.remove('hidden');
+    detailBodyContent.classList.remove('blur-md', 'opacity-30');
+    detailCardContainer.style.transition = 'none';
+    detailCardContainer.style.transform = 'none';
+
+    const videoSrc = targetCard.getAttribute('data-project-video');
+    if (videoSrc && detailBgVideo && detailVideoContainer) {
+      detailBgVideo.muted = true;
+      detailBgVideo.defaultMuted = true;
+      detailBgVideo.src = videoSrc;
+      detailBgVideo.load();
+      detailVideoContainer.classList.remove('opacity-0');
+      detailBgVideo.play().catch(() => {});
+    } else if (detailVideoContainer) {
+      detailVideoContainer.classList.add('opacity-0');
+    }
+  }
+  
   projectCards.forEach((card) => {
     // Tracciamento del momento in cui il mouse entra sulla card
     let hoverStartTime = 0;
@@ -454,54 +516,8 @@ const fallbackCoverMap: Record<string, string> = {
           }
         });
 
-        // 2. Popolamento dati
-        detailTitle.textContent = card.querySelector('h3')?.textContent || '';
-        if (detailTagline) detailTagline.textContent = card.getAttribute('data-project-tagline') || '';
-        if (detailRole) detailRole.textContent = card.getAttribute('data-project-role') || '';
-        if (detailTags) {
-          const rawTags = card.getAttribute('data-project-tags') || '';
-          const tags = rawTags ? rawTags.split('||').filter(Boolean) : [];
-          detailTags.innerHTML = tags.map((t) => `<span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs sm:text-sm font-mono">${t}</span>`).join('');
-        }
-
-        // Mostra solo il blocco media corrispondente al progetto cliccato
-        const clickedProjId = card.getAttribute('data-project-card');
-        const allMediaBlocks = document.querySelectorAll('[data-project-media-block]');
-        allMediaBlocks.forEach((block) => {
-          if (block.getAttribute('data-project-media-block') === clickedProjId) {
-            block.classList.remove('hidden');
-          } else {
-            block.classList.add('hidden');
-          }
-        });
-
-        // Gestione eventi ambientali dedicati per singolo gioco (Senza auto-cancellazione)
-        if (clickedProjId === 'pomegranade') {
-          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-          window.dispatchEvent(new CustomEvent('water:sim:clear'));
-          window.dispatchEvent(new CustomEvent('pomegranate:spawn'));
-        } else if (clickedProjId === 'puppeteer') {
-          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-          window.dispatchEvent(new CustomEvent('water:sim:clear'));
-          window.dispatchEvent(new CustomEvent('puppeteer:curse:start'));
-        } else if (clickedProjId === 'murder-mystery') {
-          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-          window.dispatchEvent(new CustomEvent('water:sim:clear'));
-          window.dispatchEvent(new CustomEvent('murder:mystery:start'));
-        } else if (clickedProjId === 'water-sim') {
-          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-          window.dispatchEvent(new CustomEvent('water:sim:start'));
-        } else {
-          window.dispatchEvent(new CustomEvent('pomegranate:clear'));
-          window.dispatchEvent(new CustomEvent('puppeteer:curse:clear'));
-          window.dispatchEvent(new CustomEvent('murder:mystery:clear'));
-          window.dispatchEvent(new CustomEvent('water:sim:clear'));
-        }
+        // 2. Popolamento dati e VFX dedicati
+        populateDetailView(card);
 
         detailBodyContent.classList.add('blur-md', 'opacity-30');
 
@@ -628,7 +644,18 @@ const fallbackCoverMap: Record<string, string> = {
     }
   }
 
-  checkUrlHash();
+  const pendingLangState = peekLangTransitionState();
+  if (pendingLangState) {
+    if (pendingLangState.openProjectId) {
+      openProjectInstantly(pendingLangState.openProjectId);
+    }
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: pendingLangState.scrollY, behavior: 'instant' as ScrollBehavior });
+      consumeLangTransitionState();
+    });
+  } else {
+    checkUrlHash();
+  }
 
   window.addEventListener('popstate', () => {
     const hash = window.location.hash.replace('#', '');

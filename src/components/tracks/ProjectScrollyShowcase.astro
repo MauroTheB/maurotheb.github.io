@@ -11,7 +11,7 @@ interface StoryStep {
 interface Props {
   steps: StoryStep[];
   isMobile?: boolean;
-  lang?: 'en' | 'it';
+  lang?: 'en' | 'it'| 'fr';
 }
 
 const { steps, isMobile = false, lang = 'en' } = Astro.props;

@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPortfolio } from "../../data/portfolio";
+import AmbientEnvironment from "../../components/vfx/AmbientEnvironment.astro";
+import CursorTrail from "../../components/vfx/CursorTrail.astro";
+import LanguageSwitcher from "../../components/hud/LanguageSwitcher.astro";
+import Hero from "../../components/sections/Hero.astro";
+import HudNav from "../../components/hud/HudNav.astro";
+import ProjectsTrack from "../../components/tracks/ProjectsTrack.astro";
+import ExperienceTrack from "../../components/tracks/ExperienceTrack.astro";
+import EducationTrack from "../../components/tracks/EducationTrack.astro";
+import SkillsTrack from "../../components/tracks/SkillsTrack.astro";
+import PomegranateHarvest from "../../components/vfx/PomegranateHarvest.astro";
+import PomegranateShockwave from "../../components/vfx/PomegranateShockwave.astro";
+import PuppeteerCurse from "../../components/vfx/PuppeteerCurse.astro";
+import MurderMysteryAssassination from "../../components/vfx/MurderMysteryAssassination.astro";
+import WaterSimulationWaves from "../../components/vfx/WaterSimulationWaves.astro";
+import GoldFilmShatter from "../../components/vfx/GoldFilmShatter.astro";
+import Footer from '../../components/sections/Footer.astro';
+
+const { profile: PROFILE, ui: UI } = getPortfolio("fr");
+---
+
+<BaseLayout 
+  title={`${PROFILE.name} | ${PROFILE.title}`}
+  description={PROFILE.subheading}
+  lang="fr"
+>
+  <AmbientEnvironment />
+  <CursorTrail />
+  <PomegranateHarvest />
+  <PomegranateShockwave />
+  <PuppeteerCurse />
+  <MurderMysteryAssassination />
+  <WaterSimulationWaves />
+  <GoldFilmShatter />
+  <LanguageSwitcher currentLang="fr" />
+
+  <Hero lang="fr" />
+  <HudNav lang="fr" />
+
+  <main class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 py-8 w-full">
+    <ProjectsTrack lang="fr" />
+    <ExperienceTrack lang="fr" />
+    <EducationTrack lang="fr" />
+    <SkillsTrack lang="fr" />
+  </main>
+
+  <Footer lang="fr" />
+</BaseLayout>

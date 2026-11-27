@@ -1,7 +1,8 @@
 import { PORTFOLIO_EN } from './portfolio.en';
 import { PORTFOLIO_IT } from './portfolio.it';
+import { PORTFOLIO_FR } from './portfolio.fr';
 
-export type Locale = 'en' | 'it';
+export type Locale = 'en' | 'it' | 'fr';
 
 export type ProjectCategory =
   | 'Academic Team Project / Industry Showcase'
@@ -145,7 +146,9 @@ export interface PortfolioData {
 }
 
 export function getPortfolio(lang: Locale = 'en'): PortfolioData {
-  return (lang === 'it' ? PORTFOLIO_IT : PORTFOLIO_EN) as unknown as PortfolioData;
+  if (lang === 'it') return PORTFOLIO_IT as unknown as PortfolioData;
+  if (lang === 'fr') return PORTFOLIO_FR as unknown as PortfolioData;
+  return PORTFOLIO_EN as unknown as PortfolioData;
 }
 
 // Retrocompatibilità per export diretti

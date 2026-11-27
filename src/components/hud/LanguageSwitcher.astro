@@ -8,8 +8,10 @@ interface Props {
 const { currentLang = 'en' } = Astro.props;
 ---
 
-<aside class="fixed top-5 right-5 z-[60] flex items-center p-1 rounded-full bg-slate-900/90 border border-white/15 backdrop-blur-xl shadow-2xl">  <a
+<aside class="fixed top-5 right-5 z-[60] data-current-lang={currentLang} flex items-center p-1 rounded-full bg-slate-900/90 border border-white/15 backdrop-blur-xl shadow-2xl">  
+  <a
     href="/"
+    data-lang-switch="en"
     class={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
       currentLang === 'en'
         ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 font-bold'
@@ -21,6 +23,7 @@ const { currentLang = 'en' } = Astro.props;
   </a>
   <a
     href="/it/"
+    data-lang-switch="it"
     class={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
       currentLang === 'it'
         ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 font-bold'
@@ -30,4 +33,73 @@ const { currentLang = 'en' } = Astro.props;
     <span>🇮🇹</span>
     <span>IT</span>
   </a>
+  <a
+    href="/fr/"
+    data-lang-switch="fr"
+    class={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
+      currentLang === 'fr'
+        ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 font-bold'
+        : 'text-slate-400 hover:text-white'
+    }`}
+  >
+    <span>🇫🇷</span>
+    <span>FR</span>
+  </a>
 </aside>
+
+<script>
+  import { saveLangTransitionState } from '../../utils/langTransition';
+
+  function initLanguageSwitcher() {
+    const container = document.querySelector<HTMLElement>('[data-current-lang]');
+    const currentLang = container?.getAttribute('data-current-lang') || '';
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch]');
+
+    links.forEach((link) => {
+      if (link.dataset.bound === 'true') return;
+      link.dataset.bound = 'true';
+
+      link.addEventListener('click', (e) => {
+        const targetLang = link.getAttribute('data-lang-switch') || '';
+        if (targetLang === currentLang) {
+          e.preventDefault();
+          return;
+        }
+
+        try {
+          localStorage.setItem('portfolio:preferred-lang', targetLang);
+        } catch {}
+
+        const detailView = document.getElementById('project-detail-view');
+        const isDetailOpen = detailView ? !detailView.classList.contains('hidden') : false;
+        const visibleMediaBlock = document.querySelector<HTMLElement>('[data-project-media-block]:not(.hidden)');
+        const openProjectId = isDetailOpen
+          ? (visibleMediaBlock?.getAttribute('data-project-media-block') || window.location.hash.replace('#', ''))
+          : '';
+
+        const activeRouletteId =
+          document.querySelector<HTMLElement>('#roulette-stage .slot-center')?.getAttribute('data-roulette-item') || '';
+
+        const sidebar = document.getElementById('projects-sidebar');
+        const sidebarOpen = sidebar ? !sidebar.classList.contains('-translate-x-full') : false;
+
+        saveLangTransitionState({
+          scrollY: window.scrollY,
+          openProjectId,
+          activeRouletteId,
+          sidebarOpen,
+        });
+
+        const baseHref = link.getAttribute('href') || '/';
+        if (openProjectId) {
+          link.href = `${baseHref}#${openProjectId}`;
+        } else if (window.location.hash) {
+          link.href = `${baseHref}${window.location.hash}`;
+        }
+      });
+    });
+  }
+
+  initLanguageSwitcher();
+  document.addEventListener('astro:page-load', initLanguageSwitcher);
+</script>
